@@ -29,11 +29,14 @@ export const subscription = pgTable("subscription", {
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
   
-  // Creem 相关字段
+  // Creem related fields
   creemCustomerId: text("creem_customer_id"),
   creemSubscriptionId: text("creem_subscription_id"),
   
-  // 订阅周期
+  // PayPal related fields
+  paypalSubscriptionId: text("paypal_subscription_id"),
+  
+  // Subscription period
   periodStart: timestamp("period_start").notNull(),
   periodEnd: timestamp("period_end").notNull(),
   cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false),

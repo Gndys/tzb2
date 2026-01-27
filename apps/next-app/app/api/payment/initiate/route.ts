@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     }, ORDER_EXPIRATION_TIME);
 
     // 4. Create payment provider instance and initiate payment
-    const paymentProvider = createPaymentProvider(provider as 'stripe' | 'wechat');
+    const paymentProvider = createPaymentProvider(provider as 'stripe' | 'wechat' | 'paypal');
     // x-forwarded-for may contain multiple IPs (comma-separated), we only need the first one
     // WeChat Pay requires payer_client_ip to be max 45 bytes
     const forwardedFor = req.headers.get('x-forwarded-for')
@@ -96,6 +96,15 @@ export async function POST(req: Request) {
         // description: `${plan.name} - ${plan.duration.description}`
       }
     });
+    // Save provider order ID and metadata for later capture/verification
+    await db.update(order)
+      .set({
+        providerOrderId: result.providerOrderId,
+        metadata: result.metadata || {},
+        updatedAt: new Date()
+      })
+      .where(eq(order.id, orderId));
+
     console.log('Payment initiation result:', result);
     return Response.json(result);
   } catch (error) {

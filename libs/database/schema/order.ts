@@ -16,6 +16,7 @@ export const paymentProviders = {
   WECHAT: "wechat",
   STRIPE: "stripe",
   CREEM: "creem",
+  PAYPAL: "paypal",
 } as const;
 
 // 订单表
@@ -26,7 +27,7 @@ export const order = pgTable("order", {
   currency: text("currency").notNull(),
   planId: text("plan_id").notNull(), // 对应 config.payment.plans 中的 id
   status: text("status").notNull(), // pending, paid, failed
-  provider: text("provider").notNull(), // wechat, stripe
+  provider: text("provider").notNull(), // wechat, stripe, creem, paypal
   providerOrderId: text("provider_order_id"), // 支付平台的订单ID
   metadata: jsonb("metadata"), // 存储支付平台返回的额外信息
   createdAt: timestamp("created_at").defaultNow(),
