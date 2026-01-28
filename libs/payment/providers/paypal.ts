@@ -491,14 +491,32 @@ export class PayPalProvider implements PaymentProvider {
 
       const plan = config.payment.plans[planId as keyof typeof config.payment.plans] as PaymentPlan;
 
+      const existingMetadata = (() => {
+        if (!existingOrder?.metadata) {
+          return {};
+        }
+        if (typeof existingOrder.metadata === 'object') {
+          return existingOrder.metadata as Record<string, unknown>;
+        }
+        if (typeof existingOrder.metadata === 'string') {
+          try {
+            return JSON.parse(existingOrder.metadata) as Record<string, unknown>;
+          } catch {
+            return {};
+          }
+        }
+        return {};
+      })();
+
       // Update order status
       await db.update(order)
         .set({ 
           status: orderStatus.PAID,
-          metadata: JSON.stringify({
+          metadata: {
+            ...existingMetadata,
             paypalCaptureId: event.resource.id,
             processedBy: 'webhook'
-          })
+          }
         })
         .where(eq(order.id, orderId));
 
