@@ -654,13 +654,19 @@ export class PayPalProvider implements PaymentProvider {
 
       const { orderId, userId, planId } = metadata;
 
-      // Update order status
-      await db.update(order)
-        .set({ status: orderStatus.PAID })
-        .where(eq(order.id, orderId));
+      const now = utcNow();
+
+      // Update order status only if still pending to prevent double fulfillment
+      const updatedOrders = await db.update(order)
+        .set({ status: orderStatus.PAID, updatedAt: now })
+        .where(and(eq(order.id, orderId), eq(order.status, orderStatus.PENDING)))
+        .returning({ id: order.id });
+
+      if (updatedOrders.length === 0) {
+        return { success: true, orderId };
+      }
 
       // Calculate subscription period
-      const now = utcNow();
       let periodEnd = new Date(now);
       
       // Try to get billing info from the subscription

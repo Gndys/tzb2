@@ -125,11 +125,28 @@ export default defineEventHandler(async (event) => {
     // === Synchronously update order status ===
     const captureNow = utcNow()
     const captureId = captureResult.purchase_units?.[0]?.payments?.captures?.[0]?.id
-    
+    const existingMetadata = (() => {
+      if (!orderRecord.metadata) {
+        return {}
+      }
+      if (typeof orderRecord.metadata === 'object') {
+        return orderRecord.metadata as Record<string, unknown>
+      }
+      if (typeof orderRecord.metadata === 'string') {
+        try {
+          return JSON.parse(orderRecord.metadata) as Record<string, unknown>
+        } catch {
+          return {}
+        }
+      }
+      return {}
+    })()
+
     const updatedOrders = await db.update(order)
       .set({
         status: orderStatus.PAID,
         metadata: {
+          ...existingMetadata,
           paypalCaptureId: captureId,
           capturedAt: captureNow.toISOString()
         },
