@@ -5,7 +5,8 @@ import {
   PaymentProvider, 
   PaymentParams, 
   PaymentResult, 
-  WebhookVerification
+  WebhookVerification,
+  PaymentPlan
 } from '../types';
 import { db } from '@libs/database';
 import { 
@@ -19,16 +20,6 @@ import { user } from '@libs/database/schema/user';
 import { randomUUID } from 'crypto';
 import { utcNow } from '@libs/database/utils/utc';
 import { creditService, TransactionTypeCode } from '@libs/credits';
-
-// Payment plan interface for type safety
-interface PaymentPlan {
-  stripePriceId?: string;
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits';
-    months?: number;
-  };
-  credits?: number;  // For credit pack plans
-}
 
 export class StripeProvider implements PaymentProvider {
   public stripe: Stripe;

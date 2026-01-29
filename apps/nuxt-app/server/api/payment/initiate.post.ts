@@ -115,6 +115,15 @@ export default defineEventHandler(async (event) => {
         // description: `${plan.name} - ${plan.duration.description}`
       }
     })
+    // Save provider order ID and metadata for later capture/verification
+    await db.update(order)
+      .set({
+        providerOrderId: result.providerOrderId,
+        metadata: result.metadata || {},
+        updatedAt: new Date()
+      })
+      .where(eq(order.id, orderId))
+
     console.log('Payment initiation result:', result)
 
     return {

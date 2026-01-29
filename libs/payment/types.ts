@@ -16,6 +16,20 @@ export interface PaymentResult {
   metadata?: Record<string, any>;
 }
 
+export interface PaymentPlan {
+  id: string;
+  amount: number;
+  currency: string;
+  duration: {
+    type: 'recurring' | 'one_time' | 'credits';
+    months?: number;
+  };
+  credits?: number;
+  stripePriceId?: string;
+  creemProductId?: string;
+  paypalPlanId?: string;
+}
+
 export interface WebhookVerification {
   success: boolean;
   orderId?: string;

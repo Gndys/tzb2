@@ -127,6 +127,52 @@ export const paymentConfig = {
           ? 'https://openapi-sandbox.dl.alipaydev.com/gateway.do'
           : 'https://openapi.alipay.com/gateway.do';
       }
+    },
+
+    /**
+     * PayPal Configuration
+     * Reference: https://developer.paypal.com/docs/checkout/
+     * Supports one-time payments (Orders API) and subscriptions (Subscriptions API)
+     */
+    paypal: {
+      /**
+       * PayPal Client ID from Developer Dashboard
+       * Get from: https://developer.paypal.com/dashboard/applications
+       */
+      get clientId() {
+        return requireEnvForService('PAYPAL_CLIENT_ID', 'PayPal');
+      },
+      /**
+       * PayPal Client Secret from Developer Dashboard
+       * Used for server-side API authentication
+       */
+      get clientSecret() {
+        return requireEnvForService('PAYPAL_CLIENT_SECRET', 'PayPal');
+      },
+      /**
+       * PayPal Webhook ID for signature verification
+       * Get from: PayPal Developer Dashboard -> Webhooks
+       */
+      get webhookId() {
+        return requireEnvForService('PAYPAL_WEBHOOK_ID', 'PayPal');
+      },
+      /**
+       * Whether to use sandbox environment for testing
+       * Sandbox: https://api-m.sandbox.paypal.com
+       * Production: https://api-m.paypal.com
+       */
+      get sandbox() {
+        return getEnv('PAYPAL_SANDBOX') === 'true';
+      },
+      /**
+       * PayPal API Base URL (automatically determined by sandbox mode)
+       */
+      get apiBaseUrl() {
+        const sandbox = getEnv('PAYPAL_SANDBOX') === 'true';
+        return sandbox
+          ? 'https://api-m.sandbox.paypal.com'
+          : 'https://api-m.paypal.com';
+      }
     }
   },
 
@@ -263,6 +309,73 @@ export const paymentConfig = {
         }
       }
     },
+    // PayPal plans - Global market, supports USD
+    monthlyPaypal: {
+      provider: 'paypal',
+      id: 'monthlyPaypal',
+      amount: 10,
+      currency: 'USD',
+      duration: {
+        months: 1,
+        type: 'recurring'
+      },
+      // PayPal Plan ID created in PayPal Dashboard
+      // Create at: https://www.sandbox.paypal.com/billing/plans (sandbox)
+      // Or: https://www.paypal.com/billing/plans (production)
+      paypalPlanId: 'P-5BS42806151539909NF3VZMQ',
+      i18n: {
+        'en': {
+          name: 'PayPal Monthly Plan',
+          description: 'Monthly recurring subscription via PayPal',
+          duration: 'month',
+          features: [
+            'All premium features',
+            'Priority support',
+            'Cancel anytime'
+          ]
+        },
+        'zh-CN': {
+          name: 'PayPal 月度订阅',
+          description: '通过 PayPal 的月度循环订阅',
+          duration: '月',
+          features: [
+            '所有高级功能',
+            '优先支持',
+            '随时取消'
+          ]
+        }
+      }
+    },
+    monthlyPaypalOneTime: {
+      provider: 'paypal',
+      id: 'monthlyPaypalOneTime',
+      amount: 10,
+      currency: 'USD',
+      duration: {
+        months: 1,
+        type: 'one_time'
+      },
+      i18n: {
+        'en': {
+          name: 'PayPal Monthly (One Time)',
+          description: 'One-time payment for monthly access via PayPal',
+          duration: 'month',
+          features: [
+            'All premium features',
+            'Priority support'
+          ]
+        },
+        'zh-CN': {
+          name: 'PayPal 月度 (一次性)',
+          description: '通过 PayPal 的一次性月度付费',
+          duration: '月',
+          features: [
+            '所有高级功能',
+            '优先支持'
+          ]
+        }
+      }
+    },
     monthlyCreem: {
       provider: 'creem',
       id: 'monthlyCreem',
@@ -385,6 +498,37 @@ export const paymentConfig = {
             '550 次 AI 对话 (含 50 赠送)',
             '积分永不过期',
             '最超值套餐'
+          ]
+        }
+      }
+    },
+
+    creditsPaypal: {
+      provider: 'paypal',
+      id: 'creditsPaypal',
+      amount: 5,
+      currency: 'USD',
+      duration: { type: 'credits' },
+      credits: 100,
+      i18n: {
+        'en': {
+          name: '100 Credits PayPal',
+          description: 'Purchase 100 AI credits via PayPal',
+          duration: 'one-time',
+          features: [
+            '100 AI conversations',
+            'Credits never expire',
+            'Pay as you go'
+          ]
+        },
+        'zh-CN': {
+          name: '100 积分包 PayPal',
+          description: '通过 PayPal 购买的 100 个 AI 积分',
+          duration: '一次性',
+          features: [
+            '100 次 AI 对话',
+            '积分永不过期',
+            '按需付费'
           ]
         }
       }

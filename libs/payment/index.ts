@@ -3,9 +3,10 @@ import { StripeProvider } from './providers/stripe';
 import { WechatPayProvider } from './providers/wechat';
 import { CreemProvider } from './providers/creem';
 import { AlipayProvider } from './providers/alipay';
+import { PayPalProvider } from './providers/paypal';
 import { PaymentProvider } from './types';
 
-export type PaymentProviderType = 'stripe' | 'wechat' | 'creem' | 'alipay';
+export type PaymentProviderType = 'stripe' | 'wechat' | 'creem' | 'alipay' | 'paypal';
 
 /**
  * Create payment provider instance
@@ -18,6 +19,7 @@ export function createPaymentProvider<T extends PaymentProviderType>(
   : T extends 'wechat' ? WechatPayProvider 
   : T extends 'creem' ? CreemProvider 
   : T extends 'alipay' ? AlipayProvider 
+  : T extends 'paypal' ? PayPalProvider
   : never {
   switch (provider) {
     case 'stripe':
@@ -28,6 +30,8 @@ export function createPaymentProvider<T extends PaymentProviderType>(
       return new CreemProvider() as any;
     case 'alipay':
       return new AlipayProvider() as any;
+    case 'paypal':
+      return new PayPalProvider() as any;
     default:
       throw new Error(`Unsupported payment provider: ${provider}`);
   }
@@ -35,5 +39,5 @@ export function createPaymentProvider<T extends PaymentProviderType>(
 
 // Export types and provider implementations for convenience
 export * from './types';
-export { StripeProvider, WechatPayProvider, CreemProvider, AlipayProvider };
+export { StripeProvider, WechatPayProvider, CreemProvider, AlipayProvider, PayPalProvider };
 export type { CreemRedirectParams, ReturnUrlVerification } from './providers/creem'; 

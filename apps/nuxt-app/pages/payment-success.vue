@@ -61,35 +61,47 @@ const sessionId = route.query.session_id as string
 const provider = (route.query.provider as string) || 'stripe'
 // Alipay uses out_trade_no as the order identifier
 const outTradeNo = route.query.out_trade_no as string
+const orderId = route.query.order_id as string
+const paypalCapture = route.query.paypal_capture as string
+const isPaypalSubscription = provider === 'paypal' && route.query.subscription === 'true'
 
-// WeChat and Alipay don't need verification - they use webhooks for confirmation
-const skipVerification = provider === 'wechat' || provider === 'alipay'
+// WeChat/Alipay and PayPal subscription don't need client verification
+const skipVerification = provider === 'wechat'
+  || provider === 'alipay'
+  || isPaypalSubscription
+  || (provider === 'paypal' && paypalCapture === 'success')
 
 // Reactive state
 const isVerifying = ref(!skipVerification)
 const isValid = ref(skipVerification)
 
-console.log('session', sessionId, 'provider', provider, 'out_trade_no', outTradeNo)
+console.log('session', sessionId, 'provider', provider, 'out_trade_no', outTradeNo, 'orderId', orderId)
 
 // Verify payment session on mount
 onMounted(async () => {
-  // For WeChat and Alipay, payment status is confirmed via webhook
-  // The return URL is just for user experience
-  if (provider === 'wechat' || provider === 'alipay') {
+  // Skip verification for providers that use webhooks or already captured
+  // WeChat, Alipay: payment confirmed via webhook
+  // PayPal subscription: activation handled by webhook
+  // PayPal capture success: already captured in return handler
+  if (skipVerification) {
     isValid.value = true
     isVerifying.value = false
     return
   }
 
-  // For Creem, we don't need sessionId, verification is done via URL signature
-  // For Stripe and others, sessionId is required
+  // PayPal without success flag means capture failed
+  if (provider === 'paypal') {
+    await navigateTo(localePath('/payment-cancel'))
+    return
+  }
+
+  // For Stripe and Creem, verify the session
   if (!sessionId && provider !== 'creem') {
     await navigateTo(localePath('/pricing'))
     return
   }
 
   try {
-    // Determine verification endpoint based on provider
     let verifyUrl: string
     if (provider === 'stripe') {
       verifyUrl = `/api/payment/verify/stripe?session_id=${sessionId}`

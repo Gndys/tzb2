@@ -1,4 +1,4 @@
-import { PaymentProvider, PaymentParams, PaymentResult, WebhookVerification } from '../types';
+import { PaymentProvider, PaymentParams, PaymentResult, WebhookVerification, PaymentPlan } from '../types';
 import { config } from '@config';
 import type { CreditPlan } from '@config';
 import { db } from '@libs/database';
@@ -11,15 +11,6 @@ import crypto from 'crypto';
 import { X509Certificate } from '@peculiar/x509';
 import { ofetch } from 'ofetch';
 import { creditService, TransactionTypeCode } from '@libs/credits';
-
-// Payment plan interface for type safety
-interface PaymentPlan {
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits';
-    months?: number;
-  };
-  credits?: number;
-}
 
 // 微信支付分为两大部分 ：https://pay.weixin.qq.com/doc/v3/merchant/4012365342 特别注意这个文档中的图
 // 1 发送请求 生成签名

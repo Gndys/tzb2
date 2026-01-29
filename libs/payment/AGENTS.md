@@ -2,7 +2,7 @@
 
 ## Overview
 
-Unified payment integration library supporting WeChat Pay, Stripe, Creem, and Alipay payment providers. Handles one-time payments, recurring subscriptions, and **credit purchases** with webhook processing, database integration, and automated plan configuration from `@config`. Includes a complete credit system for AI-powered features with consumption tracking.
+Unified payment integration library supporting WeChat Pay, Stripe, Creem, Alipay, and PayPal payment providers. Handles one-time payments, recurring subscriptions, and **credit purchases** with webhook processing, database integration, and automated plan configuration from `@config`. Includes a complete credit system for AI-powered features with consumption tracking.
 
 ## Setup Commands
 
@@ -36,6 +36,14 @@ ALIPAY_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgatiwfGM3RTw..."
 ALIPAY_NOTIFY_URL=https://yourdomain.com/api/payment/webhook/alipay
 ALIPAY_SANDBOX=false  # Set to "true" for sandbox testing
 
+# PayPal (Global market, supports subscriptions)
+# Reference: https://developer.paypal.com/docs/checkout/
+# Get credentials from: https://developer.paypal.com/dashboard/applications
+PAYPAL_CLIENT_ID=AYxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+PAYPAL_CLIENT_SECRET=ELxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+PAYPAL_WEBHOOK_ID=WH-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+PAYPAL_SANDBOX=true  # Set to "false" for production
+
 # No additional installation - configured via @config
 ```
 
@@ -45,7 +53,7 @@ ALIPAY_SANDBOX=false  # Set to "true" for sandbox testing
 - Unified interface: `PaymentProvider` with `createPayment()` and `handleWebhook()` methods
 - Configuration integration: Payment plans from `config.payment.plans` with auto-pricing page generation
 - Database integration: Orders and subscriptions tracked via `@libs/database`
-- Multi-currency support: CNY (WeChat/Alipay), USD/EUR (Stripe/Creem)
+- Multi-currency support: CNY (WeChat/Alipay), USD/EUR (Stripe/Creem/PayPal)
 - Webhook verification: Provider-specific signature validation
 
 ## Usage Examples
@@ -241,10 +249,11 @@ credits: {
 - **Stripe**: Full subscription management, credit purchases, global currencies, customer portal
 - **Creem**: Developer-friendly, credit purchases, global currencies, simplified onboarding
 - **Alipay**: One-time payments and credit purchases, CNY currency, uses official `alipay-sdk`
+- **PayPal**: Full subscription management, credit purchases, global currencies, requires manual capture
 
 ### Payment Types
 - **One-time**: Single payment (supported by all providers)
-- **Recurring**: Subscription billing (Stripe and Creem only)
+- **Recurring**: Subscription billing (Stripe, Creem, and PayPal)
 - **Credits**: One-time credit purchase with automatic balance update (all providers)
 
 ### Database Operations
@@ -291,7 +300,7 @@ credits: {
 - Ensure certificate formats are correct for WeChat Pay (PEM with \n)
 
 ### Payment Plan Issues
-- Confirm `stripePriceId` or `creemProductId` exist in provider dashboards
+- Confirm `stripePriceId`, `creemProductId`, or `paypalPlanId` exist in provider dashboards
 - Verify plan `id` matches exactly in payment requests
 - Check currency compatibility with chosen provider
 
@@ -310,6 +319,7 @@ credits: {
 - **Stripe**: API version compatibility, webhook endpoint setup
 - **Creem**: API key permissions, product configuration
 - **Alipay**: Private key format (PEM), public key for signature verification, webhook returns "success"/"fail" plain text
+- **PayPal**: Plan ID must be pre-created in PayPal Dashboard, requires explicit capture after user approval, sandbox/production URL differences
 
 ## Architecture Notes
 

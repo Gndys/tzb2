@@ -15,21 +15,34 @@ function PaymentSuccessContent() {
   const provider = searchParams.get('provider');
   // Alipay uses out_trade_no as the order identifier
   const outTradeNo = searchParams.get('out_trade_no');
+  const orderId = searchParams.get('order_id');
+  const paypalCapture = searchParams.get('paypal_capture');
+  const isPaypalSubscription = provider === 'paypal' && searchParams.get('subscription') === 'true';
   
   // WeChat and Alipay don't need verification - they use webhooks for confirmation
-  const skipVerification = provider === 'wechat' || provider === 'alipay';
+  const skipVerification = provider === 'wechat'
+    || provider === 'alipay'
+    || isPaypalSubscription
+    || (provider === 'paypal' && paypalCapture === 'success');
   const [isVerifying, setIsVerifying] = useState(!skipVerification);
   const [isValid, setIsValid] = useState(skipVerification);
 
   useEffect(() => {
-    // For WeChat and Alipay, payment status is confirmed via webhook
-    // The return URL is just for user experience
-    if (provider === 'wechat' || provider === 'alipay') {
+    // Skip verification for providers that use webhooks or already captured
+    // WeChat, Alipay: payment confirmed via webhook
+    // PayPal subscription: activation handled by webhook
+    // PayPal capture success: already captured in return handler
+    if (skipVerification) {
+      return;
+    }
+
+    // PayPal without success flag means capture failed
+    if (provider === 'paypal') {
+      router.replace('/payment-cancel');
       return;
     }
 
     // For Stripe and Creem, verify the session
-    // For Creem, we need to verify the full URL (including signature)
     if (!sessionId && provider !== 'creem') {
       router.replace('/');
       return;
@@ -37,12 +50,11 @@ function PaymentSuccessContent() {
 
     async function verifySession() {
       try {
-        // Determine verification endpoint based on provider
         let verifyUrl;
         if (provider === 'stripe') {
           verifyUrl = `/api/payment/verify/stripe?session_id=${sessionId}`;
         } else if (provider === 'creem') {
-          // Creem verification needs the full URL for signature verification
+          // Creem verification needs the full URL (including signature)
           verifyUrl = `/api/payment/verify/creem${window.location.search}`;
         } else {
           // Default to Stripe verification (backward compatibility)
@@ -53,7 +65,7 @@ function PaymentSuccessContent() {
         if (!response.ok) {
           throw new Error('Invalid session');
         }
-        const data = await response.json();
+        await response.json();
         setIsValid(true);
       } catch (error) {
         console.error('Session verification failed:', error);
@@ -64,7 +76,7 @@ function PaymentSuccessContent() {
     }
 
     verifySession();
-  }, [sessionId, router, provider]);
+  }, [sessionId, router, provider, skipVerification]);
 
   if (isVerifying) {
     return (

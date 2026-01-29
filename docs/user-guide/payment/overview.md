@@ -1,6 +1,6 @@
 # 💳 支付配置指南
 
-支付是我们重要的核心功能，目前我们支持四种支付方式：**WeChat Pay**、**Stripe**、**Creem** 和 **Alipay**，并且支持**三种付费模式**：单次付费、订阅和积分充值（微信支付和支付宝只支持单次付费和积分充值）。
+支付是我们重要的核心功能，目前我们支持五种支付方式：**WeChat Pay**、**Stripe**、**Creem**、**Alipay** 和 **PayPal**，并且支持**三种付费模式**：单次付费、订阅和积分充值（微信支付和支付宝只支持单次付费和积分充值）。
 
 > 🪙 **积分系统**：如需配置 AI 积分消耗功能，请参阅 [积分系统配置指南](../credits.md)。
 
@@ -28,6 +28,7 @@
 | WeChat Pay | ✅ | ❌ | ✅ | 中国大陆 | CNY |
 | Alipay | ✅ | ❌ | ✅ | 中国大陆 | CNY |
 | Stripe | ✅ | ✅ | ✅ | 全球 | 多币种 |
+| PayPal | ✅ | ✅ | ✅ | 全球 | 多币种 |
 | Creem | ✅ | ✅ | ✅ | 全球 | USD, EUR等 |
 
 ## ⚙️ 配置概览
@@ -35,7 +36,7 @@
 通过 `config/payment.ts` 中的 **providers** 进行设置。建议您根据项目需求和目标市场选择一种支付方式进行配置：
 
 - **中国大陆用户**：推荐 WeChat Pay 或 Alipay
-- **国际用户**：推荐 Stripe 
+- **国际用户**：推荐 Stripe 或 PayPal
 - **审核通过更容易**：推荐 Creem
 
 **特别注意：在本地开发阶段我们要使用这些平台的测试/沙盒模式（Stripe 和 Creem 支持，微信支付不支持），所以微信支付如果想测试都是使用真实 0.01 元真实支付进行测试。**
@@ -47,8 +48,9 @@
 1. **[微信支付配置](./wechat.md)** - 中国大陆用户推荐
 2. **[支付宝配置](./alipay.md)** - 中国大陆用户推荐
 3. **[Stripe 配置](./stripe.md)** - 国际用户推荐
-4. **[Creem 配置](./creem.md)** - 独立开发者出海推荐
-5. **[支付测试指南](../payment-testing.md)** - 本地开发测试和 Webhook 调试
+4. **[PayPal 配置](./paypal.md)** - 国际用户推荐
+5. **[Creem 配置](./creem.md)** - 独立开发者出海推荐
+6. **[支付测试指南](../payment-testing.md)** - 本地开发测试和 Webhook 调试
 
 ## 📦 配置付款计划
 
@@ -123,4 +125,5 @@ POST /api/payment/cancel/:orderId
 - [微信支付开发文档](https://pay.weixin.qq.com/wiki/doc/api/index.html)
 - [支付宝开放平台](https://open.alipay.com/)
 - [Stripe 开发文档](https://stripe.com/docs)
+- [PayPal 开发文档](https://developer.paypal.com/docs/)
 - [Creem API 文档](https://docs.creem.io/)
