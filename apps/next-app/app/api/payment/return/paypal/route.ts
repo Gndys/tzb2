@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createPaymentProvider } from '@libs/payment';
+import { createPaymentProvider, type PaymentPlan } from '@libs/payment';
 import { db } from '@libs/database';
 import { order, orderStatus } from '@libs/database/schema/order';
 import { subscription, subscriptionStatus, paymentTypes } from '@libs/database/schema/subscription';
@@ -8,17 +8,6 @@ import { config } from '@config';
 import { creditService, TransactionTypeCode } from '@libs/credits';
 import { randomUUID } from 'crypto';
 import { utcNow } from '@libs/database/utils/utc';
-
-interface PaymentPlan {
-  id: string;
-  amount: number;
-  currency: string;
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits';
-    months?: number;
-  };
-  credits?: number;
-}
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -45,11 +34,17 @@ export async function GET(req: Request) {
       const subscriptionDetails = await paypalProvider.getSubscription(orderRecord.providerOrderId);
 
       if (subscriptionDetails?.status === 'ACTIVE') {
-        // Update order status
+        // Update order status only if still pending to prevent double fulfillment
         const now = utcNow();
-        await db.update(order)
+        const updatedOrders = await db.update(order)
           .set({ status: orderStatus.PAID, updatedAt: now })
-          .where(eq(order.id, orderId));
+          .where(and(eq(order.id, orderId), eq(order.status, orderStatus.PENDING)))
+          .returning({ id: order.id });
+
+        if (updatedOrders.length === 0) {
+          const successUrl = `${config.app.payment.successUrl}?provider=paypal&order_id=${orderId}&subscription=true`;
+          return NextResponse.redirect(successUrl);
+        }
 
         // Calculate subscription period
         let periodEnd = new Date(now);
@@ -133,7 +128,7 @@ export async function GET(req: Request) {
     const captureNow = utcNow();
     const captureId = captureResult.purchase_units?.[0]?.payments?.captures?.[0]?.id;
     
-    await db.update(order)
+    const updatedOrders = await db.update(order)
       .set({
         status: orderStatus.PAID,
         metadata: {
@@ -142,7 +137,13 @@ export async function GET(req: Request) {
         },
         updatedAt: captureNow
       })
-      .where(eq(order.id, orderId));
+      .where(and(eq(order.id, orderId), eq(order.status, orderStatus.PENDING)))
+      .returning({ id: order.id });
+
+    if (updatedOrders.length === 0) {
+      const successUrl = `${config.app.payment.successUrl}?provider=paypal&order_id=${orderId}&paypal_capture=success`;
+      return NextResponse.redirect(successUrl);
+    }
 
     // === Handle based on plan type ===
     const plan = config.payment.plans[orderRecord.planId as keyof typeof config.payment.plans] as PaymentPlan | undefined;

@@ -6,7 +6,8 @@ import {
   PaymentParams,
   PaymentResult,
   WebhookVerification,
-  OrderQueryResult
+  OrderQueryResult,
+  PaymentPlan
 } from '../types';
 import { db } from '@libs/database';
 import { 
@@ -21,18 +22,6 @@ import { randomUUID } from 'crypto';
 import { utcNow } from '@libs/database/utils/utc';
 import crypto from 'crypto';
 import { creditService, TransactionTypeCode } from '@libs/credits';
-
-// Payment plan interface for type safety
-interface PaymentPlan {
-  creemProductId?: string;
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits';
-    months?: number;
-  };
-  credits?: number;
-  currency: string;
-  amount: number;
-}
 
 // Creem Return URL 参数接口
 export interface CreemRedirectParams {

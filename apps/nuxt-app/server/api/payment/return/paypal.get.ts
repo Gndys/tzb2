@@ -1,21 +1,10 @@
-import { createPaymentProvider } from '@libs/payment'
+import { createPaymentProvider, type PaymentPlan } from '@libs/payment'
 import { db } from '@libs/database'
 import { order, orderStatus, subscription, subscriptionStatus, paymentTypes } from '@libs/database/schema'
 import { eq, and, desc } from 'drizzle-orm'
 import { creditService, TransactionTypeCode } from '@libs/credits'
 import { randomUUID } from 'crypto'
 import { utcNow } from '@libs/database/utils/utc'
-
-interface PaymentPlan {
-  id: string
-  amount: number
-  currency: string
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits'
-    months?: number
-  }
-  credits?: number
-}
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
@@ -43,11 +32,17 @@ export default defineEventHandler(async (event) => {
       const subscriptionDetails = await paypalProvider.getSubscription(orderRecord.providerOrderId)
 
       if (subscriptionDetails?.status === 'ACTIVE') {
-        // Update order status
+        // Update order status only if still pending to prevent double fulfillment
         const now = utcNow()
-        await db.update(order)
+        const updatedOrders = await db.update(order)
           .set({ status: orderStatus.PAID, updatedAt: now })
-          .where(eq(order.id, orderId))
+          .where(and(eq(order.id, orderId), eq(order.status, orderStatus.PENDING)))
+          .returning({ id: order.id })
+
+        if (updatedOrders.length === 0) {
+          const successUrl = `${config.app.payment.successUrl}?provider=paypal&order_id=${orderId}&subscription=true`
+          return sendRedirect(event, successUrl)
+        }
 
         // Calculate subscription period
         let periodEnd = new Date(now)
@@ -131,7 +126,7 @@ export default defineEventHandler(async (event) => {
     const captureNow = utcNow()
     const captureId = captureResult.purchase_units?.[0]?.payments?.captures?.[0]?.id
     
-    await db.update(order)
+    const updatedOrders = await db.update(order)
       .set({
         status: orderStatus.PAID,
         metadata: {
@@ -140,7 +135,13 @@ export default defineEventHandler(async (event) => {
         },
         updatedAt: captureNow
       })
-      .where(eq(order.id, orderId))
+      .where(and(eq(order.id, orderId), eq(order.status, orderStatus.PENDING)))
+      .returning({ id: order.id })
+
+    if (updatedOrders.length === 0) {
+      const successUrl = `${config.app.payment.successUrl}?provider=paypal&order_id=${orderId}&paypal_capture=success`
+      return sendRedirect(event, successUrl)
+    }
 
     // === Handle based on plan type ===
     const plan = config.payment.plans[orderRecord.planId as keyof typeof config.payment.plans] as PaymentPlan | undefined

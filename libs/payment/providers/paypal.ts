@@ -4,7 +4,8 @@ import {
   PaymentParams,
   PaymentResult,
   WebhookVerification,
-  OrderQueryResult
+  OrderQueryResult,
+  PaymentPlan
 } from '../types';
 import { db } from '@libs/database';
 import {
@@ -17,18 +18,6 @@ import { eq, and, desc } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import { utcNow } from '@libs/database/utils/utc';
 import { creditService, TransactionTypeCode } from '@libs/credits';
-
-// Payment plan interface for type safety
-interface PaymentPlan {
-  paypalPlanId?: string;
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits';
-    months?: number;
-  };
-  credits?: number;
-  currency: string;
-  amount: number;
-}
 
 // PayPal API Response Types
 interface PayPalOrder {
@@ -117,15 +106,6 @@ interface PayPalWebhookEvent {
     [key: string]: any;
   };
   summary?: string;
-}
-
-// PayPal Webhook Headers for verification
-interface PayPalWebhookHeaders {
-  'paypal-transmission-id': string;
-  'paypal-transmission-time': string;
-  'paypal-transmission-sig': string;
-  'paypal-cert-url': string;
-  'paypal-auth-algo': string;
 }
 
 interface PayPalSignatureData {
@@ -508,8 +488,8 @@ export class PayPalProvider implements PaymentProvider {
         return {};
       })();
 
-      // Update order status
-      await db.update(order)
+      // Update order status only if still pending to prevent double fulfillment
+      const updatedOrders = await db.update(order)
         .set({ 
           status: orderStatus.PAID,
           metadata: {
@@ -518,7 +498,12 @@ export class PayPalProvider implements PaymentProvider {
             processedBy: 'webhook'
           }
         })
-        .where(eq(order.id, orderId));
+        .where(and(eq(order.id, orderId), eq(order.status, orderStatus.PENDING)))
+        .returning({ id: order.id });
+
+      if (updatedOrders.length === 0) {
+        return { success: true, orderId };
+      }
 
       // Handle credit pack purchase
       if (plan.duration.type === 'credits' && plan.credits) {
@@ -600,7 +585,6 @@ export class PayPalProvider implements PaymentProvider {
           planId: planId,
           status: subscriptionStatus.ACTIVE,
           paymentType: paymentTypes.ONE_TIME,
-          paypalSubscriptionId: event.resource.id,
           periodStart: now,
           periodEnd: periodEnd,
           cancelAtPeriodEnd: true,

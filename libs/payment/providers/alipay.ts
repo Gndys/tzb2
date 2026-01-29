@@ -1,5 +1,5 @@
 import { AlipaySdk } from 'alipay-sdk';
-import { PaymentProvider, PaymentParams, PaymentResult, WebhookVerification } from '../types';
+import { PaymentProvider, PaymentParams, PaymentResult, WebhookVerification, PaymentPlan } from '../types';
 import { config } from '@config';
 import type { CreditPlan } from '@config';
 import { db } from '@libs/database';
@@ -9,15 +9,6 @@ import { eq, and, desc } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import { utcNow } from '@libs/database/utils/utc';
 import { creditService, TransactionTypeCode } from '@libs/credits';
-
-// Payment plan interface for type safety
-interface PaymentPlan {
-  duration: {
-    type: 'recurring' | 'one_time' | 'credits';
-    months?: number;
-  };
-  credits?: number;
-}
 
 // Alipay notification parameters
 interface AlipayNotification {
