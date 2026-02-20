@@ -3,8 +3,8 @@ import { auth } from '@libs/auth';
 import { headers } from 'next/headers';
 import { createStorageProvider, StorageProviderType } from '@libs/storage';
 
-// Maximum file size: 1MB
-const MAX_FILE_SIZE = 1 * 1024 * 1024;
+// Maximum file size: 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 // Allowed image MIME types
 const ALLOWED_MIME_TYPES = [
@@ -13,10 +13,11 @@ const ALLOWED_MIME_TYPES = [
   'image/gif',
   'image/webp',
   'image/svg+xml',
+  'image/bmp',
 ];
 
 // Allowed file extensions
-const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
 
 // Supported storage providers
 const SUPPORTED_PROVIDERS: StorageProviderType[] = ['oss', 's3', 'r2', 'cos'];
@@ -78,7 +79,7 @@ export async function POST(request: NextRequest) {
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {
       return NextResponse.json(
         { 
-          error: 'Invalid file type. Only images are allowed (JPEG, PNG, GIF, WebP, SVG)',
+          error: 'Invalid file type. Only images are allowed (JPEG, PNG, GIF, WebP, SVG, BMP)',
           allowedTypes: ALLOWED_MIME_TYPES 
         },
         { status: 400 }

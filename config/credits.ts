@@ -56,6 +56,25 @@ export const creditsConfig = {
         'dall-e-2': 8,
       },
     } as FixedConsumptionConfig,
+
+    /**
+     * AI Video Generation Credits
+     * Video generation costs more than images due to compute requirements
+     */
+    aiVideo: {
+      default: 30,
+      models: {
+        // Fal models (Kling only)
+        'kling-video/v2.5-turbo/pro/text-to-video': 30,
+        'kling-video/v2.5-turbo/pro/image-to-video': 30,
+        // Volcengine Seedance models
+        'doubao-seedance-1-5-pro-251215': 35,
+        'doubao-seedance-1-0-pro-250528': 25,
+        // Aliyun Wanxiang models
+        'wan2.6-t2v': 20,
+        'wan2.5-t2v-turbo': 15,
+      },
+    } as FixedConsumptionConfig,
   },
 
   /**

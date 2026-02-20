@@ -2,8 +2,8 @@ import type { DeepSeekProviderSettings } from '@ai-sdk/deepseek';
 import type { OpenAIProviderSettings } from '@ai-sdk/openai';
 import type { UIMessage } from 'ai';
 
-// All supported providers
-export type AllProviderName = 'qwen' | 'openai' | 'deepseek' | 'fal';
+// All supported providers (including video-only providers)
+export type AllProviderName = 'qwen' | 'openai' | 'deepseek' | 'fal' | 'volcengine' | 'aliyun';
 
 // Chat-capable providers (excludes fal which is image-only)
 export type ChatProviderName = 'qwen' | 'openai' | 'deepseek';
@@ -21,12 +21,22 @@ export type DeepSeekConfig = DeepSeekProviderSettings;
 export type FalConfig = {
   apiKey?: string;  // Optional: uses FAL_API_KEY env var by default
 };
+export type VolcengineConfig = {
+  apiKey: string;
+  baseURL?: string;
+};
+export type AliyunConfig = {
+  apiKey: string;
+  baseURL?: string;
+};
 
 export type ProviderConfig = {
   qwen: QwenConfig;
   openai: OpenAIConfig;
   deepseek: DeepSeekConfig;
   fal: FalConfig;
+  volcengine: VolcengineConfig;
+  aliyun: AliyunConfig;
 };
 
 export interface AIConfig {
@@ -112,6 +122,179 @@ export interface QwenImageResponse {
     image_count: number;
     width: number;
     height: number;
+  };
+  request_id: string;
+  code?: string;
+  message?: string;
+}
+
+// ============================================================
+// Video Generation Types
+// ============================================================
+
+/** Supported video generation providers */
+export type VideoProviderName = 'fal' | 'volcengine' | 'aliyun';
+
+/** Task status for async video generation providers */
+export type VideoTaskStatus = 'pending' | 'running' | 'succeeded' | 'failed';
+
+/** Options for video generation request */
+export interface VideoGenerationOptions {
+  prompt: string;
+  provider: VideoProviderName;
+  model?: string;
+  /** Video size/resolution (e.g., '1280*720', '1920x1080') */
+  size?: string;
+  /** Aspect ratio (for fal, e.g., '16:9') */
+  aspectRatio?: string;
+  /** Video duration in seconds */
+  duration?: number;
+  seed?: number;
+  // Fal-specific options
+  /** Whether the video should loop (fal only) */
+  loop?: boolean;
+  /** Motion strength 0-1 (fal only) */
+  motionStrength?: number;
+  // Aliyun-specific options
+  /** Enable prompt auto-extension (aliyun only) */
+  promptExtend?: boolean;
+  /** Add watermark (aliyun only) */
+  watermark?: boolean;
+  /** Input audio URL for multi-shot generation (aliyun only) */
+  audioUrl?: string;
+  /** Shot type for aliyun models, e.g. single/multi */
+  shotType?: 'single' | 'multi';
+  /** First frame image URL for image-to-video */
+  firstFrameUrl?: string;
+  /** Last frame image URL for first-last-frame generation */
+  lastFrameUrl?: string;
+}
+
+/** Result of a completed video generation */
+export interface VideoGenerationResult {
+  videoUrl: string;
+  /** Duration of the generated video in seconds */
+  duration?: number;
+  provider: VideoProviderName;
+  model: string;
+  /** Cover/thumbnail image URL (if available) */
+  coverImageUrl?: string;
+}
+
+// ============================================================
+// Volcengine Video API Types (Seedance)
+// ============================================================
+
+/** Volcengine create video task request body */
+export interface VolcengineVideoRequest {
+  model: string;
+  content: Array<
+    | {
+      type: 'text';
+      text: string;
+    }
+    | {
+      type: 'image_url';
+      image_url: {
+        url: string;
+      };
+      role?: 'first_frame' | 'last_frame';
+    }
+  >;
+  ratio?: string;
+  resolution?: '480p' | '720p' | '1080p';
+  duration?: number;
+  seed?: number;
+  watermark?: boolean;
+}
+
+/** Volcengine create task response */
+export interface VolcengineCreateTaskResponse {
+  id: string;
+}
+
+/** Volcengine query task response */
+export interface VolcengineQueryTaskResponse {
+  id: string;
+  model?: string;
+  status: string; // 'pending' | 'running' | 'succeeded' | 'failed' | 'canceled'
+  content?: {
+    video_url?: string;
+    cover_url?: string;
+  };
+  duration?: number;
+  usage?: {
+    completion_tokens?: number;
+    total_tokens?: number;
+  };
+  created_at?: number;
+  updated_at?: number;
+  ratio?: string;
+  error?: {
+    code?: string;
+    message?: string;
+  };
+}
+
+// ============================================================
+// Aliyun Wanxiang Video API Types
+// ============================================================
+
+/** Aliyun create video task request body */
+export interface AliyunVideoRequest {
+  model: string;
+  input: {
+    prompt: string;
+    audio_url?: string;
+    image_url?: string;
+    img_url?: string;
+    first_frame_url?: string;
+    last_frame_url?: string;
+  };
+  parameters?: {
+    size?: string;
+    resolution?: '480P' | '720P' | '1080P';
+    audio?: boolean;
+    duration?: number;
+    prompt_extend?: boolean;
+    seed?: number;
+    watermark?: boolean;
+    shot_type?: 'single' | 'multi';
+  };
+}
+
+/** Aliyun create task response */
+export interface AliyunCreateTaskResponse {
+  output: {
+    task_status: string; // 'PENDING'
+    task_id: string;
+  };
+  request_id: string;
+  code?: string;
+  message?: string;
+}
+
+/** Aliyun query task response */
+export interface AliyunQueryTaskResponse {
+  output: {
+    task_status: string; // 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED'
+    task_id: string;
+    video_url?: string;
+    orig_video_url?: string;
+    video_urls?: string[];
+    results?: Array<{
+      video_url?: string;
+      url?: string;
+    }>;
+    task_metrics?: {
+      TOTAL: number;
+      SUCCEEDED: number;
+      FAILED: number;
+    };
+  };
+  usage?: {
+    video_count?: number;
+    video_duration?: number;
   };
   request_id: string;
   code?: string;

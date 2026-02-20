@@ -1,5 +1,5 @@
-import { generateImageResponse, calculateImageCreditCost } from '@libs/ai'
-import type { ImageProviderName, ImageGenerationOptions } from '@libs/ai'
+import { generateVideoResponse, calculateVideoCreditCost } from '@libs/ai'
+import type { VideoProviderName, VideoGenerationOptions } from '@libs/ai'
 import { auth } from '@libs/auth'
 import { creditService, TransactionTypeCode } from '@libs/credits'
 
@@ -32,16 +32,18 @@ export default defineEventHandler(async (event) => {
     
     const {
       prompt,
-      provider = 'qwen',
+      provider = 'fal',
       model,
-      negativePrompt,
       size,
       aspectRatio,
+      duration,
       seed,
+      loop,
+      motionStrength,
       promptExtend,
       watermark,
-      numInferenceSteps,
-      guidanceScale,
+      firstFrameUrl,
+      lastFrameUrl,
     } = body
 
     // Validate prompt
@@ -56,9 +58,26 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    // Build generation options
+    const options: VideoGenerationOptions = {
+      prompt: prompt.trim(),
+      provider: provider as VideoProviderName,
+      model,
+      size,
+      aspectRatio,
+      duration,
+      seed,
+      loop,
+      motionStrength,
+      promptExtend,
+      watermark,
+      firstFrameUrl,
+      lastFrameUrl,
+    }
+
     // Check credit balance
     const creditBalance = await creditService.getBalance(userId)
-    const creditCost = calculateImageCreditCost({ provider, model })
+    const creditCost = calculateVideoCreditCost({ provider, model })
     
     if (creditBalance < creditCost) {
       throw createError({
@@ -66,31 +85,31 @@ export default defineEventHandler(async (event) => {
         statusMessage: 'Payment Required',
         data: {
           error: 'insufficient_credits',
-          message: 'Not enough credits for image generation.',
+          message: 'Not enough credits for video generation.',
           required: creditCost,
           balance: creditBalance
         }
       })
     }
 
-    console.log('Image generation request:', { 
+    console.log('Video generation request:', { 
       provider,
       model,
-      size,
+      duration,
       userId,
       creditBalance,
       creditCost
     })
 
-    // Consume credits BEFORE generation to prevent race conditions and free generations
+    // Consume credits BEFORE generation to prevent race conditions
     const consumeResult = await creditService.consumeCredits({
       userId,
       amount: creditCost,
-      description: TransactionTypeCode.AI_IMAGE_GENERATION,
+      description: TransactionTypeCode.AI_VIDEO_GENERATION,
       metadata: {
         provider,
         model,
-        prompt: prompt.trim().substring(0, 100), // Store truncated prompt for reference
+        prompt: prompt.trim().substring(0, 100),
       }
     })
 
@@ -107,36 +126,21 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // Build generation options
-    const options: ImageGenerationOptions = {
-      prompt: prompt.trim(),
-      provider: provider as ImageProviderName,
-      model,
-      negativePrompt,
-      size,
-      aspectRatio,
-      seed,
-      promptExtend,
-      watermark,
-      numInferenceSteps,
-      guidanceScale,
-    }
-
-    // Generate image (credits already consumed)
-    // If generation fails, we need to refund the credits
+    // Generate video (credits already consumed)
+    // If generation fails, refund credits
     let result
     try {
-      result = await generateImageResponse(options)
+      result = await generateVideoResponse(options)
     } catch (generationError: any) {
       // Refund credits on generation failure
-      console.error('Image generation failed, refunding credits:', generationError)
+      console.error('Video generation failed, refunding credits:', generationError)
       
       try {
         await creditService.addCredits({
           userId,
           amount: creditCost,
           type: 'refund',
-          description: 'Refund for failed image generation',
+          description: 'Refund for failed video generation',
           metadata: {
             originalTransactionId: consumeResult.transactionId,
             provider,
@@ -163,12 +167,12 @@ export default defineEventHandler(async (event) => {
       data: result,
       credits: {
         consumed: creditCost,
-        remaining: consumeResult.newBalance  // Use actual balance from consumption result
+        remaining: consumeResult.newBalance
       }
     }
 
   } catch (error: any) {
-    console.error('Image generation API error:', error)
+    console.error('Video generation API error:', error)
     
     // Handle different types of errors
     if (error.statusCode) {

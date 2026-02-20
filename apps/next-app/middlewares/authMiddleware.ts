@@ -186,6 +186,13 @@ const protectedRoutes: ProtectedRouteConfig[] = [
     // to check balance before generation
   },
   {
+    pattern: new RegExp('^/api/video-generate(\\/.*)?$'),
+    type: 'api',
+    requiresAuth: true
+    // Credit check is handled in the API route itself
+    // to check balance before generation
+  },
+  {
     pattern: new RegExp('^/api/protected(\\/.*)?$'), 
     type: 'api',
     requiresAuth: true

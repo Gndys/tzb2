@@ -48,6 +48,19 @@
                   </NuxtLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem as-child class="p-0">
+                  <NuxtLink :to="localePath('/video-generate')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
+                      <VideoIcon class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-semibold text-sm">{{ t('header.demos.aiVideo.title') }}</span>
+                      <span class="text-sm text-muted-foreground leading-snug mt-0.5">
+                        {{ t('header.demos.aiVideo.description') }}
+                      </span>
+                    </div>
+                  </NuxtLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem as-child class="p-0">
                   <NuxtLink :to="localePath('/premium-features')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
                     <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
                       <Crown class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
@@ -241,6 +254,17 @@
               </div>
             </NuxtLink>
             <NuxtLink 
+              :to="localePath('/video-generate')" 
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
+              @click="isMenuOpen = false"
+            >
+              <VideoIcon class="h-5 w-5 text-muted-foreground" />
+              <div>
+                <span class="block">{{ t('header.demos.aiVideo.title') }}</span>
+                <span class="block text-xs text-muted-foreground">{{ t('header.demos.aiVideo.description') }}</span>
+              </div>
+            </NuxtLink>
+            <NuxtLink 
               :to="localePath('/premium-features')" 
               class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
               @click="isMenuOpen = false"
@@ -362,7 +386,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Check, ChevronDown, Bot, Crown, Upload, ImageIcon } from 'lucide-vue-next'
+import { Check, ChevronDown, Bot, Crown, Upload, ImageIcon, VideoIcon } from 'lucide-vue-next'
 // Reactive state
 const isMenuOpen = ref(false)
 

@@ -1,13 +1,16 @@
 import type { AIConfig, ProviderName, ProviderConfig, AllProviderName, ImageProviderName } from './types';
 
+/** Supported capability types for each provider */
+type ProviderCapability = 'chat' | 'image' | 'video';
+
 /**
  * Unified provider configuration
- * Supports both chat and image generation capabilities
+ * Supports chat, image, and video generation capabilities
  */
 const PROVIDER_ENV_KEYS: Record<AllProviderName, {
   apiKey: string;
   baseURL?: string;
-  capabilities: readonly ('chat' | 'image')[];
+  capabilities: readonly ProviderCapability[];
 }> = {
   // Chat + Image providers
   openai: {
@@ -25,10 +28,22 @@ const PROVIDER_ENV_KEYS: Record<AllProviderName, {
     apiKey: 'DEEPSEEK_API_KEY',
     capabilities: ['chat'],
   },
-  // Image only providers
+  // Image + Video providers
   fal: {
     apiKey: 'FAL_API_KEY',
-    capabilities: ['image'],
+    capabilities: ['image', 'video'],
+  },
+  // Video only providers
+  volcengine: {
+    apiKey: 'VOLCENGINE_ACCESS_KEY_ID',
+    baseURL: 'VOLCENGINE_BASE_URL',
+    capabilities: ['video'],
+  },
+  aliyun: {
+    // Reuse Qwen DashScope credentials by default.
+    apiKey: 'QWEN_API_KEY',
+    baseURL: 'QWEN_BASE_URL',
+    capabilities: ['video'],
   },
 };
 
@@ -83,8 +98,9 @@ export function getConfig(): AIConfig {
  */
 export function hasCapability(
   provider: AllProviderName,
-  capability: 'chat' | 'image'
+  capability: ProviderCapability
 ): boolean {
   const envKey = PROVIDER_ENV_KEYS[provider];
   return envKey.capabilities.includes(capability);
 }
+

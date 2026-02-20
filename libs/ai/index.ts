@@ -2,6 +2,7 @@ export * from './types';
 export { 
   createChatProvider, 
   createImageProvider, 
+  createVideoProvider,
   createProvider, // Legacy alias
   fal 
 } from './providers';
@@ -18,9 +19,19 @@ export {
   calculateImageCreditCost,
   getImageSizesForProvider,
 } from './image';
+export {
+  generateVideoResponse,
+  calculateVideoCreditCost,
+  getVideoSizesForProvider,
+  getVideoDurationsForProvider,
+  buildVideoProviderRequestPayload,
+} from './video';
 
 // Re-export image config from config folder
 export { aiImageConfig } from '../../config/aiImage';
+
+// Re-export video config from config folder
+export { aiVideoConfig } from '../../config/aiVideo';
 
 import { createChatProvider } from './providers';
 import { getConfig, getProviderConfig } from './config';
