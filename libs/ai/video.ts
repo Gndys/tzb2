@@ -461,18 +461,7 @@ async function aliyunCreateTask(options: VideoGenerationOptions): Promise<string
     input: {
       prompt: options.prompt,
       ...(options.audioUrl ? { audio_url: options.audioUrl } : {}),
-      ...(
-        firstFrameUrl
-          ? (
-              lastFrameUrl
-                ? {
-                    first_frame_url: firstFrameUrl,
-                    last_frame_url: lastFrameUrl,
-                  }
-                : { img_url: firstFrameUrl }
-            )
-          : {}
-      ),
+      ...(firstFrameUrl ? { img_url: firstFrameUrl } : {}),
     },
     parameters: {
       ...(isI2vModel
