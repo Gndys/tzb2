@@ -121,6 +121,7 @@ export default function VideoGeneratePage() {
     }
     setIsGenerating(true);
     setError(null);
+    setResult(null);
     
     try {
       const response = await fetch('/api/video-generate', {

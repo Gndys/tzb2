@@ -31,7 +31,7 @@
           </div>
 
           <div class="space-y-2">
-            <Label>Model</Label>
+            <Label>{{ $t('ai.video.model') }}</Label>
             <Select v-model="model">
               <SelectTrigger>
                 <SelectValue />
@@ -137,7 +137,7 @@
             <Label>{{ $t('ai.video.settings.videoSize') }}</Label>
             <Select v-model="size">
               <SelectTrigger>
-                <SelectValue placeholder="Select size" />
+                <SelectValue :placeholder="$t('ai.video.settings.videoSizePlaceholder')" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem v-for="s in availableSizes" :key="s.value" :value="s.value">
@@ -265,7 +265,7 @@
             <RefreshCw class="h-8 w-8 animate-spin text-primary" />
             <p class="text-muted-foreground">{{ $t('ai.video.generating') }}</p>
             <p class="text-xs text-muted-foreground">
-              Video generation may take 1-5 minutes...
+              {{ $t('ai.video.resultPanel.generatingHint') }}
             </p>
           </div>
         </template>
@@ -278,7 +278,7 @@
             class="max-w-full max-h-full object-contain"
             :poster="result.coverImageUrl"
           >
-            Your browser does not support the video tag.
+            {{ $t('ai.video.resultPanel.videoTagUnsupported') }}
           </video>
         </template>
         <template v-else-if="error">

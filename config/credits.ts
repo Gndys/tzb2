@@ -73,6 +73,7 @@ export const creditsConfig = {
         // Aliyun Wanxiang models
         'wan2.6-t2v': 20,
         'wan2.5-t2v-turbo': 15,
+        'wan2.6-i2v-flash': 15,
       },
     } as FixedConsumptionConfig,
   },

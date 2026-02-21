@@ -24,7 +24,6 @@ export {
   calculateVideoCreditCost,
   getVideoSizesForProvider,
   getVideoDurationsForProvider,
-  buildVideoProviderRequestPayload,
 } from './video';
 
 // Re-export image config from config folder
