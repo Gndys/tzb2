@@ -2,6 +2,7 @@ import { generateVideoResponse, calculateVideoCreditCost } from '@libs/ai'
 import type { VideoProviderName, VideoGenerationOptions } from '@libs/ai'
 import { auth } from '@libs/auth'
 import { creditService, TransactionTypeCode } from '@libs/credits'
+import { config } from '@config'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -32,7 +33,7 @@ export default defineEventHandler(async (event) => {
     
     const {
       prompt,
-      provider = 'fal',
+      provider = config.aiVideo.defaultProvider,
       model,
       size,
       aspectRatio,

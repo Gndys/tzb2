@@ -2,6 +2,7 @@ import { generateVideoResponse, calculateVideoCreditCost } from '@libs/ai';
 import type { VideoProviderName, VideoGenerationOptions } from '@libs/ai';
 import { auth } from '@libs/auth';
 import { creditService, TransactionTypeCode } from '@libs/credits';
+import { config } from '@config';
 
 // Allow longer timeout for video generation (10 minutes)
 export const maxDuration = 600;
@@ -28,7 +29,7 @@ export async function POST(req: Request) {
     
     const {
       prompt,
-      provider = 'fal',
+      provider = config.aiVideo.defaultProvider,
       model,
       size,
       aspectRatio,

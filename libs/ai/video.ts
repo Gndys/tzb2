@@ -288,11 +288,9 @@ async function falVideoGenerate(options: VideoGenerationOptions): Promise<VideoG
     seed: options.seed,
     providerOptions: Object.keys(falOpts).length > 0 ? { fal: falOpts } : undefined,
   });
-  const metadataCandidateUrl = findFirstUrlInUnknown(result.providerMetadata);
-  const responseCandidateUrl = findFirstUrlInUnknown(result.responses);
-  const videoUrl = metadataCandidateUrl || responseCandidateUrl;
+  const videoUrl = findFirstUrlInUnknown(result.providerMetadata);
   if (!videoUrl) {
-    throw new Error('Fal video generation succeeded but no hosted video URL was found in provider metadata/response.');
+    throw new Error('Fal video generation succeeded but no hosted video URL was found in provider metadata.');
   }
 
   return {
