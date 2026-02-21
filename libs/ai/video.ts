@@ -1,7 +1,6 @@
-import { experimental_generateVideo as generateVideo } from 'ai';
-import { config } from '@config';
 import { createVideoProvider } from './providers';
 import { getApiKey, getBaseUrl } from './config';
+import { getFixedConsumptionAmount } from '../credits/calculator';
 import type {
   VideoProviderName,
   VideoGenerationOptions,
@@ -23,6 +22,29 @@ const DEFAULT_MODELS: Record<VideoProviderName, string> = {
   volcengine: 'doubao-seedance-1-5-pro-251215',
   aliyun: 'wan2.6-t2v',
 };
+
+function resolveVideoModel(provider: VideoProviderName, model?: string): string {
+  return model || DEFAULT_MODELS[provider];
+}
+
+function findFirstUrlInUnknown(value: unknown): string | undefined {
+  if (!value) return undefined;
+  if (typeof value === 'string' && /^https?:\/\//i.test(value)) return value;
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const found = findFirstUrlInUnknown(item);
+      if (found) return found;
+    }
+    return undefined;
+  }
+  if (typeof value === 'object') {
+    for (const nested of Object.values(value as Record<string, unknown>)) {
+      const found = findFirstUrlInUnknown(nested);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
 
 // Volcengine API endpoints
 const VOLCENGINE_BASE_URL = 'https://ark.cn-beijing.volces.com';
@@ -231,7 +253,8 @@ function getAliyunResolution(size?: string): '480P' | '720P' | '1080P' {
  * SDK handles polling internally, so this is a synchronous-style call
  */
 async function falVideoGenerate(options: VideoGenerationOptions): Promise<VideoGenerationResult> {
-  const model = options.model || DEFAULT_MODELS.fal;
+  const { experimental_generateVideo: generateVideo } = await import('ai');
+  const model = resolveVideoModel('fal', options.model);
   const videoProvider = createVideoProvider('fal');
   const firstFrameUrl = normalizeOptionalUrl(options.firstFrameUrl);
   const duration = toFalDurationValue(options.duration);
@@ -265,11 +288,12 @@ async function falVideoGenerate(options: VideoGenerationOptions): Promise<VideoG
     seed: options.seed,
     providerOptions: Object.keys(falOpts).length > 0 ? { fal: falOpts } : undefined,
   });
-
-  // The SDK returns GeneratedFile with base64/uint8Array/mediaType
-  // Convert to a data URL for frontend consumption
-  const { video } = result;
-  const videoUrl = `data:${video.mediaType};base64,${video.base64}`;
+  const metadataCandidateUrl = findFirstUrlInUnknown(result.providerMetadata);
+  const responseCandidateUrl = findFirstUrlInUnknown(result.responses);
+  const videoUrl = metadataCandidateUrl || responseCandidateUrl;
+  if (!videoUrl) {
+    throw new Error('Fal video generation succeeded but no hosted video URL was found in provider metadata/response.');
+  }
 
   return {
     videoUrl,
@@ -395,7 +419,7 @@ async function volcenginePollTask(
  * Generate video using Volcengine Seedance (create task + poll)
  */
 async function volcengineVideoGenerate(options: VideoGenerationOptions): Promise<VideoGenerationResult> {
-  const model = options.model || DEFAULT_MODELS.volcengine;
+  const model = resolveVideoModel('volcengine', options.model);
 
   // Step 1: Create the task
   const taskId = await volcengineCreateTask(options);
@@ -576,7 +600,7 @@ async function aliyunPollTask(
  * Generate video using Aliyun Wanxiang (create task + poll)
  */
 async function aliyunVideoGenerate(options: VideoGenerationOptions): Promise<VideoGenerationResult> {
-  const model = options.model || DEFAULT_MODELS.aliyun;
+  const model = resolveVideoModel('aliyun', options.model);
 
   // Step 1: Create the task
   const taskId = await aliyunCreateTask(options);
@@ -631,19 +655,6 @@ export function calculateVideoCreditCost(options: {
   provider: VideoProviderName;
   model?: string;
 }): number {
-  const { model } = options;
-  const aiVideoConfig = config.credits.fixedConsumption.aiVideo;
-
-  // Simple number case (all videos cost the same)
-  if (typeof aiVideoConfig === 'number') {
-    return aiVideoConfig;
-  }
-
-  // Check for model-specific cost
-  if (model && aiVideoConfig.models && model in aiVideoConfig.models) {
-    return aiVideoConfig.models[model];
-  }
-
-  // Fall back to default
-  return aiVideoConfig.default;
+  const resolvedModel = resolveVideoModel(options.provider, options.model);
+  return getFixedConsumptionAmount('aiVideo', resolvedModel);
 }
