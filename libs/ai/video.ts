@@ -27,22 +27,43 @@ function resolveVideoModel(provider: VideoProviderName, model?: string): string 
   return model || DEFAULT_MODELS[provider];
 }
 
-function findFirstUrlInUnknown(value: unknown): string | undefined {
-  if (!value) return undefined;
-  if (typeof value === 'string' && /^https?:\/\//i.test(value)) return value;
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      const found = findFirstUrlInUnknown(item);
-      if (found) return found;
-    }
+function readHttpUrl(value: unknown): string | undefined {
+  if (!value || typeof value !== 'object') return undefined;
+  const url = (value as Record<string, unknown>).url;
+  if (typeof url === 'string' && /^https?:\/\//i.test(url)) {
+    return url;
+  }
+  return undefined;
+}
+
+/**
+ * Extract hosted video URL from known Fal metadata fields.
+ * Keep extraction strict to avoid accidental matches.
+ */
+function extractFalHostedVideoUrl(providerMetadata: unknown): string | undefined {
+  if (!providerMetadata || typeof providerMetadata !== 'object') {
     return undefined;
   }
-  if (typeof value === 'object') {
-    for (const nested of Object.values(value as Record<string, unknown>)) {
-      const found = findFirstUrlInUnknown(nested);
-      if (found) return found;
+
+  const falMeta = (providerMetadata as Record<string, unknown>).fal;
+  if (!falMeta || typeof falMeta !== 'object') {
+    return undefined;
+  }
+
+  const fal = falMeta as Record<string, unknown>;
+
+  // Most common shape: providerMetadata.fal.videos[0].url
+  if (Array.isArray(fal.videos)) {
+    for (const item of fal.videos) {
+      const url = readHttpUrl(item);
+      if (url) return url;
     }
   }
+
+  // Alternate shape: providerMetadata.fal.video.url
+  const singleVideoUrl = readHttpUrl(fal.video);
+  if (singleVideoUrl) return singleVideoUrl;
+
   return undefined;
 }
 
@@ -288,13 +309,20 @@ async function falVideoGenerate(options: VideoGenerationOptions): Promise<VideoG
     seed: options.seed,
     providerOptions: Object.keys(falOpts).length > 0 ? { fal: falOpts } : undefined,
   });
-  const videoUrl = findFirstUrlInUnknown(result.providerMetadata);
-  if (!videoUrl) {
-    throw new Error('Fal video generation succeeded but no hosted video URL was found in provider metadata.');
+  const hostedVideoUrl = extractFalHostedVideoUrl(result.providerMetadata);
+  if (!hostedVideoUrl) {
+    // Fallback for models/adapters that do not expose hosted URL in providerMetadata.
+    const videoUrl = `data:${result.video.mediaType};base64,${result.video.base64}`;
+    return {
+      videoUrl,
+      duration: options.duration,
+      provider: 'fal',
+      model,
+    };
   }
 
   return {
-    videoUrl,
+    videoUrl: hostedVideoUrl,
     duration: options.duration,
     provider: 'fal',
     model,
