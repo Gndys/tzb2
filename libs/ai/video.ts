@@ -633,7 +633,7 @@ async function aliyunVideoGenerate(options: VideoGenerationOptions): Promise<Vid
  * Handles both synchronous (fal) and async polling (volcengine, aliyun) providers
  */
 export async function generateVideoResponse(options: VideoGenerationOptions): Promise<VideoGenerationResult> {
-  switch (options.provider || 'fal') {
+  switch (options.provider ?? 'volcengine') {
     case 'fal':
       return falVideoGenerate(options);
     case 'volcengine':
