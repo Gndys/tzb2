@@ -2,7 +2,7 @@ import { createDeepSeek } from '@ai-sdk/deepseek';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { fal, createFal } from '@ai-sdk/fal';
-import type { ChatProviderName, ImageProviderName, ProviderConfig } from './types';
+import type { ChatProviderName, ImageProviderName, VideoProviderName, ProviderConfig } from './types';
 
 /**
  * Create a chat-capable AI provider instance
@@ -66,6 +66,38 @@ export function createImageProvider(
     }
     default:
       throw new Error(`Unsupported image provider: ${providerName}`);
+  }
+}
+
+/**
+ * Create a video-capable AI provider instance
+ * 
+ * Returns the provider object for video generation via AI SDK
+ * - fal: Video generation (Luma, HunyuanVideo models)
+ * - volcengine: Uses native HTTP (returns null)
+ * - aliyun: Uses native HTTP (returns null)
+ */
+export function createVideoProvider(
+  providerName: VideoProviderName,
+  config?: ProviderConfig[VideoProviderName]
+) {
+  switch (providerName) {
+    case 'fal': {
+      const falConfig = config as ProviderConfig['fal'] | undefined;
+      if (falConfig?.apiKey) {
+        return createFal({ apiKey: falConfig.apiKey });
+      }
+      // Use default fal instance (reads FAL_API_KEY from env)
+      return fal;
+    }
+    case 'volcengine':
+    case 'aliyun': {
+      // These providers use native HTTP calls, not AI SDK
+      // Return null to indicate direct API usage is required
+      return null;
+    }
+    default:
+      throw new Error(`Unsupported video provider: ${providerName}`);
   }
 }
 

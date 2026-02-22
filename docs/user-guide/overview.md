@@ -99,6 +99,7 @@ tinyship/
 | **支付** | 定价页 | `/pricing` | 查看订阅计划和积分包 |
 | **AI** | AI 对话 | `/ai` | AI 聊天功能 |
 | | 图片生成 | `/image-generate` | AI 图片生成 |
+| | 视频生成 | `/video-generate` | AI 视频生成 |
 | **存储** | 上传示例 | `/upload` | 文件上传示例 |
 | **管理** | 管理后台 | `/admin` | 管理员仪表盘 |
 | | 用户管理 | `/admin/users` | 用户列表和管理 |
@@ -130,6 +131,7 @@ tinyship/
 ### AI 功能
 - **[AI 对话配置](./ai/chat.md)** - AI 聊天功能
 - **[AI 图片生成](./ai/image.md)** - AI 图片生成功能
+- **[AI 视频生成](./ai/video.md)** - AI 视频生成功能
 
 ### 其他配置
 - **[存储服务](./storage.md)** - OSS/S3/R2 云存储配置

@@ -970,6 +970,7 @@ export const zhCN: Locale = {
       descriptions: {
         ai_chat: "AI 对话",
         ai_image_generation: "AI 图像生成",
+        ai_video_generation: "AI 视频生成",
         image_generation: "图片生成",
         document_processing: "文档处理",
         purchase: "积分充值",
@@ -1334,6 +1335,97 @@ export const zhCN: Locale = {
         networkError: "网络错误，请检查您的连接。",
         unknownError: "发生未知错误"
       }
+    },
+    video: {
+      metadata: {
+        title: "TinyShip - AI 视频生成",
+        description: "使用 AI 生成精彩视频。支持 fal.ai、火山引擎 Seedance 和阿里云万象。",
+        keywords: "AI, 视频生成, 文生视频, Seedance, 万象, Luma, 创意"
+      },
+      title: "AI 视频生成",
+      description: "使用多种 AI 提供商从文本提示生成精彩视频",
+      defaultPrompt: "猫猫从腿上直接跳跃到沙发上",
+      prompt: "提示词",
+      model: "模型",
+      promptPlaceholder: "描述您想要生成的视频...",
+      generate: "生成视频",
+      generating: "视频生成中...",
+      generatedSuccessfully: "视频生成成功！",
+      download: "下载视频",
+      result: "结果",
+      idle: "输入提示词以生成视频",
+      whatNext: "接下来您想做什么？",
+      credits: "积分",
+      providers: {
+        title: "提供商",
+        fal: "fal.ai",
+        volcengine: "火山引擎",
+        aliyun: "阿里云万象"
+      },
+      models: {
+        "kling-video/v2.5-turbo/pro/text-to-video": "Kling 2.5 Turbo Pro 文生视频",
+        "kling-video/v2.5-turbo/pro/image-to-video": "Kling 2.5 Turbo Pro 图生视频",
+        "doubao-seedance-1-5-pro-251215": "豆包 Seedance 1.5 Pro",
+        "doubao-seedance-1-0-pro-250528": "豆包 Seedance 1.0 Pro",
+        "wan2.6-t2v": "万象 2.6 文生视频",
+        "wan2.5-t2v-turbo": "万象 2.5 文生视频 Turbo",
+        "wan2.6-i2v-flash": "万象 2.6 图生视频 Flash"
+      },
+      inputMode: {
+        label: "生成模式",
+        text: "文生视频",
+        firstFrame: "首帧",
+        firstLastFrame: "首尾帧",
+        firstLastFrameUnsupported: "当前提供商仅支持首帧"
+      },
+      frameInput: {
+        title: "帧图输入",
+        hint: "可直接填写 URL，或上传到 Cloudflare R2。",
+        firstFrameUrl: "首帧 URL",
+        lastFrameUrl: "尾帧 URL",
+        upload: "上传",
+        uploadedToR2: "帧图已上传到 R2",
+        preview: "图片预览",
+        previewAlt: "首帧预览"
+      },
+      settings: {
+        title: "高级设置",
+        videoSize: "视频尺寸 / 宽高比",
+        videoSizePlaceholder: "选择尺寸",
+        videoSizeHint: "选择分辨率或宽高比",
+        duration: "时长（秒）",
+        durationHint: "生成视频的长度",
+        seed: "种子",
+        seedHint: "使用相同种子可以复现结果",
+        random: "随机",
+        loop: "循环",
+        loopHint: "视频是否无缝循环播放",
+        motionStrength: "运动强度",
+        motionStrengthHint: "控制视频中运动的幅度",
+        promptExtend: "提示词扩展",
+        promptExtendHint: "AI 将自动增强和扩展您的提示词",
+        watermark: "水印",
+        watermarkHint: "在生成的视频上添加水印"
+      },
+      errors: {
+        generationFailed: "视频生成失败",
+        invalidPrompt: "请输入有效的提示词",
+        firstFrameRequired: "请先提供首帧 URL",
+        lastFrameRequired: "请先提供尾帧 URL",
+        unsupportedImageType: "仅支持 JPEG/JPG/PNG/WEBP/BMP 图像",
+        imageTooLarge: "图像大小不能超过 10MB",
+        uploadFailed: "上传失败",
+        unsupportedModeForProvider: "当前提供商不支持此生成模式",
+        insufficientCredits: "积分不足",
+        insufficientCreditsDescription: "生成视频需要积分，请购买积分以继续。",
+        networkError: "网络错误，请检查您的连接。",
+        unknownError: "发生未知错误",
+        timeout: "视频生成超时，请重试。"
+      },
+      resultPanel: {
+        generatingHint: "视频生成通常需要 1-5 分钟...",
+        videoTagUnsupported: "您的浏览器不支持 video 标签。"
+      }
     }
   },
   home: {
@@ -1649,6 +1741,10 @@ export const zhCN: Locale = {
       aiImage: {
         title: "AI 图像生成",
         description: "AI 图像生成实现，可扩展设计，支持多个 Provider，需要购买积分使用"
+      },
+      aiVideo: {
+        title: "AI 视频生成",
+        description: "AI 视频生成实现，可扩展设计，支持多个 Provider，需要购买积分使用"
       },
       premium: {
         title: "高级会员功能",

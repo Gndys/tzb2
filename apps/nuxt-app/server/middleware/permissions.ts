@@ -45,6 +45,14 @@ const protectedApiRoutes: ProtectedApiRouteConfig[] = [
     pattern: /^\/api\/image-generate(\/.*)?$/,
     requiresAuth: true
   },
+
+  // Video generation API - require authentication only
+  // Credit check is handled in the API route itself
+  // to check balance before generation
+  {
+    pattern: /^\/api\/video-generate(\/.*)?$/,
+    requiresAuth: true
+  },
   
   // Premium API routes - require active subscription
   {

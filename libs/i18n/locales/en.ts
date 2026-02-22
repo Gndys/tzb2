@@ -963,6 +963,7 @@ export const en: Locale = {
       descriptions: {
         ai_chat: "AI Chat",
         ai_image_generation: "AI Image Generation",
+        ai_video_generation: "AI Video Generation",
         image_generation: "Image Generation",
         document_processing: "Document Processing",
         purchase: "Credit Purchase",
@@ -1516,6 +1517,97 @@ export const en: Locale = {
         networkError: "Network error. Please check your connection.",
         unknownError: "An unknown error occurred"
       }
+    },
+    video: {
+      metadata: {
+        title: "TinyShip - AI Video Generation",
+        description: "Generate stunning videos using AI. Powered by fal.ai, Volcengine Seedance, and Aliyun Wanxiang.",
+        keywords: "AI, video generation, text to video, Seedance, Wanxiang, Luma, creative"
+      },
+      title: "AI Video Generation",
+      description: "Generate stunning videos from text prompts using multiple AI providers",
+      defaultPrompt: "A cat jumps directly from someone's lap onto the sofa",
+      prompt: "Prompt",
+      model: "Model",
+      promptPlaceholder: "Describe the video you want to generate...",
+      generate: "Generate Video",
+      generating: "Generating video...",
+      generatedSuccessfully: "Video generated successfully!",
+      download: "Download Video",
+      result: "Result",
+      idle: "Enter a prompt to generate a video",
+      whatNext: "What would you like to do next?",
+      credits: "Credits",
+      providers: {
+        title: "Provider",
+        fal: "fal.ai",
+        volcengine: "Volcengine",
+        aliyun: "Aliyun Wanxiang"
+      },
+      models: {
+        "kling-video/v2.5-turbo/pro/text-to-video": "Kling 2.5 Turbo Pro (Text to Video)",
+        "kling-video/v2.5-turbo/pro/image-to-video": "Kling 2.5 Turbo Pro (Image to Video)",
+        "doubao-seedance-1-5-pro-251215": "Doubao Seedance 1.5 Pro",
+        "doubao-seedance-1-0-pro-250528": "Doubao Seedance 1.0 Pro",
+        "wan2.6-t2v": "Wanxiang 2.6 T2V",
+        "wan2.5-t2v-turbo": "Wanxiang 2.5 T2V Turbo",
+        "wan2.6-i2v-flash": "Wanxiang 2.6 I2V Flash"
+      },
+      inputMode: {
+        label: "Generation Mode",
+        text: "Text to Video",
+        firstFrame: "First Frame",
+        firstLastFrame: "First + Last Frame",
+        firstLastFrameUnsupported: "Current provider supports first frame only"
+      },
+      frameInput: {
+        title: "Frame Images",
+        hint: "Use URL directly, or upload to Cloudflare R2.",
+        firstFrameUrl: "First Frame URL",
+        lastFrameUrl: "Last Frame URL",
+        upload: "Upload",
+        uploadedToR2: "Frame uploaded to R2",
+        preview: "Image Preview",
+        previewAlt: "First frame preview"
+      },
+      settings: {
+        title: "Additional Settings",
+        videoSize: "Video Size / Aspect Ratio",
+        videoSizePlaceholder: "Select size",
+        videoSizeHint: "Select the resolution or aspect ratio",
+        duration: "Duration (seconds)",
+        durationHint: "Length of the generated video",
+        seed: "Seed",
+        seedHint: "Use the same seed to reproduce results",
+        random: "random",
+        loop: "Loop",
+        loopHint: "Whether the video should loop seamlessly",
+        motionStrength: "Motion Strength",
+        motionStrengthHint: "Controls how much motion appears in the video",
+        promptExtend: "Prompt Extend",
+        promptExtendHint: "AI will enhance and expand your prompt",
+        watermark: "Watermark",
+        watermarkHint: "Add watermark to the generated video"
+      },
+      errors: {
+        generationFailed: "Video generation failed",
+        invalidPrompt: "Please enter a valid prompt",
+        firstFrameRequired: "Please provide a first frame URL",
+        lastFrameRequired: "Please provide a last frame URL",
+        unsupportedImageType: "Only JPEG/JPG/PNG/WEBP/BMP images are supported",
+        imageTooLarge: "Image size must be less than or equal to 10MB",
+        uploadFailed: "Upload failed",
+        unsupportedModeForProvider: "Current provider does not support this generation mode",
+        insufficientCredits: "Insufficient Credits",
+        insufficientCreditsDescription: "You need credits to generate videos. Purchase credits to continue.",
+        networkError: "Network error. Please check your connection.",
+        unknownError: "An unknown error occurred",
+        timeout: "Video generation timed out. Please try again."
+      },
+      resultPanel: {
+        generatingHint: "Video generation may take 1-5 minutes...",
+        videoTagUnsupported: "Your browser does not support the video tag."
+      }
     }
   },
   premiumFeatures: {
@@ -1641,6 +1733,10 @@ export const en: Locale = {
       aiImage: {
         title: "AI Image Generation",
         description: "AI image generation with extensible design, multi-provider support. Login required."
+      },
+      aiVideo: {
+        title: "AI Video Generation",
+        description: "AI video generation with extensible design, multi-provider support. Login required."
       },
       premium: {
         title: "Premium Features",
