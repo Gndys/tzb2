@@ -1,4 +1,9 @@
-import { generateVideoResponse, calculateVideoCreditCost } from '@libs/ai'
+import {
+  generateVideoResponse,
+  createVideoTask,
+  calculateVideoCreditCost,
+} from '@libs/ai'
+import { createVideoTaskRecord } from '@libs/ai/video-task-store'
 import type { VideoProviderName, VideoGenerationOptions } from '@libs/ai'
 import { auth } from '@libs/auth'
 import { creditService, TransactionTypeCode } from '@libs/credits'
@@ -127,8 +132,61 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // Generate video (credits already consumed)
-    // If generation fails, refund credits
+    // For providers that support async task polling, return task id immediately.
+    if (options.provider !== 'fal') {
+      try {
+        const asyncTask = await createVideoTask(options)
+        const task = createVideoTaskRecord({
+          userId,
+          provider: asyncTask.provider,
+          model: asyncTask.model,
+          providerTaskId: asyncTask.providerTaskId,
+          creditCost,
+          consumeTransactionId: consumeResult.transactionId,
+        })
+
+        return {
+          success: true,
+          data: {
+            taskId: task.id,
+            status: 'processing',
+            async: true,
+            provider: task.provider,
+            model: task.model,
+          },
+          credits: {
+            consumed: creditCost,
+            remaining: consumeResult.newBalance
+          }
+        }
+      } catch (taskError) {
+        // Refund consumed credits when task creation fails.
+        try {
+          await creditService.addCredits({
+            userId,
+            amount: creditCost,
+            type: 'refund',
+            description: 'Refund for failed video task creation',
+            metadata: {
+              originalTransactionId: consumeResult.transactionId,
+              provider,
+              model,
+              error: taskError instanceof Error ? taskError.message : 'Unknown error',
+            }
+          })
+        } catch (refundError) {
+          console.error('CRITICAL: Failed to refund credits after task creation failure:', {
+            userId,
+            amount: creditCost,
+            originalTransactionId: consumeResult.transactionId,
+            refundError
+          })
+        }
+        throw taskError
+      }
+    }
+
+    // Fal keeps synchronous behavior.
     let result
     try {
       result = await generateVideoResponse(options)

@@ -106,6 +106,42 @@ function normalizeOptionalUrl(value?: string): string | undefined {
   return normalized.length > 0 ? normalized : undefined;
 }
 
+function getVolcengineTaskResult(model: string, result: VolcengineQueryTaskResponse): VideoGenerationResult {
+  const content = result.content;
+  const videoUrl = content?.video_url;
+  if (!videoUrl) {
+    throw new Error('No video URL in Volcengine response');
+  }
+
+  return {
+    videoUrl,
+    duration: result.duration,
+    provider: 'volcengine',
+    model,
+    coverImageUrl: content?.cover_url,
+  };
+}
+
+function getAliyunTaskResult(model: string, result: AliyunQueryTaskResponse): VideoGenerationResult {
+  const videoUrl =
+    result.output?.video_url
+    || result.output?.orig_video_url
+    || result.output?.video_urls?.[0]
+    || result.output?.results?.[0]?.video_url
+    || result.output?.results?.[0]?.url;
+
+  if (!videoUrl) {
+    throw new Error('No video URL in Aliyun DashScope response');
+  }
+
+  return {
+    videoUrl,
+    duration: result.usage?.video_duration,
+    provider: 'aliyun',
+    model,
+  };
+}
+
 function buildVolcengineContent(options: VideoGenerationOptions): VolcengineVideoRequest['content'] {
   const content: VolcengineVideoRequest['content'] = [
     {
@@ -441,6 +477,26 @@ async function volcenginePollTask(
   throw new Error(`Volcengine video generation timed out after ${maxTimeoutMs / 1000}s`);
 }
 
+async function volcengineQueryTask(taskId: string): Promise<VolcengineQueryTaskResponse> {
+  const apiKey = getApiKey('volcengine');
+  const baseUrl = getBaseUrl('volcengine') || VOLCENGINE_BASE_URL;
+  const url = `${baseUrl}${VOLCENGINE_CREATE_TASK_PATH}/${taskId}`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Volcengine query error: ${response.status} - ${errorText}`);
+  }
+
+  return response.json();
+}
+
 /**
  * Generate video using Volcengine Seedance (create task + poll)
  */
@@ -453,19 +509,7 @@ async function volcengineVideoGenerate(options: VideoGenerationOptions): Promise
   // Step 2: Poll until completion
   const result = await volcenginePollTask(taskId);
 
-  const content = result.content;
-  const videoUrl = content?.video_url;
-  if (!videoUrl) {
-    throw new Error('No video URL in Volcengine response');
-  }
-
-  return {
-    videoUrl,
-    duration: result.duration,
-    provider: 'volcengine',
-    model,
-    coverImageUrl: content?.cover_url,
-  };
+  return getVolcengineTaskResult(model, result);
 }
 
 // ============================================================
@@ -622,6 +666,26 @@ async function aliyunPollTask(
   throw new Error(`Aliyun video generation timed out after ${maxTimeoutMs / 1000}s`);
 }
 
+async function aliyunQueryTask(taskId: string): Promise<AliyunQueryTaskResponse> {
+  const apiKey = getApiKey('aliyun');
+  const baseUrl = resolveAliyunApiBaseUrl();
+  const url = `${baseUrl}${ALIYUN_TASK_QUERY_PATH}/${taskId}`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Aliyun task query error: ${response.status} - ${errorText}`);
+  }
+
+  return response.json();
+}
+
 /**
  * Generate video using Aliyun Wanxiang (create task + poll)
  */
@@ -634,22 +698,73 @@ async function aliyunVideoGenerate(options: VideoGenerationOptions): Promise<Vid
   // Step 2: Poll until completion
   const result = await aliyunPollTask(taskId);
 
-  const videoUrl =
-    result.output?.video_url
-    || result.output?.orig_video_url
-    || result.output?.video_urls?.[0]
-    || result.output?.results?.[0]?.video_url
-    || result.output?.results?.[0]?.url;
-  if (!videoUrl) {
-    throw new Error('No video URL in Aliyun DashScope response');
+  return getAliyunTaskResult(model, result);
+}
+
+export async function createVideoTask(options: VideoGenerationOptions): Promise<{
+  provider: 'volcengine' | 'aliyun';
+  model: string;
+  providerTaskId: string;
+}> {
+  const provider = options.provider ?? 'volcengine';
+
+  if (provider === 'fal') {
+    throw new Error('fal does not support external task polling in current implementation');
   }
 
-  return {
-    videoUrl,
-    duration: result.usage?.video_duration,
-    provider: 'aliyun',
-    model,
-  };
+  if (provider === 'volcengine') {
+    const model = resolveVideoModel('volcengine', options.model);
+    const providerTaskId = await volcengineCreateTask(options);
+    return { provider: 'volcengine', model, providerTaskId };
+  }
+
+  const model = resolveVideoModel('aliyun', options.model);
+  const providerTaskId = await aliyunCreateTask(options);
+  return { provider: 'aliyun', model, providerTaskId };
+}
+
+export async function queryVideoTask(
+  provider: 'volcengine' | 'aliyun',
+  model: string,
+  providerTaskId: string
+): Promise<{
+  status: 'processing' | 'succeeded' | 'failed';
+  result?: VideoGenerationResult;
+  errorMessage?: string;
+}> {
+  if (provider === 'volcengine') {
+    const task = await volcengineQueryTask(providerTaskId);
+    const status = task.status?.toLowerCase();
+    if (status === 'succeeded') {
+      return {
+        status: 'succeeded',
+        result: getVolcengineTaskResult(model, task),
+      };
+    }
+    if (status === 'failed' || status === 'canceled') {
+      return {
+        status: 'failed',
+        errorMessage: task.error?.message || 'Volcengine video generation failed',
+      };
+    }
+    return { status: 'processing' };
+  }
+
+  const task = await aliyunQueryTask(providerTaskId);
+  const status = task.output?.task_status;
+  if (status === 'SUCCEEDED') {
+    return {
+      status: 'succeeded',
+      result: getAliyunTaskResult(model, task),
+    };
+  }
+  if (status === 'FAILED') {
+    return {
+      status: 'failed',
+      errorMessage: formatAliyunTaskFailure(providerTaskId, task),
+    };
+  }
+  return { status: 'processing' };
 }
 
 // ============================================================
