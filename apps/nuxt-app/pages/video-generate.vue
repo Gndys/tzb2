@@ -348,6 +348,36 @@ interface UploadResponse {
   message?: string
 }
 
+interface AsyncVideoTaskData {
+  taskId: string
+  status: 'processing'
+  async: true
+  provider: string
+  model: string
+}
+
+interface VideoGenerateResponse {
+  success: boolean
+  data: GenerationResult | AsyncVideoTaskData
+  credits?: { remaining: number }
+  message?: string
+  error?: string
+}
+
+interface VideoTaskStatusResponse {
+  success: boolean
+  data: {
+    taskId: string
+    status: 'processing' | 'succeeded' | 'failed'
+    result?: GenerationResult
+    error?: string
+  }
+  credits?: { remaining: number }
+}
+
+const TASK_POLL_INTERVAL_MS = 3000
+const TASK_POLL_TIMEOUT_MS = 10 * 60 * 1000
+
 // SEO and metadata
 const { t: $t, tm } = useI18n()
 const localePath = useLocalePath()
@@ -456,6 +486,32 @@ const checkCreditBalance = async () => {
   }
 }
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+const pollVideoTask = async (taskId: string): Promise<GenerationResult> => {
+  const start = Date.now()
+
+  while (Date.now() - start < TASK_POLL_TIMEOUT_MS) {
+    const response = await $fetch<VideoTaskStatusResponse>(`/api/video-generate/status?taskId=${encodeURIComponent(taskId)}`)
+
+    if (response.credits?.remaining !== undefined) {
+      creditBalance.value = response.credits.remaining
+    }
+
+    if (response.data.status === 'succeeded' && response.data.result) {
+      return response.data.result
+    }
+
+    if (response.data.status === 'failed') {
+      throw new Error(response.data.error || $t('ai.video.errors.generationFailed'))
+    }
+
+    await sleep(TASK_POLL_INTERVAL_MS)
+  }
+
+  throw new Error($t('ai.video.errors.timeout'))
+}
+
 const handleGenerate = async () => {
   if (!prompt.value.trim()) {
     toast.error($t('ai.video.errors.invalidPrompt'))
@@ -471,12 +527,7 @@ const handleGenerate = async () => {
   result.value = null
 
   try {
-    const response = await $fetch<{
-      success: boolean
-      data: GenerationResult
-      credits?: { remaining: number }
-      message?: string
-    }>('/api/video-generate', {
+    const response = await $fetch<VideoGenerateResponse>('/api/video-generate', {
       method: 'POST',
       body: {
         prompt: prompt.value.trim(),
@@ -494,9 +545,15 @@ const handleGenerate = async () => {
       },
     })
 
-    result.value = response.data
     if (response.credits?.remaining !== undefined) {
       creditBalance.value = response.credits.remaining
+    }
+
+    const maybeTask = response.data as Partial<AsyncVideoTaskData>
+    if (maybeTask.taskId) {
+      result.value = await pollVideoTask(maybeTask.taskId)
+    } else {
+      result.value = response.data as GenerationResult
     }
     toast.success($t('ai.video.generatedSuccessfully'))
   } catch (err: any) {
