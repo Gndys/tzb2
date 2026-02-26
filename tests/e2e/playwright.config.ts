@@ -22,6 +22,9 @@ export default defineConfig({
   ],
   outputDir: '../../test-results/e2e-output',
 
+  // Clean up e2e-* test users from the database after all tests finish
+  globalTeardown: './global-teardown.ts',
+
   use: {
     baseURL: 'http://localhost:7001',
     trace: 'on-first-retry',

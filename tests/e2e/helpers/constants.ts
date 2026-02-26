@@ -35,6 +35,8 @@ export const PAGES = {
   resetPassword: `${BASE}/reset-password`,
   dashboard: `${BASE}/dashboard`,
   pricing: `${BASE}/pricing`,
+  paymentSuccess: `${BASE}/payment-success`,
+  paymentCancel: `${BASE}/payment-cancel`,
   ai: `${BASE}/ai`,
   imageGenerate: `${BASE}/image-generate`,
   videoGenerate: `${BASE}/video-generate`,
@@ -42,6 +44,15 @@ export const PAGES = {
   premiumFeatures: `${BASE}/premium-features`,
   admin: `${BASE}/admin`,
   adminUsers: `${BASE}/admin/users`,
+  adminSubscriptions: `${BASE}/admin/subscriptions`,
+  adminOrders: `${BASE}/admin/orders`,
+  adminCredits: `${BASE}/admin/credits`,
+} as const;
+
+/** Pre-existing admin account (not created by tests, not cleaned up) */
+export const ADMIN_USER = {
+  email: 'admin@example.com',
+  password: 'admin123',
 } as const;
 
 /** API endpoints used in auth helpers */
@@ -50,6 +61,7 @@ export const API = {
   signIn: '/api/auth/sign-in/email',
   signOut: '/api/auth/sign-out',
   getSession: '/api/auth/get-session',
+  paymentInitiate: '/api/payment/initiate',
 } as const;
 
 /** Timeouts for various operations */
@@ -58,4 +70,6 @@ export const TIMEOUTS = {
   navigation: 15_000,
   /** Auth API calls */
   auth: 10_000,
+  /** Stripe Checkout interactions (external page, may be slower) */
+  stripe: 30_000,
 } as const;
