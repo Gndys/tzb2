@@ -23,6 +23,7 @@ export function createChatProvider(
         name: 'qwen',
         apiKey: qwenConfig?.apiKey || process.env.QWEN_API_KEY || '',
         baseURL: qwenConfig?.baseURL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+        includeUsage: true
       });
     }
     case 'openai': {
