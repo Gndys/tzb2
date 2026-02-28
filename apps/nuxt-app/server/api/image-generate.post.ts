@@ -73,10 +73,16 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    const normalizedSize = (provider === 'fal' || provider === 'gemini') ? undefined : size
+    const normalizedAspectRatio = (provider === 'fal' || provider === 'gemini')
+      ? (aspectRatio || size || '1:1')
+      : undefined
+
     console.log('Image generation request:', { 
       provider,
       model,
-      size,
+      size: normalizedSize,
+      aspectRatio: normalizedAspectRatio,
       userId,
       creditBalance,
       creditCost
@@ -113,8 +119,8 @@ export default defineEventHandler(async (event) => {
       provider: provider as ImageProviderName,
       model,
       negativePrompt,
-      size,
-      aspectRatio,
+      size: normalizedSize,
+      aspectRatio: normalizedAspectRatio,
       seed,
       promptExtend,
       watermark,

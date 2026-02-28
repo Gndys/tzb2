@@ -20,7 +20,7 @@ import {
 import { config } from '@config';
 import { getImageSizesForProvider } from '@libs/ai';
 
-type ImageProviderName = 'qwen' | 'fal' | 'openai';
+type ImageProviderName = 'qwen' | 'fal' | 'openai' | 'gemini';
 
 interface GenerationResult {
   imageUrl: string;
@@ -99,6 +99,10 @@ export default function ImageGeneratePage() {
     setError(null);
     
     try {
+      const selectedAspectRatio = (provider === 'fal' || provider === 'gemini')
+        ? (size || '1:1')
+        : undefined;
+
       const response = await fetch('/api/image-generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -107,8 +111,8 @@ export default function ImageGeneratePage() {
           provider,
           model,
           negativePrompt: negativePrompt.trim() || undefined,
-          size: provider === 'fal' ? undefined : size,
-          aspectRatio: provider === 'fal' ? size : undefined,
+          size: (provider === 'fal' || provider === 'gemini') ? undefined : (size || undefined),
+          aspectRatio: selectedAspectRatio,
           seed: seed === 'random' ? undefined : parseInt(seed, 10),
           promptExtend: provider === 'qwen' ? promptExtend : undefined,
           watermark: provider === 'qwen' ? watermark : undefined,

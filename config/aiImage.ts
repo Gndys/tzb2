@@ -1,12 +1,12 @@
 /**
  * AI Image Generation Configuration
- * Providers: qwen (native HTTP), fal (AI SDK), openai (AI SDK)
+ * Providers: qwen (native HTTP), fal (AI SDK), openai (AI SDK), gemini (AI SDK)
  */
 
 export const aiImageConfig = {
   /**
    * Default Image Provider
-   * @type {'qwen' | 'fal' | 'openai'}
+   * @type {'qwen' | 'fal' | 'openai' | 'gemini'}
    */
   defaultProvider: 'qwen' as const,
 
@@ -16,7 +16,8 @@ export const aiImageConfig = {
   defaultModels: {
     qwen: 'qwen-image-plus',
     fal: 'fal-ai/qwen-image-2512/lora',
-    openai: 'dall-e-3'
+    openai: 'dall-e-3',
+    gemini: 'gemini-2.5-flash-image'
   },
 
   /**
@@ -25,7 +26,12 @@ export const aiImageConfig = {
   availableModels: {
     qwen: ['qwen-image-plus', 'qwen-image-max'],
     fal: ['fal-ai/qwen-image-2512/lora', 'fal-ai/nano-banana-pro', 'fal-ai/recraft/v3/text-to-image', 'fal-ai/flux/dev'],
-    openai: ['dall-e-3', 'dall-e-2']
+    openai: ['dall-e-3', 'dall-e-2'],
+    gemini: [
+      'gemini-3.1-flash-image-preview',
+      'gemini-3-pro-image-preview',
+      'gemini-2.5-flash-image'
+    ]
   },
 
   /**
@@ -62,6 +68,22 @@ export const aiImageConfig = {
   ],
 
   /**
+   * Aspect ratio options for Gemini (format: width:height)
+   */
+  geminiAspectRatios: [
+    { value: '21:9', label: '21:9' },
+    { value: '16:9', label: '16:9' },
+    { value: '5:4', label: '5:4' },
+    { value: '4:3', label: '4:3' },
+    { value: '3:2', label: '3:2' },
+    { value: '1:1', label: '1:1' },
+    { value: '2:3', label: '2:3' },
+    { value: '3:4', label: '3:4' },
+    { value: '4:5', label: '4:5' },
+    { value: '9:16', label: '9:16' },
+  ],
+
+  /**
    * Default generation parameters
    */
   defaults: {
@@ -73,7 +95,7 @@ export const aiImageConfig = {
 } as const;
 
 // Type exports for external use
-export type ImageProviderName = 'qwen' | 'fal' | 'openai';
+export type ImageProviderName = 'qwen' | 'fal' | 'openai' | 'gemini';
 
 /**
  * Get size/aspect ratio options for a provider
@@ -83,6 +105,7 @@ export function getImageSizesForProvider(provider: ImageProviderName) {
     case 'qwen': return aiImageConfig.qwenSizes;
     case 'fal': return aiImageConfig.falAspectRatios;
     case 'openai': return aiImageConfig.openaiSizes;
+    case 'gemini': return aiImageConfig.geminiAspectRatios;
     default: return [];
   }
 }
