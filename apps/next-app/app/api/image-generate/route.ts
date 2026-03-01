@@ -67,11 +67,16 @@ export async function POST(req: Request) {
       );
     }
     
+    const normalizedSize = (provider === 'fal' || provider === 'gemini') ? undefined : size;
+    const normalizedAspectRatio = (provider === 'fal' || provider === 'gemini')
+      ? (aspectRatio || size || '1:1')
+      : undefined;
+
     console.log('Image generation request:', { 
       provider,
       model,
-      size: provider === 'fal' ? undefined : size,
-      aspectRatio: provider === 'fal' ? aspectRatio : undefined,
+      size: normalizedSize,
+      aspectRatio: normalizedAspectRatio,
       userId,
       creditBalance,
       creditCost
@@ -110,8 +115,8 @@ export async function POST(req: Request) {
       provider: provider as ImageProviderName,
       model,
       negativePrompt,
-      size,
-      aspectRatio,
+      size: normalizedSize,
+      aspectRatio: normalizedAspectRatio,
       seed,
       promptExtend,
       watermark,

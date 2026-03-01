@@ -1265,8 +1265,8 @@ export const zhCN: Locale = {
     image: {
       metadata: {
         title: "TinyShip - AI 图像生成",
-        description: "使用 AI 生成精美图像。支持通义千问图像、fal.ai Flux 和 OpenAI DALL-E。",
-        keywords: "AI, 图像生成, DALL-E, Flux, 通义千问, 文生图, 艺术, 创意"
+        description: "使用 AI 生成精美图像。支持通义千问图像、fal.ai Flux、OpenAI DALL-E 和 Google Gemini。",
+        keywords: "AI, 图像生成, DALL-E, Flux, 通义千问, Gemini, 文生图, 艺术, 创意"
       },
       title: "AI 图像生成",
       description: "使用多种 AI 提供商从文本提示生成精美图像",
@@ -1292,7 +1292,8 @@ export const zhCN: Locale = {
         title: "提供商",
         qwen: "阿里云百炼",
         fal: "fal.ai",
-        openai: "OpenAI"
+        openai: "OpenAI",
+        gemini: "Google Gemini"
       },
       models: {
         "qwen-image-plus": "通义千问图像 Plus",
@@ -1304,7 +1305,10 @@ export const zhCN: Locale = {
         "fal-ai/flux-pro/kontext": "Flux Pro Kontext",
         "fal-ai/bytedance/seedream/v3/text-to-image": "Bytedance Seedream V3 Text to Image",
         "dall-e-3": "DALL-E 3",
-        "dall-e-2": "DALL-E 2"
+        "dall-e-2": "DALL-E 2",
+        "gemini-3.1-flash-image-preview": "Nano Banana 2",
+        "gemini-3-pro-image-preview": "Nano Banana Pro",
+        "gemini-2.5-flash-image": "Nano Banana"
       },
       settings: {
         title: "附加设置",

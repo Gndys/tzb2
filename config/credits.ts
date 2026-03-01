@@ -54,6 +54,10 @@ export const creditsConfig = {
         // OpenAI models
         'dall-e-3': 15,
         'dall-e-2': 8,
+        // Google Gemini models
+        'gemini-3.1-flash-image-preview': 10,
+        'gemini-3-pro-image-preview': 15,
+        'gemini-2.5-flash-image': 10,
       },
     } as FixedConsumptionConfig,
 

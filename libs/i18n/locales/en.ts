@@ -1447,8 +1447,8 @@ export const en: Locale = {
     image: {
       metadata: {
         title: "TinyShip - AI Image Generation",
-        description: "Generate stunning images using AI. Powered by Qwen-Image, fal.ai Flux, and OpenAI DALL-E.",
-        keywords: "AI, image generation, DALL-E, Flux, Qwen, text to image, art, creative"
+        description: "Generate stunning images using AI. Powered by Qwen-Image, fal.ai Flux, OpenAI DALL-E, and Google Gemini.",
+        keywords: "AI, image generation, DALL-E, Flux, Qwen, Gemini, text to image, art, creative"
       },
       title: "AI Image Generation",
       description: "Generate stunning images from text prompts using multiple AI providers",
@@ -1474,7 +1474,8 @@ export const en: Locale = {
         title: "Provider",
         qwen: "Aliyun BaiLian",
         fal: "fal.ai",
-        openai: "OpenAI"
+        openai: "OpenAI",
+        gemini: "Google Gemini"
       },
       models: {
         "qwen-image-plus": "Qwen Image Plus",
@@ -1486,7 +1487,10 @@ export const en: Locale = {
         "fal-ai/flux-pro/kontext": "Flux Pro Kontext",
         "fal-ai/bytedance/seedream/v3/text-to-image": "Bytedance Seedream V3 Text to Image",
         "dall-e-3": "DALL-E 3",
-        "dall-e-2": "DALL-E 2"
+        "dall-e-2": "DALL-E 2",
+        "gemini-3.1-flash-image-preview": "Nano Banana 2",
+        "gemini-3-pro-image-preview": "Nano Banana Pro",
+        "gemini-2.5-flash-image": "Nano Banana"
       },
       settings: {
         title: "Additional Settings",

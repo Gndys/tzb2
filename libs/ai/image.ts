@@ -21,6 +21,7 @@ const DEFAULT_MODELS: Record<ImageProviderName, string> = {
   qwen: 'qwen-image-max',
   fal: 'fal-ai/qwen-image-2512/lora',
   openai: 'dall-e-3',
+  gemini: 'gemini-2.5-flash-image',
 };
 
 /**
@@ -177,6 +178,36 @@ async function openaiImageGenerate(options: ImageGenerationOptions): Promise<Ima
 }
 
 /**
+ * Generate image using Google Gemini
+ */
+async function geminiImageGenerate(options: ImageGenerationOptions): Promise<ImageGenerationResult> {
+  const model = options.model || DEFAULT_MODELS.gemini;
+  const imageProvider = createImageProvider('gemini');
+
+  if (!imageProvider) {
+    throw new Error('GOOGLE_GENERATIVE_AI_API_KEY is not configured');
+  }
+
+  const { image } = await generateImage({
+    model: imageProvider.image(model),
+    prompt: options.prompt,
+    aspectRatio: options.aspectRatio as `${number}:${number}` | undefined,
+    seed: options.seed,
+  });
+
+  const imageUrl = image.base64.startsWith('data:')
+    ? image.base64
+    : `data:${image.mediaType};base64,${image.base64}`;
+
+  return {
+    imageUrl,
+    provider: 'gemini',
+    model,
+    seed: options.seed,
+  };
+}
+
+/**
  * Main function to generate images with multi-provider support
  */
 export async function generateImageResponse(options: ImageGenerationOptions): Promise<ImageGenerationResult> {
@@ -187,6 +218,8 @@ export async function generateImageResponse(options: ImageGenerationOptions): Pr
       return falImageGenerate(options);
     case 'openai':
       return openaiImageGenerate(options);
+    case 'gemini':
+      return geminiImageGenerate(options);
     default:
       throw new Error(`Unsupported image provider: ${options.provider}`);
   }
