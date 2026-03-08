@@ -48,11 +48,13 @@ test.describe('Password Change', () => {
     const page = await authedPage();
     await page.goto(PAGES.dashboard, { timeout: TIMEOUTS.navigation });
 
-    // Click the Account tab (English: "Account", Chinese: "账户")
-    const accountTab = page.locator('button[role="tab"]').filter({
-      hasText: /Account|账户/,
+    // Click the Account Management sidebar button
+    const accountTab = page.locator('button').filter({
+      hasText: /Account Management|账户管理/,
     });
+    await expect(accountTab.first()).toBeVisible({ timeout: TIMEOUTS.navigation });
     await accountTab.first().click();
+    await page.waitForTimeout(500);
 
     // Verify the "Change Password" section is visible
     await expect(
@@ -72,11 +74,13 @@ test.describe('Password Change', () => {
     const page = await authedPage();
     await page.goto(PAGES.dashboard, { timeout: TIMEOUTS.navigation });
 
-    // Navigate to Account tab
-    const accountTab = page.locator('button[role="tab"]').filter({
-      hasText: /Account|账户/,
+    // Navigate to Account Management tab
+    const accountTab = page.locator('button').filter({
+      hasText: /Account Management|账户管理/,
     });
+    await expect(accountTab.first()).toBeVisible({ timeout: TIMEOUTS.navigation });
     await accountTab.first().click();
+    await page.waitForTimeout(500);
 
     // Click the "Change Password" button to open dialog
     const changePasswordButton = page
@@ -88,10 +92,14 @@ test.describe('Password Change', () => {
     const dialog = page.locator('[role="dialog"]');
     await expect(dialog).toBeVisible({ timeout: TIMEOUTS.navigation });
 
-    // Fill the form
-    await page.locator('#currentPassword').fill(originalPassword);
-    await page.locator('#newPassword').fill(newPassword);
-    await page.locator('#confirmPassword').fill(newPassword);
+    // Fill the form – IDs differ between Next.js (camelCase) and Nuxt (kebab-case)
+    const currentPwInput = page.locator('#currentPassword, #current-password');
+    const newPwInput = page.locator('#newPassword, #new-password');
+    const confirmPwInput = page.locator('#confirmPassword, #confirm-password');
+
+    await currentPwInput.first().fill(originalPassword);
+    await newPwInput.first().fill(newPassword);
+    await confirmPwInput.first().fill(newPassword);
 
     // Click submit button inside the dialog
     const submitButton = dialog.locator('button[type="submit"]');

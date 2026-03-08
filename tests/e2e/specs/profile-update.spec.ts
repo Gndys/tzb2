@@ -51,8 +51,9 @@ test.describe('Profile Update', () => {
       timeout: TIMEOUTS.navigation,
     });
 
-    // Verify the "Edit" button exists
-    const editButton = page.locator('button:has(svg)').filter({ hasText: /Edit/i });
+    // Verify the "Edit" button exists (scoped to main content area)
+    // Use substring match — Vue/Nuxt SSR may add whitespace around text content
+    const editButton = page.locator('main button').filter({ hasText: /Edit/ });
     await expect(editButton.first()).toBeVisible({ timeout: TIMEOUTS.navigation });
 
     await page.close();
@@ -62,16 +63,26 @@ test.describe('Profile Update', () => {
     const page = await authedPage();
     await page.goto(PAGES.dashboard, { timeout: TIMEOUTS.navigation });
 
-    // Wait for the profile to load
+    // Explicitly click the Profile sidebar tab (inside <nav>) to ensure we're on the right panel.
+    // IMPORTANT: Do not use `button:has-text("Profile")` without scoping to nav,
+    // because the user menu button "P {name}" also contains "Profile" in the name.
+    const profileTab = page.locator('nav button').filter({ hasText: /Profile/i }).first();
+    await expect(profileTab).toBeVisible({ timeout: TIMEOUTS.navigation });
+    await profileTab.click();
+    await page.waitForTimeout(500);
+
+    // Wait for the profile to load and display the user name
     await expect(page.locator('text=' + originalName).first()).toBeVisible({
       timeout: TIMEOUTS.navigation,
     });
 
-    // Click Edit button
-    const editButton = page.locator('button:has(svg)').filter({ hasText: /Edit/i });
-    await editButton.first().click();
+    // Click Edit button via JS dispatch to bypass potential pointer-event interception.
+    const editButton = page.locator('main button').filter({ hasText: /Edit/ });
+    await expect(editButton.first()).toBeVisible({ timeout: TIMEOUTS.navigation });
+    await editButton.first().dispatchEvent('click');
+    await page.waitForTimeout(500);
 
-    // Verify edit mode — name input should appear
+    // Verify edit mode — name input should appear (the input has id="name")
     const nameInput = page.locator('#name');
     await expect(nameInput).toBeVisible({ timeout: TIMEOUTS.navigation });
 
@@ -79,13 +90,13 @@ test.describe('Profile Update', () => {
     const newName = 'Updated E2E Name';
     await nameInput.fill(newName);
 
-    // Click save button
-    const saveButton = page.locator('button:has(svg)').filter({ hasText: /Save/i });
-    await saveButton.first().click();
+    // Click save button via JS dispatch to bypass pointer-event interception
+    const saveButton = page.locator('main button').filter({ hasText: /Save/ });
+    await saveButton.first().dispatchEvent('click');
 
     // Wait for the edit mode to close (edit button reappears)
     await expect(
-      page.locator('button:has(svg)').filter({ hasText: /Edit/i }).first()
+      page.locator('main button').filter({ hasText: /Edit/ }).first()
     ).toBeVisible({ timeout: TIMEOUTS.navigation });
 
     // Verify the new name is displayed

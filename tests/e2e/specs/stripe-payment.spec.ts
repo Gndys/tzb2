@@ -64,14 +64,19 @@ async function initiateCheckout(
   planNamePattern: RegExp,
 ): Promise<void> {
   await page.goto(PAGES.pricing, { timeout: TIMEOUTS.navigation });
+  // Wait for full hydration so Vue reactivity and plan data are ready
+  await page.waitForLoadState('networkidle');
+
+  // Wait for at least one plan card heading to appear (plans have rendered)
+  await page.locator('h3').first().waitFor({ state: 'attached', timeout: TIMEOUTS.navigation });
 
   // Switch pricing tab if needed (credits tab)
   if (tab === 'credits') {
     const creditsTab = page.locator('.inline-flex.p-1 button').nth(1);
     await creditsTab.waitFor({ state: 'visible', timeout: TIMEOUTS.navigation });
     await creditsTab.click();
-    // Wait for the tab content to switch
-    await page.waitForTimeout(500);
+    // Wait for the tab content to re-render after switching
+    await page.waitForTimeout(1000);
   }
 
   // Find the plan card by its heading text
@@ -142,25 +147,18 @@ test.describe('Stripe Payment Flow', () => {
     await page.close();
   });
 
-  test('can complete Stripe subscription payment with test card', async () => {
+  test('can complete Stripe subscription payment and see success page', async () => {
+    test.slow(); // Stripe Checkout + webhook processing can take time
     const page = await authedPage();
 
     await initiateCheckout(page, 'subscription', /Stripe Monthly/i);
     await fillAndSubmitStripeCheckout(page);
 
-    // Verify success page
+    // Verify success page URL
     expect(page.url()).toContain('payment-success');
     expect(page.url()).toContain('provider=stripe');
 
-    await page.close();
-  });
-
-  test('payment-success page shows heading and dashboard link', async () => {
-    const page = await authedPage();
-
-    await initiateCheckout(page, 'subscription', /Stripe Monthly/i);
-    await fillAndSubmitStripeCheckout(page);
-
+    // Verify success page content — heading and dashboard link
     await expect(page.locator('h1').first()).toBeVisible({ timeout: TIMEOUTS.stripe });
     await expect(
       page.locator('a[href*="/dashboard"]').first()
@@ -183,6 +181,7 @@ test.describe('Stripe Payment Flow', () => {
   });
 
   test('dashboard subscription tab shows plan name, active status, and period dates after payment', async () => {
+    test.slow(); // Webhook processing may take time before data shows
     const page = await authedPage();
 
     await page.goto(PAGES.dashboard, { timeout: TIMEOUTS.navigation });
@@ -245,6 +244,7 @@ test.describe('Stripe Payment Flow', () => {
   // ── B) Credits Purchase Flow ──────────────────────────────────────────
 
   test('clicking a Stripe credits plan redirects to Stripe Checkout', async () => {
+    test.slow(); // Extra time for page hydration + Stripe redirect
     const page = await authedPage();
 
     await initiateCheckout(page, 'credits', /100 Credits Stripe/i);
@@ -254,6 +254,7 @@ test.describe('Stripe Payment Flow', () => {
   });
 
   test('can complete Stripe credits purchase with test card', async () => {
+    test.slow(); // Stripe Checkout + redirect can take time
     const page = await authedPage();
 
     await initiateCheckout(page, 'credits', /100 Credits Stripe/i);
@@ -267,32 +268,55 @@ test.describe('Stripe Payment Flow', () => {
   });
 
   test('dashboard credits tab shows updated balance after credits purchase', async () => {
+    // Webhook processing can be significantly delayed under load (full suite).
+    // Allow up to 3 minutes for this test.
+    test.setTimeout(180_000);
     const page = await authedPage();
 
-    await page.goto(PAGES.dashboard, { timeout: TIMEOUTS.navigation });
-    await expect(page).toHaveURL(/\/dashboard/);
+    // Webhook may not have processed yet. Poll the dashboard up to 6 times
+    // with 10s waits in between to allow webhook delivery and processing.
+    let balance = 0;
+    const MAX_ATTEMPTS = 6;
+    const POLL_INTERVAL = 10_000;
 
-    // Click the Credits sidebar tab
-    await clickDashboardTab(page, /Credits|积分/);
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      if (attempt > 1) {
+        // Wait before retrying (webhook may still be in flight)
+        await page.waitForTimeout(POLL_INTERVAL);
+      }
 
-    // Wait for credits data to load
-    // The credits card title contains "Credit Balance" or "积分余额"
-    const creditTitle = page.locator('text=/Credit Balance|积分余额/i');
-    await expect(creditTitle.first()).toBeVisible({ timeout: TIMEOUTS.navigation });
+      await page.goto(PAGES.dashboard, { timeout: TIMEOUTS.navigation });
+      await expect(page).toHaveURL(/\/dashboard/);
 
-    // The "Available Credits" stat should be visible
-    const availableLabel = page.locator('text=/Available Credits|可用积分/i');
-    await expect(availableLabel.first()).toBeVisible();
+      // Click the Credits sidebar tab
+      await clickDashboardTab(page, /Credits|积分/);
 
-    // The balance number should be a bold text-2xl element
-    // After purchasing 100 credits, balance should be >= 100
-    const balanceElement = page.locator('.grid.grid-cols-3 .text-2xl.font-bold').first();
-    await expect(balanceElement).toBeVisible({ timeout: TIMEOUTS.stripe });
+      // Wait for credits data to load
+      const creditTitle = page.locator('text=/Credit Balance|积分余额/i');
+      await expect(creditTitle.first()).toBeVisible({ timeout: TIMEOUTS.navigation });
 
-    // Read the balance value and check it's >= 100
-    // (May be higher if previous test runs added credits to same account)
-    const balanceText = await balanceElement.textContent();
-    const balance = parseInt(balanceText?.replace(/,/g, '') || '0', 10);
+      // The "Available Credits" stat should be visible
+      const availableLabel = page.locator('text=/Available Credits|可用积分/i');
+      await expect(availableLabel.first()).toBeVisible();
+
+      // Read the balance number
+      const balanceElement = page.locator('.grid.grid-cols-3 .text-2xl.font-bold').first();
+      await expect(balanceElement).toBeVisible({ timeout: TIMEOUTS.navigation });
+
+      const balanceText = await balanceElement.textContent();
+      balance = parseInt(balanceText?.replace(/,/g, '') || '0', 10);
+
+      if (balance >= 100) break; // Credits arrived — stop polling
+    }
+
+    // If credits are still 0 after all attempts, the Stripe webhook may not have been
+    // delivered (e.g. stripe listen not running). Log a warning but still assert.
+    if (balance === 0) {
+      console.warn(
+        `[stripe-payment] Credits balance is still 0 after ${MAX_ATTEMPTS} polls. ` +
+        `Ensure 'stripe listen --forward-to localhost:7001/api/payment/webhook/stripe' is running.`
+      );
+    }
     expect(balance).toBeGreaterThanOrEqual(100);
 
     // "Total Purchased" should also show >= 100
@@ -305,7 +329,6 @@ test.describe('Stripe Payment Flow', () => {
     expect(purchased).toBeGreaterThanOrEqual(100);
 
     // A purchase transaction should appear in the transaction table
-    // (only if the webhook has been processed)
     const purchaseBadge = page.locator('text=/Purchase|购买/i');
     const hasPurchaseRecord = await purchaseBadge.first().isVisible().catch(() => false);
     if (hasPurchaseRecord) {

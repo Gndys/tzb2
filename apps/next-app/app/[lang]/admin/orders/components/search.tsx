@@ -152,11 +152,11 @@ export function Search() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">{t.admin.orders.table.search.allStatus}</SelectItem>
-          <SelectItem value="pending">{t.admin.orders.table.search.pending}</SelectItem>
-          <SelectItem value="paid">{t.admin.orders.table.search.paid}</SelectItem>
-          <SelectItem value="failed">{t.admin.orders.table.search.failed}</SelectItem>
-          <SelectItem value="refunded">{t.admin.orders.table.search.refunded}</SelectItem>
-          <SelectItem value="canceled">{t.admin.orders.table.search.canceled}</SelectItem>
+          <SelectItem value="pending">{t.admin.orders.status.pending}</SelectItem>
+          <SelectItem value="paid">{t.admin.orders.status.paid}</SelectItem>
+          <SelectItem value="failed">{t.admin.orders.status.failed}</SelectItem>
+          <SelectItem value="refunded">{t.admin.orders.status.refunded}</SelectItem>
+          <SelectItem value="canceled">{t.admin.orders.status.canceled}</SelectItem>
         </SelectContent>
       </Select>
 
