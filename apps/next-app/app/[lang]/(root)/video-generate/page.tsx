@@ -40,6 +40,36 @@ interface UploadResponse {
   message?: string;
 }
 
+interface AsyncVideoTaskData {
+  taskId: string;
+  status: 'processing';
+  async: true;
+  provider: string;
+  model: string;
+}
+
+interface VideoGenerateResponse {
+  success: boolean;
+  data: GenerationResult | AsyncVideoTaskData;
+  credits?: { remaining: number };
+  message?: string;
+  error?: string;
+}
+
+interface VideoTaskStatusResponse {
+  success: boolean;
+  data: {
+    taskId: string;
+    status: 'processing' | 'succeeded' | 'failed';
+    result?: GenerationResult;
+    error?: string;
+  };
+  credits?: { remaining: number };
+}
+
+const TASK_POLL_INTERVAL_MS = 3000;
+const TASK_POLL_TIMEOUT_MS = 10 * 60 * 1000;
+
 export default function VideoGeneratePage() {
   const { t, locale } = useTranslation();
   
@@ -108,6 +138,37 @@ export default function VideoGeneratePage() {
       console.error('Failed to check credit balance:', err);
     }
   };
+
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const pollVideoTask = async (taskId: string): Promise<GenerationResult> => {
+    const start = Date.now();
+
+    while (Date.now() - start < TASK_POLL_TIMEOUT_MS) {
+      const response = await fetch(`/api/video-generate/status?taskId=${encodeURIComponent(taskId)}`);
+      const data = await response.json() as VideoTaskStatusResponse;
+
+      if (!response.ok) {
+        throw new Error((data as any)?.message || t.ai.video.errors.generationFailed);
+      }
+
+      if (data.credits?.remaining !== undefined) {
+        setCreditBalance(data.credits.remaining);
+      }
+
+      if (data.data.status === 'succeeded' && data.data.result) {
+        return data.data.result;
+      }
+
+      if (data.data.status === 'failed') {
+        throw new Error(data.data.error || t.ai.video.errors.generationFailed);
+      }
+
+      await sleep(TASK_POLL_INTERVAL_MS);
+    }
+
+    throw new Error(t.ai.video.errors.timeout);
+  };
   
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -143,7 +204,7 @@ export default function VideoGeneratePage() {
         }),
       });
       
-      const data = await response.json();
+      const data = await response.json() as VideoGenerateResponse;
       
       if (!response.ok) {
         if (response.status === 402) {
@@ -159,8 +220,17 @@ export default function VideoGeneratePage() {
         throw new Error(data.message || t.ai.video.errors.generationFailed);
       }
       
-      setResult(data.data);
-      setCreditBalance(data.credits?.remaining);
+      if (data.credits?.remaining !== undefined) {
+        setCreditBalance(data.credits.remaining);
+      }
+
+      const maybeTask = data.data as Partial<AsyncVideoTaskData>;
+      if (maybeTask.taskId) {
+        const finalResult = await pollVideoTask(maybeTask.taskId);
+        setResult(finalResult);
+      } else {
+        setResult(data.data as GenerationResult);
+      }
       toast.success(t.ai.video.generatedSuccessfully);
       
     } catch (err) {

@@ -21,6 +21,8 @@ export {
 } from './image';
 export {
   generateVideoResponse,
+  createVideoTask,
+  queryVideoTask,
   calculateVideoCreditCost,
   getVideoSizesForProvider,
   getVideoDurationsForProvider,

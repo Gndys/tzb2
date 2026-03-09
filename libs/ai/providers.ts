@@ -2,6 +2,7 @@ import { createDeepSeek } from '@ai-sdk/deepseek';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { fal, createFal } from '@ai-sdk/fal';
+import { google, createGoogleGenerativeAI } from '@ai-sdk/google';
 import type { ChatProviderName, ImageProviderName, VideoProviderName, ProviderConfig } from './types';
 
 /**
@@ -23,6 +24,7 @@ export function createChatProvider(
         name: 'qwen',
         apiKey: qwenConfig?.apiKey || process.env.QWEN_API_KEY || '',
         baseURL: qwenConfig?.baseURL || 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+        includeUsage: true
       });
     }
     case 'openai': {
@@ -63,6 +65,32 @@ export function createImageProvider(
       // Qwen image generation uses native HTTP, not AI SDK
       // Return null to indicate direct API usage is required
       return null;
+    }
+    case 'gemini': {
+      const geminiConfig = config as ProviderConfig['gemini'] | undefined;
+      const apiKey = geminiConfig?.apiKey || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+      const baseURL = geminiConfig?.baseURL || process.env.GOOGLE_GENERATIVE_AI_BASE_URL;
+
+      if (apiKey && baseURL) {
+        // For third-party Gemini gateways (e.g. jiekou), Bearer auth is common.
+        // Keep apiKey for default x-goog-api-key behavior while adding Authorization header.
+        return createGoogleGenerativeAI({
+          apiKey,
+          baseURL,
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+          },
+        });
+      }
+
+      if (apiKey) {
+        return createGoogleGenerativeAI({
+          apiKey,
+        });
+      }
+
+      // Use default google instance (reads GOOGLE_GENERATIVE_AI_API_KEY from env)
+      return google;
     }
     default:
       throw new Error(`Unsupported image provider: ${providerName}`);

@@ -45,6 +45,12 @@ const PROVIDER_ENV_KEYS: Record<AllProviderName, {
     baseURL: 'QWEN_BASE_URL',
     capabilities: ['video'],
   },
+  // Google Gemini - Image generation
+  gemini: {
+    apiKey: 'GOOGLE_GENERATIVE_AI_API_KEY',
+    baseURL: 'GOOGLE_GENERATIVE_AI_BASE_URL',
+    capabilities: ['image'],
+  },
 };
 
 /**

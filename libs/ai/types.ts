@@ -3,7 +3,7 @@ import type { OpenAIProviderSettings } from '@ai-sdk/openai';
 import type { UIMessage } from 'ai';
 
 // All supported providers (including video-only providers)
-export type AllProviderName = 'qwen' | 'openai' | 'deepseek' | 'fal' | 'volcengine' | 'aliyun';
+export type AllProviderName = 'qwen' | 'openai' | 'deepseek' | 'fal' | 'volcengine' | 'aliyun' | 'gemini';
 
 // Chat-capable providers (excludes fal which is image-only)
 export type ChatProviderName = 'qwen' | 'openai' | 'deepseek';
@@ -29,6 +29,10 @@ export type AliyunConfig = {
   apiKey: string;
   baseURL?: string;
 };
+export type GeminiConfig = {
+  apiKey?: string;  // Optional: uses GOOGLE_GENERATIVE_AI_API_KEY env var by default
+  baseURL?: string;
+};
 
 export type ProviderConfig = {
   qwen: QwenConfig;
@@ -37,6 +41,7 @@ export type ProviderConfig = {
   fal: FalConfig;
   volcengine: VolcengineConfig;
   aliyun: AliyunConfig;
+  gemini: GeminiConfig;
 };
 
 export interface AIConfig {
@@ -53,7 +58,7 @@ export interface ChatRequestOptions {
 }
 
 // Image Generation Provider Types
-export type ImageProviderName = 'qwen' | 'fal' | 'openai';
+export type ImageProviderName = 'qwen' | 'fal' | 'openai' | 'gemini';
 
 export type QwenImageSize = '1664*928' | '1472*1104' | '1328*1328' | '1104*1472' | '928*1664';
 export type OpenAIImageSize = '1024x1024' | '1792x1024' | '1024x1792' | '512x512' | '256x256';

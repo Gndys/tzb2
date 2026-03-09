@@ -259,7 +259,7 @@ import {
 } from '@/components/ui/select'
 import { getImageSizesForProvider } from '@libs/ai'
 
-type ImageProviderName = 'qwen' | 'fal' | 'openai'
+type ImageProviderName = 'qwen' | 'fal' | 'openai' | 'gemini'
 
 interface GenerationResult {
   imageUrl: string
@@ -369,6 +369,10 @@ const handleGenerate = async () => {
   error.value = null
 
   try {
+    const selectedAspectRatio = (provider.value === 'fal' || provider.value === 'gemini')
+      ? (size.value || '1:1')
+      : undefined
+
     const response = await $fetch<{
       success: boolean
       data: GenerationResult
@@ -381,8 +385,8 @@ const handleGenerate = async () => {
         provider: provider.value,
         model: model.value,
         negativePrompt: negativePrompt.value.trim() || undefined,
-        size: provider.value === 'fal' ? undefined : size.value,
-        aspectRatio: provider.value === 'fal' ? size.value : undefined,
+        size: (provider.value === 'fal' || provider.value === 'gemini') ? undefined : (size.value || undefined),
+        aspectRatio: selectedAspectRatio,
         seed: seed.value === 'random' ? undefined : parseInt(seed.value, 10),
         promptExtend: provider.value === 'qwen' ? promptExtend.value : undefined,
         watermark: provider.value === 'qwen' ? watermark.value : undefined,
