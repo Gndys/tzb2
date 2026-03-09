@@ -185,6 +185,7 @@ pnpm start:docs
 ### 开发指南
 
 - **[开发最佳实践](./best-practices.md)**：代码规范和开发建议
+- **[本地 E2E 测试流程](./e2e-local.md)**：如何在本地运行单测/全量 E2E（含 Next + Nuxt 双端回归）
 
 ## 🤝 社区与支持
 

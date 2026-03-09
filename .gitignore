@@ -46,6 +46,11 @@ Thumbs.db
 # 测试覆盖率
 coverage
 
+# Playwright E2E test outputs
+test-results/
+playwright-report/
+playwright-*-state.json
+
 # Turbo
 .turbo
 

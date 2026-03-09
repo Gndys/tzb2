@@ -20,6 +20,56 @@ Use this file as the default instruction when implementing any new feature, so r
 4. Any user-accessed API/page must be checked for auth and permission consistency.
 5. If a feature consumes credits/money, ensure charge/refund path and transaction labels are complete.
 6. Always finish with typecheck + build verification.
+7. A feature is **not done** until E2E tests pass on both apps.
+
+## Development Workflow (Spec First, Code First)
+
+Each feature follows five phases. The key idea: define **what to verify** before coding,
+but write the **actual test code** after the UI exists (E2E selectors depend on real DOM).
+
+```
+┌─────────┐   ┌─────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
+│  SPEC   │──▶│  CODE   │──▶│  VERIFY  │──▶│  TEST   │──▶│  GREEN  │
+│         │   │         │   │          │   │         │   │         │
+│ Define  │   │ Implement│  │ agent-   │   │ Write   │   │ E2E pass│
+│ accept- │   │ feature  │  │ browser  │   │ E2E     │   │ both    │
+│ ance    │   │ code     │  │ visual   │   │ specs   │   │ apps =  │
+│ criteria│   │ (dual    │  │ walkthru │   │ against │   │ DONE    │
+│ in plain│   │  app)    │  │          │   │ real UI │   │         │
+│ language│   │         │   │          │   │         │   │         │
+└─────────┘   └─────────┘   └──────────┘   └─────────┘   └─────────┘
+```
+
+### Phase details
+
+| # | Phase | What | Output |
+|---|-------|------|--------|
+| 1 | **Spec** | Write acceptance scenarios in `tests/e2e/TEST-CATALOG.md` (plain language, no Playwright code). Define what pages/flows to test, what URL params to check, what UI states to verify. | TEST-CATALOG.md entry in backlog |
+| 2 | **Code** | Implement the feature following the checklist below (libs → config → both apps → i18n → permissions). | Working feature on both apps |
+| 3 | **Verify** | Use `agent-browser` to walk through the key user flows on the running app. Catch visual/UX issues before writing tests. | Visual confirmation |
+| 4 | **Test** | Write Playwright E2E specs based on the real DOM structure. Use selectors discovered during the Verify phase. | `tests/e2e/specs/*.spec.ts` |
+| 5 | **Green** | Run E2E on both apps (`pnpm test:e2e`). Both pass = feature complete. Record results in TEST-CATALOG.md. | Updated test results table |
+
+### Why not pure BDD (E2E first)?
+
+E2E tests are tightly coupled to DOM structure (`[data-slot="select-trigger"]`, `role="combobox"`,
+`.nth(1)`), URL patterns, and i18n text. These are unknowable before the UI exists.
+Additionally, Next.js and Nuxt.js render differently — selectors often need framework-specific
+handling that only emerges during implementation. Writing E2E first would produce throwaway code.
+
+The BDD **mindset** (think about acceptance criteria first) is preserved in the Spec phase.
+
+### When to run E2E
+
+| Trigger | Scope | Command |
+|---------|-------|---------|
+| Finished a feature | Related spec files only | `npx playwright test <spec-file>` |
+| Before release | Full suite, both apps | Switch app on port 7001, run `pnpm test:e2e` twice |
+| Large refactor | Full suite, both apps | Same as above |
+| CI (every push) | **No E2E** — typecheck + build only | `pnpm typecheck && pnpm build` |
+
+> E2E is a **local regression net**, not a CI gate. Payment tests need Stripe CLI,
+> AI tests need provider API keys, and the full suite takes ~6 min per app.
 
 ## New Feature Checklist (Copy/Paste Friendly)
 
@@ -28,6 +78,7 @@ Use this file as the default instruction when implementing any new feature, so r
 - [ ] Confirm feature goal, supported providers/modes, and non-goals.
 - [ ] Identify if this is: UI only / API only / full-stack / provider integration.
 - [ ] Decide whether both Next and Nuxt need implementation.
+- [ ] Write acceptance scenarios in `tests/e2e/TEST-CATALOG.md` (Spec phase).
 
 ### 1) Architecture placement
 
@@ -92,9 +143,17 @@ Use this file as the default instruction when implementing any new feature, so r
 - [ ] Run Nuxt typecheck: `pnpm --filter @tinyship/nuxt-app typecheck`
 - [ ] Run Next build: `pnpm --filter @tinyship/next-app build`
 - [ ] Run Nuxt build: `pnpm --filter @tinyship/nuxt-app build`
-- [ ] If frontend behavior changed, do a quick browser validation of key flow.
+- [ ] Use `agent-browser` to walk through the key user flow (Verify phase).
 
-### 10) Delivery format
+### 10) E2E tests
+
+- [ ] Write Playwright E2E specs in `tests/e2e/specs/` (Test phase).
+- [ ] Run E2E on current app: `npx playwright test --config=tests/e2e/playwright.config.ts <spec>`
+- [ ] Switch to the other app on port 7001, run again.
+- [ ] Both apps green → update `tests/e2e/TEST-CATALOG.md` results table (Green phase).
+- [ ] See `tests/e2e/AGENTS.md` for E2E conventions and helpers.
+
+### 11) Delivery format
 
 - [ ] Summarize changed files grouped by: shared libs / Next / Nuxt / config / docs.
 - [ ] List any intentional deviations from parity and why.
@@ -113,6 +172,7 @@ When adding a new capability, track these rows explicitly:
 - [ ] Middleware/permissions
 - [ ] i18n EN + ZH
 - [ ] Credits/transactions
+- [ ] E2E tests (both apps green)
 - [ ] Docs
 
 ## Key Project References
@@ -126,6 +186,8 @@ When adding a new capability, track these rows explicitly:
 - Build verification notes: `docs/implementation/build-verification.md`
 - Storage upload guide: `docs/user-guide/storage.md`
 - Credits user guide: `docs/user-guide/credits.md`
+- E2E test conventions: `tests/e2e/AGENTS.md`
+- E2E test catalog: `tests/e2e/TEST-CATALOG.md`
 
 ## Suggested Prompt Shortcut
 
