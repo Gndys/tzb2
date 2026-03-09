@@ -21,9 +21,13 @@ export const TEST_USER = {
 /**
  * Generate a unique test email for each test run.
  * Prevents conflicts when tests create accounts.
+ *
+ * Always prefixes with `e2e-` so global-teardown.ts can match
+ * all test users via `email LIKE 'e2e-%@example.com'`.
  */
-export function uniqueEmail(prefix = 'e2e'): string {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@example.com`;
+export function uniqueEmail(prefix = 'test'): string {
+  const slug = prefix.startsWith('e2e-') ? prefix.slice(4) : prefix;
+  return `e2e-${slug}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@example.com`;
 }
 
 /** Well-known page paths (without locale prefix) */
@@ -47,6 +51,9 @@ export const PAGES = {
   adminSubscriptions: `${BASE}/admin/subscriptions`,
   adminOrders: `${BASE}/admin/orders`,
   adminCredits: `${BASE}/admin/credits`,
+  adminBlog: `${BASE}/admin/blog`,
+  adminBlogNew: `${BASE}/admin/blog/new`,
+  blog: `${BASE}/blog`,
 } as const;
 
 /** Pre-existing admin account (not created by tests, not cleaned up) */

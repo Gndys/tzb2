@@ -10,6 +10,9 @@ export {
 // Export admin user validators
 export { createAdminUserValidators } from './admin-user';
 
+// Export blog post validators
+export { createBlogPostValidators } from './blog-post';
+
 // 为 Next.js 创建支持参数插值的翻译函数工厂
 export function createNextTranslationFunction(translations: any) {
   return (key: string, params?: Record<string, any>) => {

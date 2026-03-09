@@ -44,7 +44,8 @@ export const zhCN: Locale = {
       subscriptions: "订阅管理",
       orders: "订单管理",
       credits: "积分管理",
-      application: "应用程序"
+      application: "应用程序",
+      blog: "博客管理"
     }
   },
   actions: {
@@ -66,7 +67,10 @@ export const zhCN: Locale = {
     resendVerificationEmail: "重新发送验证邮件",
     upload: "上传",
     previous: "上一页",
-    next: "下一页"
+    next: "下一页",
+    createPost: "新建文章",
+    deletePost: "删除文章",
+    backToBlog: "返回博客"
   },
   email: {
     verification: {
@@ -600,6 +604,75 @@ export const zhCN: Locale = {
         failed: "支付失败",
         refunded: "已退款",
         canceled: "已取消"
+      }
+    },
+    blog: {
+      title: "博客管理",
+      subtitle: "创建和管理博客文章",
+      createPost: "创建文章",
+      editPost: "编辑文章",
+      actions: {
+        newPost: "新建文章"
+      },
+      messages: {
+        fetchError: "加载博客文章失败，请重试。",
+        createSuccess: "文章创建成功",
+        updateSuccess: "文章更新成功",
+        deleteSuccess: "文章删除成功",
+        deleteError: "删除文章失败",
+        operationFailed: "操作失败",
+        uploadSuccess: "上传成功",
+        uploadError: "上传失败"
+      },
+      table: {
+        noResults: "未找到文章。",
+        search: {
+          searchPlaceholder: "按标题搜索...",
+          filterByStatus: "按状态筛选",
+          allStatus: "所有状态",
+          draft: "草稿",
+          published: "已发布"
+        },
+        columns: {
+          title: "标题",
+          status: "状态",
+          author: "作者",
+          publishedAt: "发布时间",
+          createdAt: "创建时间",
+          actions: "操作"
+        },
+        actions: {
+          edit: "编辑",
+          delete: "删除"
+        },
+        sort: {
+          ascending: "升序排列",
+          descending: "降序排列",
+          none: "取消排序"
+        }
+      },
+      form: {
+        title: "文章信息",
+        description: "请在下方输入文章详情",
+        labels: {
+          title: "标题",
+          slug: "URL 别名",
+          excerpt: "摘要",
+          coverImage: "封面图",
+          status: "状态",
+          content: "内容"
+        },
+        placeholders: {
+          title: "请输入文章标题",
+          slug: "URL 友好别名（根据标题自动生成）",
+          excerpt: "文章简要摘要",
+          coverImage: "拖放或点击上传（最大 2MB）",
+          content: "使用 Markdown 编写内容..."
+        }
+      },
+      deleteDialog: {
+        title: "删除文章",
+        description: "您确定要删除此文章吗？此操作无法撤销，将永久删除该文章。"
       }
     },
     credits: {
@@ -1710,7 +1783,26 @@ export const zhCN: Locale = {
       deleteAccount: {
         confirmRequired: "您必须确认删除账户"
       }
-    }
+    },
+    blog: {
+      title: {
+        required: "标题不能为空",
+        maxLength: "标题不能超过 {max} 个字符",
+      },
+      slug: {
+        maxLength: "Slug 不能超过 {max} 个字符",
+        invalid: "Slug 只能包含小写字母、数字和连字符",
+      },
+      excerpt: {
+        maxLength: "摘要不能超过 {max} 个字符",
+      },
+      coverImage: {
+        invalidUrl: "请输入有效的封面图片 URL",
+      },
+      status: {
+        invalid: "状态必须是草稿或已发布",
+      },
+    },
   },
   countries: {
     china: "中国",
@@ -1735,7 +1827,8 @@ export const zhCN: Locale = {
       pricing: "定价",
       upload: "文件上传",
       demos: "功能演示",
-      demosDescription: "探索示例功能"
+      demosDescription: "探索示例功能",
+      blog: "博客"
     },
     demos: {
       ai: {
@@ -1836,5 +1929,19 @@ export const zhCN: Locale = {
       imageOnly: "只允许上传图片文件",
       fileTooLarge: "文件大小必须小于 1MB"
     }
+  },
+  blog: {
+    metadata: {
+      title: "TinyShip - 博客",
+      description: "阅读 TinyShip 团队的最新文章和动态。",
+      keywords: "博客, 文章, 动态, TinyShip, SaaS"
+    },
+    title: "博客",
+    subtitle: "最新文章和动态",
+    readMore: "阅读更多",
+    publishedOn: "发布于",
+    by: "作者",
+    noPosts: "暂无文章，请稍后再来！",
+    backToBlog: "返回博客"
   }
 } as const; 

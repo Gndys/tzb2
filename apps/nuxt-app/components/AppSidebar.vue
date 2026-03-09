@@ -63,6 +63,15 @@
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            
+            <SidebarMenuItem>
+              <SidebarMenuButton as-child :is-active="isRouteActive('/admin/blog')">
+                <NuxtLink :to="localePath('/admin/blog')">
+                  <FileText />
+                  <span>{{ t('navigation.admin.blog') }}</span>
+                </NuxtLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -71,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { User, CreditCard, ShoppingCart, LayoutDashboard, Coins } from 'lucide-vue-next'
+import { User, CreditCard, ShoppingCart, LayoutDashboard, Coins, FileText } from 'lucide-vue-next'
 
 // Internationalization
 const { t } = useI18n()
