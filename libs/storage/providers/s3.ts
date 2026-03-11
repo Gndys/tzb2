@@ -58,7 +58,7 @@ export class S3Provider implements StorageProvider {
 
     this.bucket = s3Config.bucket;
     this.endpoint = s3Config.endpoint;
-    this.publicUrl = s3Config.publicUrl;
+    this.publicUrl = 'publicUrl' in s3Config ? (s3Config as S3ProviderConfig).publicUrl : undefined;
     this.defaultExpiration = s3Config.defaultExpiration || 3600; // 1 hour default
   }
 
