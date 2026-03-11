@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+
 import { notFound } from "next/navigation";
 import { db, blogPost, user } from "@libs/database";
 import { blogPostStatus } from "@libs/database/schema/blog-post";
@@ -92,14 +92,11 @@ export default async function BlogDetailPage({ params }: Props) {
             )}
           </div>
           {post.coverImage && (
-            <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-lg bg-muted">
-              <Image
+            <div className="mt-6 aspect-video w-full overflow-hidden rounded-lg bg-muted">
+              <img
                 src={post.coverImage}
                 alt={post.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 672px"
-                priority
+                className="h-full w-full object-cover"
               />
             </div>
           )}

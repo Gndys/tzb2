@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+
 import { db, blogPost, user } from "@libs/database";
 import { blogPostStatus } from "@libs/database/schema/blog-post";
 import { eq, desc, count } from "drizzle-orm";
@@ -86,13 +86,11 @@ export default async function BlogListPage({ params, searchParams }: Props) {
                     className="group rounded-xl border border-border bg-card p-0 overflow-hidden transition-all hover:shadow-lg hover:border-primary/20"
                   >
                     {post.coverImage ? (
-                      <div className="relative aspect-video w-full overflow-hidden bg-muted">
-                        <Image
+                      <div className="aspect-video w-full overflow-hidden bg-muted">
+                        <img
                           src={post.coverImage}
                           alt={post.title}
-                          fill
-                          className="object-cover transition-transform group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
                         />
                       </div>
                     ) : (

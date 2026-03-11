@@ -139,23 +139,32 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    // Generate signed URL for immediate access (1 hour expiration)
-    const signedUrlResult = await storage.generateSignedUrl({
-      key: uploadResult.key,
-      expiresIn: 3600,
-      operation: 'get',
-    });
+    // Use permanent public URL when available; otherwise fall back to signed URL
+    let url: string;
+    let expiresAt: Date | undefined;
+
+    if (uploadResult.url) {
+      url = uploadResult.url;
+    } else {
+      const signedUrlResult = await storage.generateSignedUrl({
+        key: uploadResult.key,
+        expiresIn: 3600,
+        operation: 'get',
+      });
+      url = signedUrlResult.url;
+      expiresAt = signedUrlResult.expiresAt;
+    }
 
     return {
       success: true,
       data: {
         key: uploadResult.key,
-        url: signedUrlResult.url,
+        url,
         size: uploadResult.size,
         contentType: fileData.type,
         originalName: fileData.filename,
         provider,
-        expiresAt: signedUrlResult.expiresAt,
+        ...(expiresAt && { expiresAt }),
       },
     };
   } catch (error: any) {

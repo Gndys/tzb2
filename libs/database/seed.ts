@@ -1,8 +1,9 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
+import * as crypto from "crypto";
 import { auth } from "@libs/auth";
 import { db } from "./client";
-import { user, account } from "./schema";
+import { user, account, blogPost } from "./schema";
 import { eq } from "drizzle-orm";
 
 // 加载环境变量
@@ -121,6 +122,56 @@ async function seedDatabase() {
       }
     }
     
+    // 创建博客文章
+    console.log("创建博客文章...");
+    try {
+      const adminUser = await db.select().from(user).where(eq(user.email, "admin@example.com")).limit(1);
+      if (adminUser.length > 0) {
+        const adminId = adminUser[0].id;
+        const existingPosts = await db.select({ id: blogPost.id }).from(blogPost).limit(1);
+
+        if (existingPosts.length > 0) {
+          console.log("✓ 博客文章已存在，跳过创建");
+        } else {
+          await db.insert(blogPost).values([
+            {
+              id: crypto.randomUUID(),
+              title: "Getting Started with TinyShip",
+              slug: "getting-started-with-tinyship",
+              content: "# Getting Started\n\nWelcome to **TinyShip**! This is a modern SaaS starter kit.\n\n## Features\n\n- Next.js & Nuxt.js support\n- Authentication\n- Payment integration\n\n```javascript\nconsole.log(\"Hello TinyShip!\");\n```\n\nEnjoy building your SaaS!",
+              coverImage: "https://static.vikingz.me/uploads/m7i5mVxdOw0oP8Y6iIPfpGgHJK5i1VVd/1773209769094-z7o70l.png",
+              excerpt: "Learn how to get started with TinyShip, the modern SaaS development platform.",
+              authorId: adminId,
+              status: "published",
+              publishedAt: new Date(),
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+            {
+              id: crypto.randomUUID(),
+              title: "Draft Post - Coming Soon",
+              slug: "draft-post-coming-soon",
+              content: "# Coming Soon\n\nThis post is still being written.",
+              excerpt: "This is a draft post that should not appear on the public blog.",
+              authorId: adminId,
+              status: "draft",
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+          ]);
+          console.log("✓ 已创建示例博客文章（1 篇已发布，1 篇草稿）");
+        }
+      } else {
+        console.log("⚠ 未找到管理员用户，跳过博客文章创建");
+      }
+    } catch (error: any) {
+      if (error.code === "23505") {
+        console.log("✓ 博客文章已存在，跳过创建");
+      } else {
+        console.error("❌ 创建博客文章失败:", error.message || error);
+      }
+    }
+
     console.log("\n✅ 数据填充完成!");
     console.log("测试账户信息:");
     console.log("管理员 - 邮箱: admin@example.com, 密码: admin123");

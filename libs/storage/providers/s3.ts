@@ -28,6 +28,8 @@ export interface S3ProviderConfig {
   endpoint?: string;
   defaultExpiration?: number;
   forcePathStyle?: boolean;
+  /** Public base URL for constructing permanent URLs (e.g. https://cdn.example.com) */
+  publicUrl?: string;
 }
 
 /**
@@ -38,6 +40,7 @@ export class S3Provider implements StorageProvider {
   private bucket: string;
   private defaultExpiration: number;
   private endpoint?: string;
+  private publicUrl?: string;
 
   constructor(providerConfig?: S3ProviderConfig) {
     // Use provided config or fall back to default S3 config
@@ -55,6 +58,7 @@ export class S3Provider implements StorageProvider {
 
     this.bucket = s3Config.bucket;
     this.endpoint = s3Config.endpoint;
+    this.publicUrl = s3Config.publicUrl;
     this.defaultExpiration = s3Config.defaultExpiration || 3600; // 1 hour default
   }
 
@@ -80,9 +84,12 @@ export class S3Provider implements StorageProvider {
       // Upload file to S3
       const result = await this.client.send(command);
 
-      // Construct URL based on endpoint or standard S3 URL
+      // Prefer public URL (permanent, no signature) over internal endpoint URL
       let url: string | undefined;
-      if (this.endpoint) {
+      if (this.publicUrl) {
+        const base = this.publicUrl.replace(/\/+$/, '');
+        url = `${base}/${key}`;
+      } else if (this.endpoint) {
         url = `${this.endpoint}/${this.bucket}/${key}`;
       }
 
@@ -247,7 +254,7 @@ export class S3Provider implements StorageProvider {
  */
 export function createR2Provider(): S3Provider {
   const r2Config = config.storage.r2;
-  
+
   return new S3Provider({
     region: 'auto', // R2 uses 'auto' region
     accessKeyId: r2Config.accessKeyId,
@@ -256,6 +263,7 @@ export function createR2Provider(): S3Provider {
     endpoint: `https://${r2Config.accountId}.r2.cloudflarestorage.com`,
     defaultExpiration: r2Config.defaultExpiration || 3600,
     forcePathStyle: true, // R2 requires path-style access
+    publicUrl: r2Config.publicUrl || undefined,
   });
 }
 

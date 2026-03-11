@@ -6,6 +6,9 @@
 @import './themes/ocean-breeze.css';
 @import './themes/perplexity.css';
 
+/* Typography / Prose overrides for @tailwindcss/typography */
+@import './prose.css';
+
 /* Utility Classes */
 .bg-gradient-chart-warm {
   background: var(--gradient-chart-warm);
