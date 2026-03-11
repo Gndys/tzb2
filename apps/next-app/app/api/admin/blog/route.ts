@@ -79,7 +79,6 @@ export async function GET(request: NextRequest) {
         id: blogPost.id,
         title: blogPost.title,
         slug: blogPost.slug,
-        content: blogPost.content,
         excerpt: blogPost.excerpt,
         coverImage: blogPost.coverImage,
         authorId: blogPost.authorId,
