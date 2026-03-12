@@ -83,6 +83,10 @@ export const storageConfig = {
     get bucket() {
       return getEnv('R2_BUCKET') || 'tinyship';
     },
+    /** Public custom domain for the R2 bucket (e.g. https://cdn.example.com) */
+    get publicUrl() {
+      return getEnv('R2_PUBLIC_URL') || '';
+    },
     defaultExpiration: 3600, // 1 hour in seconds
   },
 

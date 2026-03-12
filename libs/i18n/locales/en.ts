@@ -44,7 +44,8 @@ export const en: Locale = {
       subscriptions: "Subscriptions",
       orders: "Orders",
       credits: "Credits",
-      application: "Application"
+      application: "Application",
+      blog: "Blog"
     }
   },
   actions: {
@@ -66,7 +67,10 @@ export const en: Locale = {
     resendVerificationEmail: "Resend Verification Email",
     upload: "Upload",
     previous: "Previous",
-    next: "Next"
+    next: "Next",
+    createPost: "New Post",
+    deletePost: "Delete Post",
+    backToBlog: "Back to Blog"
   },
   email: {
     verification: {
@@ -593,6 +597,75 @@ export const en: Locale = {
         failed: "Failed",
         refunded: "Refunded",
         canceled: "Canceled"
+      }
+    },
+    blog: {
+      title: "Blog Management",
+      subtitle: "Create and manage blog posts",
+      createPost: "Create Post",
+      editPost: "Edit Post",
+      actions: {
+        newPost: "New Post"
+      },
+      messages: {
+        fetchError: "Failed to load blog posts. Please try again.",
+        createSuccess: "Post created successfully",
+        updateSuccess: "Post updated successfully",
+        deleteSuccess: "Post deleted successfully",
+        deleteError: "Failed to delete post",
+        operationFailed: "Operation failed",
+        uploadSuccess: "Upload successful",
+        uploadError: "Upload failed"
+      },
+      table: {
+        noResults: "No posts found.",
+        search: {
+          searchPlaceholder: "Search by title...",
+          filterByStatus: "Filter by status",
+          allStatus: "All Status",
+          draft: "Draft",
+          published: "Published"
+        },
+        columns: {
+          title: "Title",
+          status: "Status",
+          author: "Author",
+          publishedAt: "Published At",
+          createdAt: "Created At",
+          actions: "Actions"
+        },
+        actions: {
+          edit: "Edit",
+          delete: "Delete"
+        },
+        sort: {
+          ascending: "Sort ascending",
+          descending: "Sort descending",
+          none: "Remove sorting"
+        }
+      },
+      form: {
+        title: "Post Information",
+        description: "Enter post details below",
+        labels: {
+          title: "Title",
+          slug: "Slug",
+          excerpt: "Excerpt",
+          coverImage: "Cover Image",
+          status: "Status",
+          content: "Content"
+        },
+        placeholders: {
+          title: "Enter post title",
+          slug: "URL-friendly slug (auto-generated from title)",
+          excerpt: "Brief summary of the post",
+          coverImage: "Drag and drop or click to upload (max 2MB)",
+          content: "Write your content in Markdown..."
+        }
+      },
+      deleteDialog: {
+        title: "Delete Post",
+        description: "Are you absolutely sure? This action cannot be undone. This will permanently delete the post."
       }
     },
     credits: {
@@ -1702,7 +1775,26 @@ export const en: Locale = {
       deleteAccount: {
         confirmRequired: "You must confirm account deletion"
       }
-    }
+    },
+    blog: {
+      title: {
+        required: "Title is required",
+        maxLength: "Title must be less than {max} characters",
+      },
+      slug: {
+        maxLength: "Slug must be less than {max} characters",
+        invalid: "Slug can only contain lowercase letters, numbers, and hyphens",
+      },
+      excerpt: {
+        maxLength: "Excerpt must be less than {max} characters",
+      },
+      coverImage: {
+        invalidUrl: "Please enter a valid URL for the cover image",
+      },
+      status: {
+        invalid: "Status must be either draft or published",
+      },
+    },
   },
   countries: {
     china: "China",
@@ -1727,7 +1819,8 @@ export const en: Locale = {
       pricing: "Pricing",
       upload: "Upload",
       demos: "Demos",
-      demosDescription: "Explore example features"
+      demosDescription: "Explore example features",
+      blog: "Blog"
     },
     demos: {
       ai: {
@@ -1828,5 +1921,19 @@ export const en: Locale = {
       imageOnly: "Only image files are allowed",
       fileTooLarge: "File size must be less than 1MB"
     }
+  },
+  blog: {
+    metadata: {
+      title: "TinyShip - Blog",
+      description: "Read the latest articles and updates from the TinyShip team.",
+      keywords: "blog, articles, updates, TinyShip, SaaS"
+    },
+    title: "Blog",
+    subtitle: "Latest articles and updates",
+    readMore: "Read More",
+    publishedOn: "Published on",
+    by: "by",
+    noPosts: "No posts yet. Check back soon!",
+    backToBlog: "Back to Blog"
   }
 } as const; 

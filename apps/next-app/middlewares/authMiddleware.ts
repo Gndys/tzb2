@@ -141,6 +141,12 @@ const protectedRoutes: ProtectedRouteConfig[] = [
     requiredPermission: { action: Action.MANAGE, subject: Subject.ALL }
   },
   {
+    pattern: new RegExp('^/api/admin/blog(\\/.*)?$'),
+    type: 'api',
+    requiresAuth: true,
+    requiredPermission: { action: Action.MANAGE, subject: Subject.ALL }
+  },
+  {
     pattern: new RegExp('^/api/premium(\\/.*)?$'), 
     type: 'api',
     requiresAuth: true,
