@@ -11,85 +11,6 @@
 
         <!-- Desktop navigation -->
         <nav class="hidden md:flex md:items-center md:space-x-8">
-          <!-- Demos Dropdown -->
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <button class="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                {{ t('header.navigation.demos') }}
-                <ChevronDown class="h-4 w-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" class="w-96 p-4">
-              <div class="space-y-1">
-                <DropdownMenuItem as-child class="p-0">
-                  <NuxtLink :to="localePath('/ai')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
-                      <Bot class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-semibold text-sm">{{ t('header.demos.ai.title') }}</span>
-                      <span class="text-sm text-muted-foreground leading-snug mt-0.5">
-                        {{ t('header.demos.ai.description') }}
-                      </span>
-                    </div>
-                  </NuxtLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem as-child class="p-0">
-                  <NuxtLink :to="localePath('/image-generate')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
-                      <ImageIcon class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-semibold text-sm">{{ t('header.demos.aiImage.title') }}</span>
-                      <span class="text-sm text-muted-foreground leading-snug mt-0.5">
-                        {{ t('header.demos.aiImage.description') }}
-                      </span>
-                    </div>
-                  </NuxtLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem as-child class="p-0">
-                  <NuxtLink :to="localePath('/video-generate')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
-                      <VideoIcon class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-semibold text-sm">{{ t('header.demos.aiVideo.title') }}</span>
-                      <span class="text-sm text-muted-foreground leading-snug mt-0.5">
-                        {{ t('header.demos.aiVideo.description') }}
-                      </span>
-                    </div>
-                  </NuxtLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem as-child class="p-0">
-                  <NuxtLink :to="localePath('/premium-features')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
-                      <Crown class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-semibold text-sm">{{ t('header.demos.premium.title') }}</span>
-                      <span class="text-sm text-muted-foreground leading-snug mt-0.5">
-                        {{ t('header.demos.premium.description') }}
-                      </span>
-                    </div>
-                  </NuxtLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem as-child class="p-0">
-                  <NuxtLink :to="localePath('/upload')" class="group flex items-start gap-4 rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-muted/50 group-hover:bg-primary-foreground">
-                      <Upload class="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-semibold text-sm">{{ t('header.demos.upload.title') }}</span>
-                      <span class="text-sm text-muted-foreground leading-snug mt-0.5">
-                        {{ t('header.demos.upload.description') }}
-                      </span>
-                    </div>
-                  </NuxtLink>
-                </DropdownMenuItem>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
           <NuxtLink 
             :to="localePath('/blog')" 
             class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -237,70 +158,6 @@
     <!-- Mobile menu -->
     <div v-if="isMenuOpen" class="md:hidden bg-background border-t border-border">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-        <!-- Demos Section -->
-        <div class="px-3 py-2">
-          <p class="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-            {{ t('header.navigation.demos') }}
-          </p>
-          <div class="space-y-1">
-            <NuxtLink 
-              :to="localePath('/ai')" 
-              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-              @click="isMenuOpen = false"
-            >
-              <Bot class="h-5 w-5 text-muted-foreground" />
-              <div>
-                <span class="block">{{ t('header.demos.ai.title') }}</span>
-                <span class="block text-xs text-muted-foreground">{{ t('header.demos.ai.description') }}</span>
-              </div>
-            </NuxtLink>
-            <NuxtLink 
-              :to="localePath('/image-generate')" 
-              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-              @click="isMenuOpen = false"
-            >
-              <ImageIcon class="h-5 w-5 text-muted-foreground" />
-              <div>
-                <span class="block">{{ t('header.demos.aiImage.title') }}</span>
-                <span class="block text-xs text-muted-foreground">{{ t('header.demos.aiImage.description') }}</span>
-              </div>
-            </NuxtLink>
-            <NuxtLink 
-              :to="localePath('/video-generate')" 
-              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-              @click="isMenuOpen = false"
-            >
-              <VideoIcon class="h-5 w-5 text-muted-foreground" />
-              <div>
-                <span class="block">{{ t('header.demos.aiVideo.title') }}</span>
-                <span class="block text-xs text-muted-foreground">{{ t('header.demos.aiVideo.description') }}</span>
-              </div>
-            </NuxtLink>
-            <NuxtLink 
-              :to="localePath('/premium-features')" 
-              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-              @click="isMenuOpen = false"
-            >
-              <Crown class="h-5 w-5 text-muted-foreground" />
-              <div>
-                <span class="block">{{ t('header.demos.premium.title') }}</span>
-                <span class="block text-xs text-muted-foreground">{{ t('header.demos.premium.description') }}</span>
-              </div>
-            </NuxtLink>
-            <NuxtLink 
-              :to="localePath('/upload')" 
-              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-foreground hover:bg-muted"
-              @click="isMenuOpen = false"
-            >
-              <Upload class="h-5 w-5 text-muted-foreground" />
-              <div>
-                <span class="block">{{ t('header.demos.upload.title') }}</span>
-                <span class="block text-xs text-muted-foreground">{{ t('header.demos.upload.description') }}</span>
-              </div>
-            </NuxtLink>
-          </div>
-        </div>
-        <div class="border-t border-border my-2" />
         <NuxtLink 
           :to="localePath('/blog')" 
           class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-foreground hover:bg-muted"
@@ -412,7 +269,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Check, ChevronDown, Bot, Crown, Upload, ImageIcon, VideoIcon } from 'lucide-vue-next'
+import { Check } from 'lucide-vue-next'
 // Reactive state
 const isMenuOpen = ref(false)
 

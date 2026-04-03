@@ -9,8 +9,8 @@ import { auth } from '@libs/auth';
 import { creditService, TransactionTypeCode } from '@libs/credits';
 import { config } from '@config';
 
-// Allow longer timeout for video generation (10 minutes)
-export const maxDuration = 600;
+// Vercel Hobby serverless functions support up to 300 seconds.
+export const maxDuration = 300;
 
 export async function POST(req: Request) {
   try {
