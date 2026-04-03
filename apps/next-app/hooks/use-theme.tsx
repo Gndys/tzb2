@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { config } from '@config'
+import { CLIENT_THEME_CONFIG } from '@/lib/client-config'
 import { 
   type Theme, 
   type ColorScheme, 
@@ -26,8 +26,8 @@ type ThemeProviderState = {
 }
 
 const initialState: ThemeProviderState = {
-  theme: config.app.theme.defaultTheme,
-  colorScheme: config.app.theme.defaultColorScheme,
+  theme: CLIENT_THEME_CONFIG.defaultTheme,
+  colorScheme: CLIENT_THEME_CONFIG.defaultColorScheme,
   setTheme: () => null,
   setColorScheme: () => null,
 }
@@ -36,9 +36,9 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({
   children,
-  defaultTheme = config.app.theme.defaultTheme,
-  defaultColorScheme = config.app.theme.defaultColorScheme,
-  storageKey = config.app.theme.storageKey,
+  defaultTheme = CLIENT_THEME_CONFIG.defaultTheme,
+  defaultColorScheme = CLIENT_THEME_CONFIG.defaultColorScheme,
+  storageKey = CLIENT_THEME_CONFIG.storageKey,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme)

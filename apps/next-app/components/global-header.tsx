@@ -17,7 +17,6 @@ import { Logo } from "./ui/logo";
 import { authClientReact } from "@libs/auth/authClient";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { config } from "@config";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +30,7 @@ import { Check, Globe } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { type SupportedLocale, locales } from "@libs/i18n";
 import { useTranslation } from "@/hooks/use-translation";
+import { CLIENT_I18N_CONFIG } from "@/lib/client-config";
 import { ThemeToggle, ColorSchemeToggle } from "@/components/theme-toggle";
 
 interface HeaderProps {
@@ -62,7 +62,7 @@ export default function Header({ className }: HeaderProps) {
     const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '') || '/';
     
     // Store the preference first
-    document.cookie = `${config.app.i18n.cookieKey}=${locale}; path=/; max-age=31536000`;
+    document.cookie = `${CLIENT_I18N_CONFIG.cookieKey}=${locale}; path=/; max-age=31536000`;
     
     // Navigate to the new locale path using window.location to ensure full page reload
     // This prevents theme state issues during navigation
