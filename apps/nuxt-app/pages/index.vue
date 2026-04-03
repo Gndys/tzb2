@@ -1,663 +1,232 @@
 <template>
-  <div>
-    <!-- SEO Head -->
-    <Head>
-      <title>{{ t('home.metadata.title') }}</title>
-      <meta name="description" :content="t('home.metadata.description')" />
-      <meta name="keywords" :content="t('home.metadata.keywords')" />
-    </Head>    
-    <div class="flex flex-col min-h-screen bg-background">
-      <!-- Hero Section -->
-      <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background decorations -->
-        <div class="absolute inset-0 bg-gradient-to-br from-background via-background to-muted">
-          <div class="absolute top-20 left-10 w-72 h-72 bg-chart-1 rounded-full filter blur-3xl opacity-15 dark:opacity-30 animate-blob"></div>
-          <div class="absolute top-40 right-10 w-72 h-72 bg-chart-2 rounded-full filter blur-3xl opacity-15 dark:opacity-30 animate-blob animation-delay-2000"></div>
-          <div class="absolute -bottom-8 left-20 w-72 h-72 bg-chart-4 rounded-full filter blur-3xl opacity-15 dark:opacity-30 animate-blob animation-delay-4000"></div>
-        </div>
-        
-        <div class="container px-4 md:px-6 relative z-10">
-          <motion.div 
-            class="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto"
-            :initial="{ opacity: 0, scale: 0.9 }"
-            :animate="{ opacity: 1, scale: 1 }"
-            :transition="{ duration: 0.8, ease: 'easeOut' }"
-          >
-            <motion.h1 
-              class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
-              :initial="{ opacity: 0, y: 20 }"
-              :animate="{ opacity: 1, y: 0 }"
-              :transition="{ duration: 0.8, delay: 0.2 }"
-            >
-              {{ t('home.hero.titlePrefix') }}
-              <span class="text-gradient-chart-warm">
-                {{ t('home.hero.titleHighlight') }}
+  <div class="bg-background text-foreground">
+    <section class="relative overflow-hidden border-b border-border">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(34,197,94,0.15),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(56,189,248,0.18),_transparent_34%),linear-gradient(180deg,_rgba(15,23,42,0.04),_transparent_55%)]" />
+      <div class="container relative px-4 py-20 md:px-6 md:py-28">
+        <div class="grid gap-14 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div class="space-y-8">
+            <div class="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1 text-sm font-medium text-emerald-700 dark:text-emerald-300">
+              {{ t('home.hero.eyebrow') }}
+            </div>
+            <div class="space-y-5">
+              <h1 class="max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
+                {{ t('home.hero.titlePrefix') }}
+                <span class="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-transparent">
+                  {{ t('home.hero.titleHighlight') }}
+                </span>
+                {{ t('home.hero.titleSuffix') }}
+              </h1>
+              <p class="max-w-2xl text-lg leading-8 text-muted-foreground md:text-xl">
+                {{ t('home.hero.subtitle') }}
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-4 sm:flex-row">
+              <Button as-child size="lg" class="rounded-full px-8">
+                <NuxtLink :to="`${localePath('/')}#services`">
+                  {{ t('home.hero.buttons.primary') }}
+                  <ArrowRight class="h-4 w-4" />
+                </NuxtLink>
+              </Button>
+              <Button as-child size="lg" variant="outline" class="rounded-full px-8">
+                <NuxtLink :to="localePath(`/services/${serviceCatalog[3].slug}`)">
+                  {{ t('home.hero.buttons.secondary') }}
+                </NuxtLink>
+              </Button>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+              <span
+                v-for="tag in heroTags"
+                :key="tag"
+                class="rounded-full border border-border bg-background/80 px-4 py-2 text-sm text-muted-foreground shadow-sm backdrop-blur"
+              >
+                {{ tag }}
               </span>
-              {{ t('home.hero.titleSuffix') }}
-            </motion.h1>
-            
-            <motion.p 
-              class="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed"
-              :initial="{ opacity: 0, y: 20 }"
-              :animate="{ opacity: 1, y: 0 }"
-              :transition="{ duration: 0.8, delay: 0.4 }"
-            >
-              {{ t('home.hero.subtitle') }}
-            </motion.p>
+            </div>
+          </div>
 
-            <motion.div 
-              class="flex flex-col sm:flex-row gap-4 pt-4"
-              :initial="{ opacity: 0, y: 20 }"
-              :animate="{ opacity: 1, y: 0 }"
-              :transition="{ duration: 0.8, delay: 0.6 }"
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div
+              v-for="item in overviewItems"
+              :key="item.title"
+              class="rounded-3xl border border-border bg-card/90 p-6 shadow-sm backdrop-blur"
             >
-              <Button 
-                size="lg" 
-                class="px-8 py-4 text-lg rounded-full transition-all duration-300 hover:scale-105"
-                @click="navigateTo(localePath('/pricing'))"
-              >
-                {{ t('home.hero.buttons.purchase') }}
+              <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500/20 to-emerald-500/20 text-sky-700 dark:text-sky-300">
+                <CalendarRange class="h-5 w-5" />
+              </div>
+              <h2 class="text-xl font-semibold">{{ item.title }}</h2>
+              <p class="mt-3 text-sm leading-7 text-muted-foreground">
+                {{ item.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="py-20 md:py-24">
+      <div class="container px-4 md:px-6">
+        <div class="mx-auto mb-12 max-w-3xl text-center">
+          <p class="text-sm font-medium uppercase tracking-[0.25em] text-sky-600 dark:text-sky-300">
+            {{ t('home.servicesSection.eyebrow') }}
+          </p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+            {{ t('home.servicesSection.title') }}
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-muted-foreground">
+            {{ t('home.servicesSection.subtitle') }}
+          </p>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+          <NuxtLink
+            v-for="service in serviceCards"
+            :key="service.slug"
+            :to="localePath(`/services/${service.slug}`)"
+            :data-testid="`service-card-${service.slug}`"
+            class="group relative overflow-hidden rounded-[28px] border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <div :class="`absolute inset-0 bg-gradient-to-br ${service.accentClassName} opacity-80`" />
+            <div class="relative space-y-5">
+              <div class="flex items-start justify-between gap-4">
+                <div :class="`inline-flex h-12 w-12 items-center justify-center rounded-2xl border ${service.badgeClassName}`">
+                  <component :is="iconMap[service.icon]" class="h-5 w-5" />
+                </div>
+                <span :class="`rounded-full border px-3 py-1 text-xs font-medium ${service.badgeClassName}`">
+                  {{ service.content.tagline }}
+                </span>
+              </div>
+
+              <div>
+                <h3 class="text-2xl font-semibold">{{ service.content.name }}</h3>
+                <p class="mt-3 line-clamp-3 text-sm leading-7 text-muted-foreground">
+                  {{ service.content.cardDescription }}
+                </p>
+              </div>
+
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="audience in service.content.audiences.slice(0, 3)"
+                  :key="audience"
+                  class="rounded-full border border-border bg-background/80 px-3 py-1 text-xs text-muted-foreground"
+                >
+                  {{ audience }}
+                </span>
+              </div>
+
+              <div class="space-y-2">
+                <div
+                  v-for="highlight in service.content.highlights.slice(0, 3)"
+                  :key="highlight"
+                  class="flex items-center gap-2 text-sm text-foreground"
+                >
+                  <span class="h-2 w-2 rounded-full bg-sky-500" />
+                  <span>{{ highlight }}</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between border-t border-border/70 pt-4 text-sm font-medium">
+                <span>{{ t('home.common.viewDetails') }}</span>
+                <ArrowRight class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </div>
+            </div>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-border bg-muted/30 py-20 md:py-24">
+      <div class="container px-4 md:px-6">
+        <div class="grid gap-8 lg:grid-cols-3">
+          <div
+            v-for="(item, index) in bookingItems"
+            :key="item.title"
+            class="rounded-3xl border border-border bg-background p-6 shadow-sm"
+          >
+            <div class="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white dark:bg-slate-100 dark:text-slate-900">
+              {{ index + 1 }}
+            </div>
+            <h3 class="text-2xl font-semibold">{{ item.title }}</h3>
+            <p class="mt-3 text-sm leading-7 text-muted-foreground">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 md:py-24">
+      <div class="container px-4 md:px-6">
+        <div class="rounded-[32px] border border-border bg-gradient-to-br from-slate-950 to-slate-800 px-6 py-10 text-slate-50 shadow-xl md:px-10 md:py-14">
+          <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div class="max-w-2xl space-y-4">
+              <p class="text-sm font-medium uppercase tracking-[0.25em] text-sky-200">
+                {{ t('home.finalCta.eyebrow') }}
+              </p>
+              <h2 class="text-3xl font-semibold tracking-tight md:text-5xl">
+                {{ t('home.finalCta.title') }}
+              </h2>
+              <p class="text-base leading-8 text-slate-300 md:text-lg">
+                {{ t('home.finalCta.subtitle') }}
+              </p>
+            </div>
+            <div class="flex flex-col gap-4 sm:flex-row">
+              <Button as-child size="lg" class="rounded-full bg-sky-500 px-8 text-white hover:bg-sky-400">
+                <NuxtLink :to="localePath(`/services/${serviceCatalog[0].slug}`)">
+                  {{ t('home.finalCta.buttons.primary') }}
+                </NuxtLink>
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                class="px-8 py-4 text-lg rounded-full transition-all duration-300 hover:scale-105"
-              >
-                {{ t('home.hero.buttons.demo') }}
-              </Button>
-            </motion.div>
-
-            <motion.div 
-              class="flex items-center gap-6 text-sm text-muted-foreground pt-4"
-              :initial="{ opacity: 0 }"
-              :animate="{ opacity: 1 }"
-              :transition="{ duration: 0.8, delay: 0.8 }"
-            >
-              <div class="flex items-center gap-2">
-                <Check class="h-4 w-4 text-primary" />
-                <span>{{ t('home.hero.features.lifetime') }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <Check class="h-4 w-4 text-primary" />
-                <span>{{ t('home.hero.features.earlyBird') }}</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      <!-- Features Section -->
-      <section class="py-24 bg-muted/50">
-        <div class="container px-4 md:px-6">
-          <motion.div 
-            class="text-center mb-16"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6 }"
-            :viewport="{ once: true }"
-          >
-            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {{ t('home.features.title') }}
-            </h2>
-            <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {{ t('home.features.subtitle') }}
-            </p>
-          </motion.div>
-
-          <BentoGrid class="max-w-7xl mx-auto auto-rows-[14rem] grid-cols-4 gap-4">
-            <template v-for="(feature, index) in tm('home.features.items') as any" :key="index">
-              <motion.div
-                :initial="{ opacity: 0, y: 20 }"
-                :whileInView="{ opacity: 1, y: 0 }"
-                :transition="{ duration: 0.6, delay: index * 0.1 }"
-                :viewport="{ once: true }"
-              >
-                <BentoCard
-                  :name="rt(feature.title)"
-                  :description="rt(feature.description)"
-                  :icon="iconMap[index]"
-                  :className="`${rt(feature.className)} group hover:scale-[1.02] transition-all duration-300 hover:shadow-xl bg-card border border-border hover:border-border/80 h-full`"
-                  href="#"
-                  :cta="t('home.common.learnMore')"
-                >
-                  <template #background>
-                    <div 
-                      class="absolute inset-0 opacity-5 dark:opacity-15 group-hover:opacity-10 dark:group-hover:opacity-25 transition-opacity duration-300 rounded-xl bg-gradient-chart-warm"
-                    />
-                  </template>
-                </BentoCard>
-              </motion.div>
-            </template>
-          </BentoGrid>
-
-          <!-- Tech Stack Display -->
-          <motion.div 
-            class="mt-20 text-center"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6, delay: 0.3 }"
-            :viewport="{ once: true }"
-          >
-            <h3 class="text-xl font-semibold text-foreground mb-8">{{ t('home.features.techStack.title') }}</h3>
-            <div class="flex flex-wrap justify-center items-center gap-8 max-w-4xl mx-auto">
-              <div 
-                v-for="(tech, index) in tm('home.features.techStack.items') as any"
-                :key="index"
-                class="flex items-center space-x-2 px-4 py-2 bg-card rounded-full border border-border shadow-sm"
-              >
-                <div :class="`w-2 h-2 bg-chart-${(index % 5) + 1} rounded-full`"></div>
-                <span class="text-card-foreground font-medium">{{ tech }}</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <!-- Application Features Details -->
-      <section class="py-24 bg-background">
-        <div class="container px-4 md:px-6">
-          <motion.div 
-            class="text-center mb-16"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6 }"
-            :viewport="{ once: true }"
-          >
-            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {{ t('home.applicationFeatures.title') }}
-            </h2>
-            <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {{ t('home.applicationFeatures.subtitle') }}
-            </p>
-          </motion.div>
-
-          <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-              <!-- Left: Feature List -->
-              <div class="lg:col-span-2 space-y-4">
-                <motion.div
-                  v-for="(feature, index) in tm('home.applicationFeatures.items') as any"
-                  :key="index"
-                  :class="[
-                    'p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300',
-                    activeFeature === index
-                      ? 'border-primary bg-primary/5 shadow-lg'
-                      : 'border-border bg-card hover:border-border/80 hover:shadow-md'
-                  ]"
-                  @click="activeFeature = index"
-                  :initial="{ opacity: 0, x: -20 }"
-                  :whileInView="{ opacity: 1, x: 0 }"
-                  :transition="{ duration: 0.6, delay: index * 0.1 }"
-                  :viewport="{ once: true }"
-                >
-                  <div class="space-y-3">
-                    <div class="flex items-center space-x-3">
-                      <div :class="[
-                        'w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg',
-                        activeFeature === index ? 'bg-chart-1' : 'bg-muted-foreground'
-                      ]">
-                        {{ index + 1 }}
-                      </div>
-                      <h3 :class="[
-                        'text-lg font-bold',
-                        activeFeature === index ? 'text-primary' : 'text-foreground'
-                      ]">
-                        {{ feature.title }}
-                      </h3>
-                    </div>
-                    <p :class="[
-                      'text-sm leading-relaxed pl-13',
-                      activeFeature === index ? 'text-primary/80' : 'text-muted-foreground'
-                    ]">
-                      {{ feature.subtitle }}
-                    </p>
-                    <!-- Show highlights for active item -->
-                    <motion.div 
-                      v-if="activeFeature === index"
-                      class="pl-13 space-y-2"
-                      :initial="{ opacity: 0, height: 0 }"
-                      :animate="{ opacity: 1, height: 'auto' }"
-                      :transition="{ duration: 0.3 }"
-                    >
-                      <div 
-                        v-for="(highlight, idx) in feature.highlights"
-                        :key="idx"
-                        class="flex items-center space-x-2"
-                      >
-                        <div class="w-1.5 h-1.5 rounded-full bg-chart-1"></div>
-                        <span class="text-primary/80 text-xs font-medium">{{ highlight }}</span>
-                      </div>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </div>
-
-              <!-- Right: Image and Description -->
-              <div class="lg:col-span-3">
-                <motion.div
-                  :key="activeFeature"
-                  :initial="{ opacity: 0, y: 20 }"
-                  :animate="{ opacity: 1, y: 0 }"
-                  :transition="{ duration: 0.5 }"
-                  class="space-y-6"
-                >
-                  <!-- Image placeholder -->
-                  <div class="aspect-[16/10] bg-gradient-to-br from-primary/5 to-muted rounded-2xl border border-border flex items-center justify-center overflow-hidden">
-                    <div class="w-full h-full bg-gradient-to-br from-primary/10 to-muted/50 flex items-center justify-center">
-                      <div class="text-center space-y-4">
-                        <component 
-                          :is="appIconMap[activeFeature]"
-                          class="h-20 w-20 text-primary mx-auto"
-                        />
-                        <div class="text-muted-foreground font-medium text-lg">{{ (tm('home.applicationFeatures.items') as any)[activeFeature].imageTitle }}</div>
-                        <div class="text-sm text-muted-foreground/80">{{ t('home.common.demoInterface') }}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Description -->
-                  <div class="p-6 bg-muted/50 rounded-2xl">
-                    <p class="text-muted-foreground leading-relaxed">
-                      {{ (tm('home.applicationFeatures.items') as any)[activeFeature].description }}
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Technical advantage tip -->
-          <motion.div 
-            class="mt-20 text-center"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6, delay: 0.3 }"
-            :viewport="{ once: true }"
-          >
-            <div class="inline-flex items-center space-x-2 px-6 py-3 bg-muted/50 rounded-full border border-border">
-              <div class="flex space-x-1">
-                <div class="w-2 h-2 bg-chart-1 rounded-full animate-pulse"></div>
-                <div class="w-2 h-2 bg-chart-2 rounded-full animate-pulse animation-delay-2000"></div>
-                <div class="w-2 h-2 bg-chart-3 rounded-full animate-pulse animation-delay-4000"></div>
-              </div>
-              <span class="text-muted-foreground font-medium">{{ t('home.common.techArchitecture') }}</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <!-- Roadmap Section -->
-      <section class="py-24 bg-background">
-        <div class="container px-4 md:px-6">
-          <motion.div 
-            class="text-center mb-16"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6 }"
-            :viewport="{ once: true }"
-          >
-            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {{ t('home.roadmap.title') }}
-            </h2>
-            <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {{ t('home.roadmap.subtitle') }}
-            </p>
-          </motion.div>
-
-          <!-- Horizontal scroll container -->
-          <div class="relative">
-            <div class="flex overflow-x-auto pb-6 gap-6 snap-x snap-mandatory scrollbar-hide">
-              <motion.div
-                v-for="(item, index) in tm('home.roadmap.items') as any"
-                :key="index"
-                class="flex-shrink-0 w-80 snap-start"
-                :initial="{ opacity: 0, x: 50 }"
-                :whileInView="{ opacity: 1, x: 0 }"
-                :transition="{ duration: 0.6, delay: index * 0.1 }"
-                :viewport="{ once: true }"
-              >
-                <!-- Timeline node -->
-                <div class="flex items-center mb-4">
-                  <div :class="[
-                    'w-4 h-4 rounded-full border-4 shadow-lg mr-3',
-                    item.status === 'completed' 
-                      ? 'bg-chart-1 border-chart-1/30' 
-                      : item.status === 'in-progress'
-                      ? 'bg-chart-2 border-chart-2/30'
-                      : 'bg-muted-foreground border-muted'
-                  ]">
-                    <Check v-if="item.status === 'completed'" class="w-2 h-2 text-white absolute -top-1 -left-1" />
-                  </div>
-                  <div class="flex-1 h-0.5 bg-chart-1/20"></div>
-                </div>
-
-                <!-- Content card -->
-                <div :class="[
-                  'p-6 rounded-2xl border-2 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] h-80',
-                  item.status === 'completed' 
-                    ? 'border-chart-1 bg-chart-1/5' 
-                    : item.status === 'in-progress'
-                    ? 'border-chart-2 bg-chart-2/5'
-                    : 'border-border bg-card hover:border-border/80'
-                ]">
-                  <div class="flex items-center space-x-3 mb-4">
-                    <div :class="[
-                      'w-12 h-12 rounded-xl flex items-center justify-center font-bold',
-                      item.status === 'completed' 
-                        ? 'bg-chart-1 text-white' 
-                        : item.status === 'in-progress'
-                        ? 'bg-chart-2 text-white'
-                        : 'bg-muted text-muted-foreground'
-                    ]">
-                      <component :is="roadmapIconMap[index]" class="h-6 w-6" />
-                    </div>
-                    <div class="flex-1">
-                      <h3 class="text-lg font-bold text-foreground line-clamp-2">{{ item.title }}</h3>
-                      <div class="flex items-center space-x-2 mt-1">
-                        <span :class="[
-                          'px-2 py-1 rounded-full text-xs font-medium',
-                          item.status === 'completed' 
-                            ? 'bg-chart-1/20 text-chart-1' 
-                            : item.status === 'in-progress'
-                            ? 'bg-chart-2/20 text-chart-2'
-                            : 'bg-muted text-muted-foreground'
-                        ]">
-                          {{ item.statusText }}
-                        </span>
-                        <span class="text-sm text-muted-foreground font-medium">{{ item.timeline }}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <p class="text-muted-foreground leading-relaxed mb-4 text-sm line-clamp-3">{{ item.description }}</p>
-                  
-                  <div class="flex flex-wrap gap-2">
-                    <span 
-                      v-for="(feature, idx) in item.features"
-                      :key="idx" 
-                      :class="[
-                        'px-2 py-1 rounded-full text-xs font-medium',
-                        item.status === 'completed' 
-                          ? 'bg-chart-1/10 text-chart-1' 
-                          : item.status === 'in-progress'
-                          ? 'bg-chart-2/10 text-chart-2'
-                          : 'bg-muted text-muted-foreground'
-                      ]"
-                    >
-                      {{ feature }}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
-          <!-- Bottom tip -->
-          <motion.div 
-            class="mt-12 text-center"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6, delay: 0.5 }"
-            :viewport="{ once: true }"
-          >
-            <div class="inline-flex items-center space-x-2 px-6 py-3 bg-chart-1/5 rounded-full border border-chart-1/20">
-              <div class="flex space-x-1">
-                <div class="w-2 h-2 bg-chart-1 rounded-full animate-pulse"></div>
-                <div class="w-2 h-2 bg-chart-1/80 rounded-full animate-pulse animation-delay-2000"></div>
-                <div class="w-2 h-2 bg-chart-1/60 rounded-full animate-pulse animation-delay-4000"></div>
-              </div>
-              <span class="text-chart-1 font-medium">{{ t('home.roadmap.footer') }}</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <!-- Stats Section -->
-      <section class="py-24 bg-background" ref="statsRef">
-        <div class="container px-4 md:px-6">
-          <motion.div 
-            class="text-center mb-16"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6 }"
-            :viewport="{ once: true }"
-          >
-            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {{ t('home.stats.title') }}
-            </h2>
-          </motion.div>
-
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <motion.div 
-              v-for="(stat, index) in tm('home.stats.items') as any"
-              :key="index"
-              class="text-center"
-              :initial="{ opacity: 0, scale: 0.5 }"
-              :whileInView="{ opacity: 1, scale: 1 }"
-              :transition="{ duration: 0.6, delay: 0.1 + index * 0.1 }"
-              :viewport="{ once: true }"
-            >
-              <div class="text-4xl md:text-5xl font-bold text-foreground mb-2">
-                {{ stat.value }}{{ stat.suffix }}
-              </div>
-              <div class="text-muted-foreground">{{ stat.label }}</div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Testimonials -->
-      <section class="py-24 bg-muted/50">
-        <div class="container px-4 md:px-6">
-          <motion.div 
-            class="text-center mb-16"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6 }"
-            :viewport="{ once: true }"
-          >
-            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {{ t('home.testimonials.title') }}
-            </h2>
-          </motion.div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              v-for="(testimonial, index) in tm('home.testimonials.items') as any"
-              :key="index"
-              class="bg-card p-8 rounded-2xl border border-border hover:shadow-lg transition-all duration-300"
-              :initial="{ opacity: 0, y: 20 }"
-              :whileInView="{ opacity: 1, y: 0 }"
-              :transition="{ duration: 0.6, delay: index * 0.1 }"
-              :viewport="{ once: true }"
-            >
-              <div class="flex mb-4">
-                <Star v-for="i in 5" :key="i" class="h-5 w-5 text-chart-5 fill-current" />
-              </div>
-              <p class="text-muted-foreground mb-6 leading-relaxed">"{{ testimonial.quote }}"</p>
-              <div class="flex items-center">
-                <div 
-                  :class="[
-                    'w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold mr-4',
-                    index === 0 ? 'bg-chart-1' : 
-                    index === 1 ? 'bg-chart-3' : 
-                    'bg-chart-5'
-                  ]"
-                >
-                  {{ testimonial.author }}
-                </div>
-                <div>
-                  <div class="font-semibold text-foreground">{{ testimonial.author }}</div>
-                  <div class="text-muted-foreground text-sm">{{ testimonial.role }}</div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Final CTA -->
-      <section class="py-24 bg-gradient-chart-warm text-white relative overflow-hidden">
-        <div class="absolute inset-0 bg-repeat opacity-10"></div>
-        <div class="container px-4 md:px-6 relative z-10">
-          <motion.div 
-            class="text-center max-w-3xl mx-auto"
-            :initial="{ opacity: 0, y: 20 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.6 }"
-            :viewport="{ once: true }"
-          >
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">
-              {{ t('home.finalCta.title') }}
-            </h2>
-            <p class="text-xl text-primary-foreground/80 mb-8">
-              {{ t('home.finalCta.subtitle') }}
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                class="px-8 py-4 text-lg rounded-full transition-all duration-300 hover:scale-105"
-                @click="navigateTo(localePath('/pricing'))"
-              >
-                {{ t('home.finalCta.buttons.purchase') }}
-              </Button>
-              <Button 
-                size="lg" 
-                variant="secondary" 
-                class="px-8 py-4 text-lg rounded-full transition-all duration-300 hover:scale-105"
-              >
-                {{ t('home.finalCta.buttons.demo') }}
+              <Button as-child size="lg" variant="outline" class="rounded-full border-slate-600 bg-transparent px-8 text-slate-50 hover:bg-slate-50 hover:text-slate-900">
+                <NuxtLink :to="localePath(`/services/${serviceCatalog[4].slug}`)">
+                  {{ t('home.finalCta.buttons.secondary') }}
+                </NuxtLink>
               </Button>
             </div>
-          </motion.div>
-        </div>
-      </section>
-      
-      <!-- Footer -->
-      <footer class="py-12 bg-muted text-muted-foreground">
-        <div class="container px-4 md:px-6">
-          <div class="flex flex-col md:flex-row justify-between items-center">
-            <div class="flex items-center mb-4 md:mb-0">
-              <AppLogo size="md" />
-            </div>
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-              <div class="text-muted-foreground text-center md:text-left">
-                {{ t('home.footer.copyright', { year: new Date().getFullYear() }) }}
-              </div>
-              <div class="flex space-x-4">
-                <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted/50 transition-colors cursor-pointer">
-                  <span class="text-xs text-foreground">G</span>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted/50 transition-colors cursor-pointer">
-                  <span class="text-xs text-foreground">T</span>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center hover:bg-muted/50 transition-colors cursor-pointer">
-                  <span class="text-xs text-foreground">D</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </footer>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
-import { motion } from 'motion-v'
-import { 
-  Check, 
-  Shield, 
-  Globe, 
-  Zap, 
-  BarChart3, 
-  Smartphone, 
-  Star, 
-  CreditCard, 
-  Users, 
-  Brain, 
-  Code, 
-  Layers, 
-  Palette, 
-  Play, 
-  Settings, 
-  FileText, 
-  BookOpen 
+import {
+  ArrowRight,
+  Briefcase,
+  CalendarRange,
+  GraduationCap,
+  ShoppingBag,
+  Sparkles,
+  Waves,
 } from 'lucide-vue-next'
-import BentoGrid from '@/components/magicui/BentoGrid.vue'
-import BentoCard from '@/components/magicui/BentoCard.vue'
 
-// SEO and metadata
-const { t, tm, rt, locale } = useI18n()
+import { serviceCatalog } from '@libs/content/services'
+
+const { t, tm } = useI18n()
 const localePath = useLocalePath()
+
+const iconMap = {
+  waves: Waves,
+  sparkles: Sparkles,
+  'graduation-cap': GraduationCap,
+  briefcase: Briefcase,
+  'shopping-bag': ShoppingBag,
+} as const
+
+const catalogContent = computed(() => tm('services.catalog') as Record<string, any>)
+const heroTags = computed(() => tm('home.hero.tags') as string[])
+const overviewItems = computed(() => tm('home.overview.items') as Array<{ title: string; description: string }>)
+const bookingItems = computed(() => tm('home.bookingSteps.items') as Array<{ title: string; description: string }>)
+
+const serviceCards = computed(() =>
+  serviceCatalog.map((service) => ({
+    ...service,
+    content: catalogContent.value[service.key],
+  })),
+)
 
 useSeoMeta({
   title: () => t('home.metadata.title'),
   description: () => t('home.metadata.description'),
-  keywords: () => t('home.metadata.keywords')
+  keywords: () => t('home.metadata.keywords'),
 })
-
-// Reactive state
-const activeFeature = ref(0)
-const statsRef = ref(null)
-
-// Icon mappings for features
-const iconMap = [Layers, Shield, Globe, Zap, BarChart3, Smartphone, Brain, Code]
-const appIconMap = [Globe, BarChart3, Brain]  
-const roadmapIconMap = [Check, Settings, BookOpen, Palette, Play, FileText]
-
-// Features data
-
 </script>
-
-<style scoped>
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Animation classes */
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-</style>

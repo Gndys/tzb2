@@ -167,6 +167,9 @@ export default function Header({ className }: HeaderProps) {
             <Link href={`/${currentLocale}/blog`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               {t.header.navigation.blog}
             </Link>
+            <Link href={`/${currentLocale}#services`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              {t.header.navigation.services}
+            </Link>
             <Link href={`/${currentLocale}/pricing`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               {t.header.navigation.pricing}
             </Link>
@@ -350,6 +353,9 @@ export default function Header({ className }: HeaderProps) {
             <div className="border-t border-border my-2" />
             <Link href={`/${currentLocale}/blog`} className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-foreground hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
               {t.header.navigation.blog}
+            </Link>
+            <Link href={`/${currentLocale}#services`} className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-foreground hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
+              {t.header.navigation.services}
             </Link>
             <Link href={`/${currentLocale}/pricing`} className="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-foreground hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
               {t.header.navigation.pricing}

@@ -54,6 +54,12 @@ export const PAGES = {
   adminBlog: `${BASE}/admin/blog`,
   adminBlogNew: `${BASE}/admin/blog/new`,
   blog: `${BASE}/blog`,
+  services: `${BASE}/services`,
+  serviceWaterSports: `${BASE}/services/water-sports`,
+  serviceFestivalCustom: `${BASE}/services/festival-custom`,
+  serviceEducationCourses: `${BASE}/services/education-courses`,
+  serviceBusinessExhibition: `${BASE}/services/business-exhibition`,
+  serviceCulturalRetail: `${BASE}/services/cultural-retail`,
 } as const;
 
 /** Pre-existing admin account (not created by tests, not cleaned up) */

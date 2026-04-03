@@ -1507,231 +1507,71 @@ export const zhCN: Locale = {
   },
   home: {
     metadata: {
-      title: "TinyShip - 现代化全栈 SaaS 开发启动器",
-      description: "现代化、功能齐全的 monorepo 启动套件，用于构建支持国内外双市场的 SaaS 应用程序。基于 Next.js/Nuxt.js、TypeScript 和完整认证系统构建。",
-      keywords: "SaaS, monorepo, 启动套件, Next.js, Nuxt.js, TypeScript, 认证, 国际化, 中国市场, 国际市场"
+      title: "千年舟文旅服务 - 水上体验、活动定制、研学课程与文创零售",
+      description: "围绕水上运动体验、节庆与场景定制、教育与课程、商务与会展、文创与零售五大板块，提供统一预约咨询与完整服务展示。",
+      keywords: "水上运动, 研学课程, 团建活动, 商务接待, 文创零售, 观光游艇, 皮划艇, 桨板"
     },
     hero: {
-      title: "虽然是小船，也能载你远航",
-      titlePrefix: "虽然是",
-      titleHighlight: "小船",
-      titleSuffix: "，也能载你远航",
-      subtitle: "现代化全栈 SaaS 开发平台，支持国内外双市场。一次购买，终身使用，快速构建你的商业项目。",
+      eyebrow: "统一预约与咨询入口",
+      titlePrefix: "把",
+      titleHighlight: "五大文旅服务",
+      titleSuffix: "放到同一个首页，一眼看懂、一步跳转",
+      subtitle: "首页先看清服务结构，进入详情页再看人群、套餐、升级款和附加产品。适合个人游客、家庭亲子、情侣活动、企业接待和文创消费。",
       buttons: {
-        purchase: "立即购买",
-        demo: "查看演示"
+        primary: "查看五大服务",
+        secondary: "先看商务与会展"
       },
-      features: {
-        lifetime: "一次购买终身使用",
-        earlyBird: "早鸟价限时优惠"
-      }
+      tags: [
+        "五大服务统一展示",
+        "支持套餐与升级款说明",
+        "首页可直达详情页",
+        "适用人群与报价同时可见"
+      ]
     },
-    features: {
-      title: "全栈 SaaS 开发平台",
-      subtitle: "从双框架支持到 AI 集成，从全球化到本土化，TinyShip 为你的商业项目提供完整的现代化技术解决方案。",
+    overview: {
       items: [
         {
-          title: "双框架支持",
-          description: "灵活选择 Next.js 或 Nuxt.js，React 和 Vue 开发者都能找到熟悉的技术栈，同时享受相同的强大后端能力。",
-          className: "col-span-1 row-span-1"
+          title: "五大主题服务并列展示",
+          description: "水上运动、活动定制、教育课程、商务会展、文创零售都放在首页显眼区域，用户不需要翻很久就能看明白业务范围。"
         },
         {
-          title: "全面身份认证",
-          description: "基于 Better-Auth 的企业级认证系统，支持邮箱/手机/OAuth 登录，2FA 多因子认证，会话管理等完整认证体系。",
-          className: "col-span-1 row-span-1"
+          title: "统一预约咨询收口",
+          description: "无论用户从哪个服务入口进入，详情页都统一承接到预约与咨询动作，适合后续接表单、电话或微信。"
         },
         {
-          title: "全球化 + 本土化",
-          description: "既支持国际市场的 Stripe、OAuth 登录，也深度适配中国本土市场的微信登录、微信支付，双市场无缝覆盖。",
-          className: "col-span-2 row-span-1"
-        },
-        {
-          title: "现代化技术栈",
-          description: "采用最新技术：TailwindCSS v4、shadcn/ui、Magic UI、TypeScript、Zod 类型安全验证，开发体验极佳。",
-          className: "col-span-1 row-span-1"
-        },
-        {
-          title: "无厂商锁定架构",
-          description: "开放式 Monorepo 架构，libs 抽象接口设计，可自由选择任何云服务商、数据库、支付提供商，避免技术绑定。",
-          className: "col-span-2 row-span-1"
-        },
-        {
-          title: "通信服务集成",
-          description: "多渠道通信支持：邮件服务（Resend/SendGrid）、短信服务（阿里云/Twilio），全球化通信无障碍。",
-          className: "col-span-1 row-span-1"
-        },
-        {
-          title: "AI 开发就绪",
-          description: "集成 Vercel AI SDK，支持多 AI 提供商，内置 Cursor 开发规则，AI 辅助开发，智能化构建应用。",
-          className: "col-span-1 row-span-1"
-        },
-        {
-          title: "主题系统",
-          description: "基于 shadcn/ui 的现代化主题系统，支持暗黑模式，深度定制和品牌化，让应用拥有独特视觉体验。",
-          className: "col-span-1 row-span-1"
-        }
-      ],
-      techStack: {
-        title: "基于现代化技术栈构建",
-        items: [
-          "Next.js / Nuxt.js",
-          "TailwindCSS v4",
-          "Better-Auth",
-          "Vercel AI SDK",
-          "TypeScript + Zod",
-          "shadcn/ui + Magic UI",
-          "Drizzle ORM + PostgreSQL"
-        ]
-      }
-    },
-    applicationFeatures: {
-      title: "核心应用特性",
-      subtitle: "从国内外双体系支持到 AI 集成，TinyShip 为你的商业项目提供完整的技术解决方案。",
-      items: [
-        {
-          title: "国内外双体系支持",
-          subtitle: "一套代码，双市场覆盖",
-          description: "完美适配国内外不同市场需求。国内支持微信登录、手机号登录、微信支付等本土化功能；国外支持主流 OAuth 登录（Google、GitHub、Apple）、Stripe 和 Creem 支付体系。一套代码，双市场覆盖。",
-          highlights: [
-            "微信登录 & 手机号登录",
-            "OAuth 登录（Google、GitHub、Apple）",
-            "微信支付 & Stripe & Creem",
-            "国内外无缝切换"
-          ],
-          imageTitle: "双体系架构"
-        },
-        {
-          title: "内置 Admin Panel",
-          subtitle: "企业级管理后台，开箱即用",
-          description: "开箱即用的管理后台，提供轻量级的用户管理、订阅管理、订单管理等功能。基于现代化 UI 组件库构建，支持角色权限控制、实时数据监控等功能。让你专注于业务逻辑，而非重复的管理界面开发。",
-          highlights: [
-            "用户管理",
-            "订阅管理",
-            "角色权限控制",
-            "订单管理"
-          ],
-          imageTitle: "管理后台"
-        },
-        {
-          title: "AI Ready 集成",
-          subtitle: "基于 Vercel AI SDK，即插即用",
-          description: "基于 Vercel AI SDK 构建的完整 AI 解决方案。内置简易的 AI Chat 页面，支持多种 AI 模型切换（OpenAI、Claude、Gemini 等），让你的应用瞬间具备 AI 能力。",
-          highlights: [
-            "Vercel AI SDK 集成",
-            "多模型支持（OpenAI、Claude、Gemini 等）",
-            "流式响应",
-          ],
-          imageTitle: "AI 集成"
+          title: "活动体验到零售成交闭环",
+          description: "从单次体验、套餐、升级款，到文创售卖、直播代播和内容授权，页面结构可以直接承接不同营收入口。"
         }
       ]
     },
-    roadmap: {
-      title: "产品路线图",
-      subtitle: "持续迭代，不断创新。我们致力于为开发者提供更强大、更灵活的 SaaS 开发解决方案。",
-      items: [
-        {
-          title: "核心平台搭建",
-          description: "完成 TinyShip 核心平台的开发，包括双框架支持、身份认证、支付集成、国际化等基础功能模块。",
-          timeline: "2025 Q3",
-          status: "completed",
-          statusText: "已完成",
-          features: ["双框架支持", "身份认证系统", "支付集成", "国际化支持", "AI 开发就绪", "内置 Admin Panel"]
-        },
-        {
-          title: "主题系统升级",
-          description: "推出全新的主题系统，提供多种精美的 UI 主题和布局选择。支持深度定制和品牌化，让你的应用拥有独特的视觉体验。",
-          timeline: "2025 Q3",
-          status: "completed",
-          statusText: "已完成",
-          features: ["多套 UI 主题", "深色模式支持", "组件库扩展"]
-        },
-        {
-          title: "第三方服务扩展",
-          description: "大幅扩展第三方服务支持，覆盖更多云服务商和 SaaS 工具。通过统一的接口设计，让你轻松切换和集成各种服务提供商。",
-          timeline: "2025 Q4",
-          status: "in-progress",
-          statusText: "开发中",
-          features: ["更多支付网关", "云存储服务", "更多短信服务商"]
-        },
-        {
-          title: "博客/文档系统",
-          description: "内置完整的博客和文档管理系统，支持 Markdown 编辑、SEO 优化、评论系统等功能。让你的 SaaS 产品拥有完整的内容营销能力。",
-          timeline: "2026 Q1",
-          status: "planned",
-          statusText: "计划中",
-          features: ["博客系统", "文档系统", "知识库搜索"]
-        },
-
-        {
-          title: "视频教程体系",
-          description: "制作完整的视频教程系列，从基础使用到高级定制，帮助开发者快速掌握 TinyShip 的各项功能和最佳实践。",
-          timeline: "2026 Q3",
-          status: "planned",
-          statusText: "计划中",
-          features: ["入门教程", "进阶开发", "部署指南", "实战案例"]
-        },
-        {
-          title: "行业模板库",
-          description: "针对不同行业和应用场景，提供开箱即用的项目模板。每个模板都包含完整的业务逻辑、UI 设计和最佳实践，让你快速启动项目。作为基础版本的扩展包，需要单独购买，但基础版本用户享受大力度优惠。",
-          timeline: "2026 Q4",
-          status: "planned",
-          statusText: "计划中",
-          features: ["SaaS 应用模板", "软件售卖模板", "AI 项目模板", "电商平台模板", "企业官网模板", "基础版用户专享优惠"]
-        }
-      ],
-      footer: "持续更新中，敬请期待更多功能..."
+    servicesSection: {
+      eyebrow: "我们提供什么服务",
+      title: "首页先看全局，点击再看细项",
+      subtitle: "五个入口分别对应一整页服务说明，每一页直接展开基础服务、套餐报价、升级款和附加产品。"
     },
-    stats: {
-      title: "值得信赖的选择",
+    bookingSteps: {
       items: [
         {
-          value: "10000",
-          suffix: "+",
-          label: "用户选择"
+          title: "先选服务方向",
+          description: "用户从首页 5 个功能入口里快速判断自己属于水上体验、活动定制、课程、商务接待还是文创消费。"
         },
         {
-          value: "2",
-          suffix: "",
-          label: "前端框架支持"
+          title: "一页看完完整内容",
+          description: "进入详情页后直接看到适用人群、服务亮点、价格卡片和升级项，不需要再去其他页面找说明。"
         },
         {
-          value: "50",
-          suffix: "+",
-          label: "内置功能模块"
-        },
-        {
-          value: "99",
-          suffix: "%",
-          label: "用户满意度"
-        }
-      ]
-    },
-    testimonials: {
-      title: "用户真实反馈",
-      items: [
-        {
-          quote: "早鸟价太值了！完整的源码和终身更新，帮我快速搭建了自己的 SaaS 项目，一个月就回本了。",
-          author: "张伟",
-          role: "独立开发者"
-        },
-        {
-          quote: "技术支持很给力，遇到问题都能快速解决。双框架支持让团队可以选择熟悉的技术栈。",
-          author: "李小明",
-          role: "创业公司 CTO"
-        },
-        {
-          quote: "出海功能特别实用，国际化和支付都配置好了，省了我们大量的开发时间。",
-          author: "王芳",
-          role: "产品经理"
+          title: "统一进入咨询与预约",
+          description: "页面末尾统一放预约/咨询动作，后续接表单、客服微信、电话或者报价单下载都比较顺手。"
         }
       ]
     },
     finalCta: {
-      title: "准备好开始你的远航了吗？",
-      subtitle: "加入数千名用户的行列，用 TinyShip 快速构建你的下一个商业项目。虽然是小船，但足以载你驶向成功的彼岸。早鸟价仅限前 100 名用户！",
+      eyebrow: "继续浏览",
+      title: "先从最容易成交的一页开始",
+      subtitle: "如果你希望用户快速理解业务并进入咨询，建议先主推水上运动体验或商务与会展两类页面，再把文创与零售作为后续转化页面。",
       buttons: {
-        purchase: "立即抢购 ¥299",
-        demo: "查看演示"
+        primary: "查看水上运动体验",
+        secondary: "查看文创与零售"
       }
     },
     footer: {
@@ -1739,9 +1579,292 @@ export const zhCN: Locale = {
       description: "TinyShip"
     },
     common: {
-      demoInterface: "功能演示界面",
-      techArchitecture: "企业级技术架构，生产环境验证",
-      learnMore: "了解更多"
+      viewDetails: "查看详情"
+    }
+  },
+  services: {
+    common: {
+      metadataTitleSuffix: "千年舟文旅服务",
+      backToHome: "返回首页服务区",
+      audienceTitle: "适合哪些人",
+      primaryCta: "查看完整服务内容",
+      secondaryCta: "继续浏览其他服务",
+      highlightTitle: "本页重点内容",
+      sectionLabel: "服务模块",
+      relatedTitle: "继续浏览",
+      relatedSubtitle: "其他服务也已经整理成独立页面",
+      notFoundTitle: "服务不存在"
+    },
+    catalog: {
+      waterSports: {
+        name: "水上运动体验",
+        tagline: "轻户外体验",
+        cardDescription: "皮划艇、桨板、观光游艇和长期训练组合在同一页，适合个人、朋友、家庭和团队做轻量水上体验。",
+        detailIntro: "围绕“先体验、再复购”的路径组织内容，既有单次项目，也有包船、年卡和培训课，适合周末体验、团体活动和长期兴趣培养。",
+        audiences: ["个人游客", "朋友结伴", "家庭亲子", "团队客群"],
+        highlights: [
+          "皮划艇 68 元 / 双人 40 分钟",
+          "皮划艇 98 元 / 三人不限时",
+          "桨板含指导 98 元 / 30 分钟",
+          "观光游艇 58 元 / 人 20 分钟",
+          "包船观光 880 元 / 小时"
+        ],
+        quickFacts: [
+          { label: "推荐停留时长", value: "40 - 120 分钟" },
+          { label: "适合预订形式", value: "单次体验 / 包船 / 年卡" },
+          { label: "内容强度", value: "轻体验到持续训练" },
+          { label: "适合场景", value: "周末休闲 / 朋友聚会 / 亲子同行" }
+        ],
+        sections: [
+          {
+            slug: "basic",
+            title: "基础体验项目",
+            description: "适合第一次接触水上项目的游客，页面上直接给出价格和时长，决策成本低。",
+            items: [
+              { name: "皮划艇双人体验", price: "68 元 / 双人", duration: "40 分钟", description: "适合情侣、朋友和轻松休闲客群，体验门槛低，适合首页主推。" },
+              { name: "皮划艇三人体验", price: "98 元 / 三人", duration: "不限时", description: "更适合亲子和三五好友一起上水，具备较强社交属性。" },
+              { name: "桨板体验（含指导）", price: "98 元 / 人", duration: "30 分钟", description: "由现场指导带入门，适合想快速尝鲜又担心不会操作的用户。" },
+              { name: "观光游艇", price: "58 元 / 人", duration: "20 分钟", description: "节奏轻、出片快，适合游客到店后的即时消费。" },
+              { name: "航模体验", price: "20 元 / 人", duration: "20 分钟", description: "可作为轻互动补充项目，提高停留时间和亲子参与感。" }
+            ]
+          },
+          {
+            slug: "long-term",
+            title: "长期服务与训练",
+            description: "为复购用户和青少年培养需求设计，补齐单次体验之外的持续营收。",
+            items: [
+              { name: "皮划艇 / 桨板年卡", price: "580 元 / 年", duration: "全年有效", description: "适合本地客群复购，形成固定训练与周末活动习惯。" },
+              { name: "青少年桨板培训", price: "1380 元 / 12 课", duration: "分阶段课程", description: "面向青少年兴趣培养，便于和研学课程联动。" },
+              { name: "包船观光服务", price: "880 元 / 小时", duration: "按小时预约", description: "适合家庭聚会、小团队出游或商务私享场景。" }
+            ]
+          },
+          {
+            slug: "custom",
+            title: "组合与定制体验",
+            description: "把体验和服务包做成更完整的交付，适合有明确活动目的的客户。",
+            items: [
+              { name: "定制体验服务", price: "198 元 / 2 小时", duration: "2 小时", description: "可加入教学、下午茶和团体互动内容，适合活动型消费。" },
+              { name: "专业摄影记录", price: "定制报价", duration: "按活动安排", description: "可与包船、团建、情侣和研学项目联动，提高客单价和纪念价值。" },
+              { name: "体验后续纪念册", price: "定制报价", duration: "活动结束后交付", description: "适合把单次体验继续延伸为纪念品和二次传播素材。" }
+            ]
+          }
+        ]
+      },
+      festivalCustom: {
+        name: "节庆与场景定制",
+        tagline: "氛围与活动策划",
+        cardDescription: "婚恋、生日会、团建和亲子活动都归到这一页，先给场景布置与体验项目，再展示套餐与升级服务。",
+        detailIntro: "页面聚焦“场景感”和“整包交付”。用户可以先看单项布置与互动项目，再看双人套餐、亲子团建套餐和升级款服务。",
+        audiences: ["情侣 / 婚恋客群", "家庭亲子", "企业团建", "社团活动"],
+        highlights: [
+          "专属码头布景 300 元 / 场",
+          "双人观光游艇 116 元 / 双人 60 分钟",
+          "主题场景布置 100 元 / 场",
+          "亲子互动游戏 20 元 / 人 50 分钟",
+          "团建 / 亲子套餐 158 元 / 人，10 人起订"
+        ],
+        quickFacts: [
+          { label: "推荐停留时长", value: "2 - 2.5 小时" },
+          { label: "适合预约方式", value: "双人套餐 / 团建整包 / 生日会升级" },
+          { label: "服务重点", value: "布景、体验、影像、互动" },
+          { label: "适合场景", value: "约会、生日、团建、家庭聚会" }
+        ],
+        sections: [
+          {
+            slug: "scene",
+            title: "场景与互动单项",
+            description: "适合先做轻量组合报价，也方便把不同需求拆开说明。",
+            items: [
+              { name: "专属码头布景", price: "300 元 / 场", duration: "按活动档期", description: "适合情侣约会、求婚或纪念日场景拍摄，形成明确视觉记忆点。" },
+              { name: "主题场景布置", price: "100 元 / 场", duration: "按活动档期", description: "适合生日会、亲子活动和团体合照区域快速搭建。" },
+              { name: "双人观光游艇", price: "116 元 / 双人", duration: "60 分钟", description: "适合婚恋客群、纪念日体验和轻奢约会场景。" },
+              { name: "亲子互动游戏", price: "20 元 / 人", duration: "50 分钟", description: "适合拉长亲子停留时间，也可以作为生日会或团建暖场环节。" }
+            ]
+          },
+          {
+            slug: "package",
+            title: "基础套餐组合",
+            description: "把用户最容易理解的服务打成套餐，首页点击后可以很快看到一整套方案。",
+            items: [
+              { name: "婚恋双人套餐", price: "498 元 / 双人", duration: "约 2 小时", description: "包含专属码头布景、双人观光游艇和纪念短片拍摄，适合情侣纪念日与求婚前置体验。" },
+              { name: "团建 / 亲子套餐", price: "158 元 / 人", duration: "2.5 小时", description: "10 人起订，包含主题场景布置、皮划艇 / 桨板体验、生日蛋糕定制与亲子互动游戏。" },
+              { name: "主题活动定制", price: "198 元 / 2 小时", duration: "2 小时", description: "适合需要教学、下午茶和轻策划服务的活动场景。" }
+            ]
+          },
+          {
+            slug: "upgrade",
+            title: "升级款与高客单服务",
+            description: "用于承接高预算用户，把影像、礼品和管家式服务一起说清楚。",
+            items: [
+              { name: "婚恋升级款", price: "3980 元 / 场", duration: "按活动全程", description: "包含主题场景深度定制、专业电影级影像全记录，以及定制婚礼伴手礼和私人管家服务。" },
+              { name: "宝宝生日会升级款", price: "880 元 / 场", duration: "按活动全程", description: "以木船下午茶、定制蛋糕和儿童互动游戏为主，附加主持、纪念手册和影像留存。" },
+              { name: "纪念影像留存", price: "定制报价", duration: "按需求配置", description: "适合在节庆或家庭场景中提升成交金额和传播效果。" }
+            ]
+          }
+        ]
+      },
+      educationCourses: {
+        name: "教育与课程",
+        tagline: "研学与自然课程",
+        cardDescription: "把青少年研学、自然科普、水上体验和非遗手作归并到课程页，便于学校、家长和机构快速判断方案深度。",
+        detailIntro: "这一页围绕“能学到什么、孩子会体验什么、整套课程时长多久”来组织内容，兼顾基础课程、研学套餐和升级课程。",
+        audiences: ["爱好者", "青少年", "学校团体", "企业研学"],
+        highlights: [
+          "自然科普讲解 55 元 / 人 30 分钟",
+          "皮划艇体验 68 元 / 人 60 分钟",
+          "水生植物观察手账 89 元 / 人 40 分钟",
+          "研学套餐 138 元 / 人 2 小时",
+          "升级款 368 元 / 人"
+        ],
+        quickFacts: [
+          { label: "推荐停留时长", value: "2 小时起" },
+          { label: "课程结构", value: "讲解 + 观察 + 上水 + 手作" },
+          { label: "适合合作对象", value: "学校 / 家长 / 社团 / 企业" },
+          { label: "交付亮点", value: "纪念手册与摄影记录" }
+        ],
+        sections: [
+          {
+            slug: "basic",
+            title: "基础课程单项",
+            description: "适合按课时和项目拆开售卖，也便于学校或家长组合安排。",
+            items: [
+              { name: "自然科普讲解", price: "55 元 / 人", duration: "30 分钟", description: "适合作为研学开场内容，让参与者先建立基础知识背景。" },
+              { name: "皮划艇体验", price: "68 元 / 人", duration: "60 分钟", description: "让课程从岸上观察延伸到真实水上体验，增强参与感。" },
+              { name: "水生植物观察手账", price: "89 元 / 人", duration: "40 分钟", description: "结合观察和记录，适合青少年形成完整的学习成果。" }
+            ]
+          },
+          {
+            slug: "package",
+            title: "标准研学套餐",
+            description: "适合学校、家庭亲子和青少年社群做一站式安排。",
+            items: [
+              { name: "青少年研学套餐", price: "138 元 / 人", duration: "2 小时", description: "包含科普讲解、皮划艇体验和全流程指导，是最适合首页直推的基础完整方案。" },
+              { name: "企业研学轻定制", price: "定制报价", duration: "按人数与时长安排", description: "适合企业家属日、员工亲子日和教育主题活动延展。" },
+              { name: "课程延伸摄影记录", price: "定制报价", duration: "课程全程", description: "便于形成可回传的图文内容，提高研学项目感知价值。" }
+            ]
+          },
+          {
+            slug: "upgrade",
+            title: "升级课程与增值项",
+            description: "用于承接更重体验和更完整交付的研学客户。",
+            items: [
+              { name: "研学升级款", price: "368 元 / 人", duration: "半日深度体验", description: "加入非遗船模手作工坊和水上文化寻宝挑战，并附带纪念手册与专业摄影记录。" },
+              { name: "非遗船模手作工坊", price: "含在升级款中", duration: "按课程安排", description: "强化文化内容，让研学不只停留在体验层面。" },
+              { name: "水上文化寻宝挑战", price: "含在升级款中", duration: "按课程安排", description: "更适合团体合作和任务式学习场景。" }
+            ]
+          }
+        ]
+      },
+      businessExhibition: {
+        name: "商务与会展",
+        tagline: "接待与展陈服务",
+        cardDescription: "将商务接待、国际人文交流、露天展茶歇和定制饮品整合到一个页面，方便企业快速判断接待规格。",
+        detailIntro: "该页适合面向企业、机构和高端游客展示服务层次，从基础导览和茶歇，到包船接待、VIP 翻译与露天展会饮品服务都能直接展开说明。",
+        audiences: ["企业", "机构", "高端游客", "国际交流团队"],
+        highlights: [
+          "双语导览讲解 55 元 / 人 30 分钟",
+          "商务茶歇 68 元 / 人 不限时",
+          "观光游艇包船 89 元 / 人 40 分钟",
+          "商务接待套餐 258 元 / 人，4 人起订",
+          "围炉煮茶 68 元 / 位"
+        ],
+        quickFacts: [
+          { label: "推荐停留时长", value: "2 小时起" },
+          { label: "适合预约形式", value: "商务接待 / 展陈服务 / 定制茶席" },
+          { label: "内容重点", value: "接待流程、翻译、茶歇、包船" },
+          { label: "适合场景", value: "企业拜访 / 国际交流 / 展会露天活动" }
+        ],
+        sections: [
+          {
+            slug: "basic",
+            title: "基础接待模块",
+            description: "让企业客户先看懂基础单项，再决定是否升级到整包服务。",
+            items: [
+              { name: "双语导览讲解", price: "55 元 / 人", duration: "30 分钟", description: "适合国际人文交流、企业接待和外地来访客群。" },
+              { name: "商务茶歇", price: "68 元 / 人", duration: "不限时", description: "适合作为洽谈前后停留和轻社交环节，提高整体接待完整度。" },
+              { name: "观光游艇包船体验", price: "89 元 / 人", duration: "40 分钟", description: "适合作为商务接待的亮点环节，兼具体验感与出片效果。" },
+              { name: "文化手册", price: "20 元 / 人", duration: "现场领取", description: "适合作为接待材料或纪念品配套发放。" }
+            ]
+          },
+          {
+            slug: "package",
+            title: "整包商务接待方案",
+            description: "适合首页点击后直接看到可成交的标准商务方案。",
+            items: [
+              { name: "国际人文交流 / 商务套餐", price: "258 元 / 人", duration: "2 小时", description: "4 人起订，包含双语导览、商务茶歇、观光游艇和文化手册，全流程更完整。" },
+              { name: "企业 / 团队定制茶席", price: "368 元 / 桌", duration: "8 人 / 桌", description: "适合展会、团建或企业交流中的围炉茶席接待。" },
+              { name: "茶席体验", price: "68 元 / 位", duration: "含茶点 + 讲解", description: "适合作为露天展和文化展示的轻型体验项目。" }
+            ]
+          },
+          {
+            slug: "exhibition",
+            title: "会展与升级接待",
+            description: "用于展示更高规格的接待能力，以及露天展现场的营收内容。",
+            items: [
+              { name: "VIP 接待流程 + 专属翻译服务", price: "定制报价", duration: "按活动安排", description: "适合涉外、机构和高端商务来访，对服务规格要求更高的客群。" },
+              { name: "高级洽谈茶室", price: "定制报价", duration: "按活动安排", description: "适合把商务洽谈从体验区延伸到更安静、更正式的场域。" },
+              { name: "移动茶歇车", price: "25 - 45 元 / 杯", duration: "活动期间", description: "适合露天展、会展活动与企业开放日现场。" },
+              { name: "定制饮品 / 联名杯", price: "35 - 45 元 / 杯", duration: "活动期间", description: "文创联名杯 38 元 / 杯，适合展陈活动现场售卖与品牌联名传播。" }
+            ]
+          }
+        ]
+      },
+      culturalRetail: {
+        name: "文创与零售",
+        tagline: "商品、直播与授权",
+        cardDescription: "把常规文创、新品系列、盲盒、直播代播和 AI 内容授权都集中展示，适合做体验后的消费承接页面。",
+        detailIntro: "这一页承担体验之后的成交延展，既展示可直接售卖的文创产品，也承接直播、电商、AI 内容制作和授权类服务。",
+        audiences: ["所有游客", "粉丝客群", "合作商户", "品牌联名方"],
+        highlights: [
+          "按动中性笔 12.9 元",
+          "线圈笔记本 22.9 元",
+          "海洋主题立体相框 89.9 元",
+          "AI 定制服务 300 - 1500 元 / 单",
+          "代播服务费 500 - 2000 元 / 场"
+        ],
+        quickFacts: [
+          { label: "购买方式", value: "现场零售 / 活动联名 / 直播成交" },
+          { label: "内容范围", value: "文创商品 + 数字内容服务" },
+          { label: "适合场景", value: "体验后续消费 / 粉丝转化 / 品牌合作" },
+          { label: "营收特征", value: "低门槛零售 + 高客单授权" }
+        ],
+        sections: [
+          {
+            slug: "retail",
+            title: "常规文创矩阵",
+            description: "适合先做即买即走型零售，作为体验页之后的自然转化。",
+            items: [
+              { name: "按动中性笔", price: "12.9 元", duration: "现货", description: "适合作为入门文创产品，单价低、转化快。" },
+              { name: "线圈笔记本", price: "22.9 元", duration: "现货", description: "兼具实用性和纪念价值，适合游客与学生客群。" },
+              { name: "海洋主题双人冰箱贴", price: "49.9 元", duration: "现货", description: "适合情侣、家庭和异地游客购买留念。" },
+              { name: "手机壳（一对）", price: "29.9 元", duration: "现货", description: "适合双人客群和情侣场景，适合作为活动联名小商品。" }
+            ]
+          },
+          {
+            slug: "new-products",
+            title: "海洋主题新品与盲盒",
+            description: "页面中重点展示更强视觉辨识度的新品与 IP 化产品。",
+            items: [
+              { name: "海洋主题立体相框", price: "89.9 元", duration: "现货", description: "适合和亲子、情侣、纪念影像服务联动销售。" },
+              { name: "海洋主题 IP 风铃", price: "69.9 元", duration: "现货", description: "更适合作为节庆活动或展会现场的氛围型文创。" },
+              { name: "海洋主题香氛卡", price: "9.9 元", duration: "现货", description: "客单价轻，适合搭售或活动伴手礼。" },
+              { name: "海洋主题长条书签 / 装饰条", price: "29.9 元", duration: "现货", description: "适合作为学生与文艺客群的标准化文创商品。" },
+              { name: "五舟开运系列盲盒", price: "系列定价", duration: "限量发售", description: "适合制造收藏感和社交传播话题。" }
+            ]
+          },
+          {
+            slug: "content",
+            title: "数字内容与合作服务",
+            description: "除了零售产品，也展示能够带来更高客单的服务型收入。",
+            items: [
+              { name: "AI 定制内容制作", price: "300 - 1500 元 / 单", duration: "按项目交付", description: "为本地文旅商户提供 AIGC 内容制作与策划案生成。" },
+              { name: "直播代播服务", price: "500 - 2000 元 / 场", duration: "按场次", description: "适合体验、文创和活动直播，帮助商家做现场转化。" },
+              { name: "内容授权", price: "定制报价", duration: "按授权周期", description: "适合 AI 生成文旅内容和舟船文化素材授权合作。" },
+              { name: "数据授权", price: "定制报价", duration: "按合作周期", description: "围绕文旅用户画像和消费趋势数据做企业授权。" }
+            ]
+          }
+        ]
+      }
     }
   },
   validators: {
@@ -1828,7 +1951,8 @@ export const zhCN: Locale = {
       upload: "文件上传",
       demos: "功能演示",
       demosDescription: "探索示例功能",
-      blog: "博客"
+      blog: "博客",
+      services: "服务"
     },
     demos: {
       ai: {

@@ -1222,230 +1222,71 @@ export const en: Locale = {
   },
   home: {
     metadata: {
-      title: "TinyShip - Modern Full-Stack SaaS Development Starter",
-      description: "A modern, full-featured monorepo starter kit for building SaaS applications with support for both domestic (China) and international markets. Built with Next.js/Nuxt.js, TypeScript, and comprehensive authentication.",
-      keywords: "SaaS, monorepo, starter kit, Next.js, Nuxt.js, TypeScript, authentication, i18n, China market, international"
+      title: "Qiannianzhou Cultural Tourism Services - Water Experiences, Event Planning, Courses, Business Reception, and Cultural Retail",
+      description: "Present five service categories in one place: water sports, festive and scene customization, education and courses, business and exhibition services, and cultural retail.",
+      keywords: "water sports, study tours, team building, business reception, cultural products, sightseeing yacht, kayaking, paddleboarding"
     },
     hero: {
-      title: "Though it's a small boat, it can take you far",
-      titlePrefix: "Though it's a small ",
-      titleHighlight: "boat",
-      titleSuffix: ", it can take you far",
-      subtitle: "Modern full-stack SaaS development platform with dual-market support for both domestic and international markets. One purchase, lifetime use, quickly build your business project.",
+      eyebrow: "One destination for booking and consultation",
+      titlePrefix: "Put",
+      titleHighlight: "five tourism service lines",
+      titleSuffix: "on one homepage so visitors understand the offer immediately",
+      subtitle: "The homepage introduces the structure first, and each detail page expands the audience, packages, premium upgrades, and add-on products. It works for individual visitors, families, couples, business guests, and retail customers.",
       buttons: {
-        purchase: "Buy Now",
-        demo: "View Demo"
+        primary: "Browse the five services",
+        secondary: "Start with business reception"
       },
-      features: {
-        lifetime: "One purchase, lifetime use",
-        earlyBird: "Early bird pricing - limited time"
-      }
+      tags: [
+        "Five services shown side by side",
+        "Packages and upgrade tiers included",
+        "Homepage cards jump straight to detail pages",
+        "Audience and pricing visible together"
+      ]
     },
-    features: {
-      title: "Full-Stack SaaS Development Platform",
-      subtitle: "From dual-framework support to AI integration, from globalization to localization, TinyShip provides complete modern technology solutions for your business projects.",
+    overview: {
       items: [
         {
-          title: "Dual Framework Support",
-          description: "Flexibly choose Next.js or Nuxt.js, both React and Vue developers can find familiar tech stacks while enjoying the same powerful backend capabilities.",
-          className: "col-span-1 row-span-1"
+          title: "Five service pillars on the homepage",
+          description: "Water experiences, event customization, courses, business reception, and cultural retail are visible without digging through multiple pages."
         },
         {
-          title: "Comprehensive Authentication",
-          description: "Enterprise-grade authentication system based on Better-Auth, supporting email/phone/OAuth login, 2FA multi-factor authentication, session management and complete authentication system.",
-          className: "col-span-1 row-span-1"
+          title: "One unified inquiry path",
+          description: "No matter which service page a visitor opens, the page structure leads them back to one booking and consultation flow."
         },
         {
-          title: "Global + Localization",
-          description: "Supports international markets with Stripe and OAuth login, also deeply adapts to China's domestic market with WeChat login and WeChat Pay, seamlessly covering dual markets.",
-          className: "col-span-2 row-span-1"
-        },
-        {
-          title: "Modern Technology Stack",
-          description: "Uses latest technologies: TailwindCSS v4, shadcn/ui, Magic UI, TypeScript, Zod type-safe validation, excellent development experience.",
-          className: "col-span-1 row-span-1"
-        },
-        {
-          title: "No Vendor Lock-in Architecture",
-          description: "Open Monorepo architecture with libs abstract interface design, freely choose any cloud service providers, databases, payment providers, avoid technology binding.",
-          className: "col-span-2 row-span-1"
-        },
-        {
-          title: "Communication Service Integration",
-          description: "Multi-channel communication support: email services (Resend/SendGrid), SMS services (Alibaba Cloud/Twilio), global communication without barriers.",
-          className: "col-span-1 row-span-1"
-        },
-        {
-          title: "AI Development Ready",
-          description: "Integrated Vercel AI SDK, supports multiple AI providers, built-in Cursor development rules, AI-assisted development, intelligent application building.",
-          className: "col-span-1 row-span-1"
-        },
-        {
-          title: "Theme System",
-          description: "Modern theme system based on shadcn/ui with dark mode support, deep customization and branding, making applications have unique visual experience.",
-          className: "col-span-1 row-span-1"
-        }
-      ],
-      techStack: {
-        title: "Built on Modern Technology Stack",
-        items: [
-          "Next.js / Nuxt.js",
-          "TailwindCSS v4",
-          "Better-Auth",
-          "Vercel AI SDK",
-          "TypeScript + Zod",
-          "shadcn/ui + Magic UI",
-          "Drizzle ORM + PostgreSQL"
-        ]
-      }
-    },
-    applicationFeatures: {
-      title: "Core Application Features",
-      subtitle: "From dual-system support for domestic and international markets to AI integration, TinyShip provides complete technical solutions for your business projects.",
-      items: [
-        {
-          title: "Dual System Support",
-          subtitle: "One codebase, dual market coverage",
-          description: "Perfect adaptation to different market needs domestically and internationally. Domestic support for WeChat login, phone login, WeChat Pay and other localized features; International support for mainstream OAuth login (Google, GitHub, Apple), Stripe and Creem payment systems. One codebase, dual market coverage.",
-          highlights: [
-            "WeChat login & phone login",
-            "OAuth login (Google, GitHub, Apple)",
-            "WeChat Pay & Stripe & Creem",
-            "Seamless domestic and international switching"
-          ],
-          imageTitle: "Dual System Architecture"
-        },
-        {
-          title: "Built-in Admin Panel",
-          subtitle: "Enterprise-grade management backend, ready to use",
-          description: "Ready-to-use management backend providing lightweight user management, subscription management, order management and other functions. Built on modern UI component library, supports role permission control, real-time data monitoring and other functions. Let you focus on business logic, not repetitive management interface development.",
-          highlights: [
-            "User management",
-            "Subscription management",
-            "Role permission control",
-            "Order management"
-          ],
-          imageTitle: "Management Backend"
-        },
-        {
-          title: "AI Ready Integration",
-          subtitle: "Based on Vercel AI SDK, plug and play",
-          description: "Complete AI solution based on Vercel AI SDK. Built-in simple AI Chat page, supports multiple AI model switching (OpenAI, Claude, Gemini, etc.), making your application instantly AI-capable.",
-          highlights: [
-            "Vercel AI SDK integration",
-            "Multi-model support (OpenAI, Claude, Gemini, etc.)",
-            "Streaming responses",
-          ],
-          imageTitle: "AI Integration"
+          title: "Experience-to-retail revenue loop",
+          description: "From one-off experiences and premium packages to cultural products, livestream commerce, and content licensing, the site supports several revenue layers."
         }
       ]
     },
-    roadmap: {
-      title: "Product Roadmap",
-      subtitle: "Continuous iteration, constant innovation. We are committed to providing developers with more powerful and flexible SaaS development solutions.",
-      items: [
-        {
-          title: "Core Platform Development",
-          description: "Complete TinyShip core platform development, including dual framework support, authentication, payment integration, internationalization and other basic functional modules.",
-          timeline: "2025 Q3",
-          status: "completed",
-          statusText: "Completed",
-          features: ["Dual framework support", "Authentication system", "Payment integration", "Internationalization support", "AI development ready", "Built-in Admin Panel"]
-        },
-        {
-          title: "Theme System Upgrade",
-          description: "Launch new theme system providing multiple beautiful UI themes and layout choices. Support deep customization and branding, making your application have unique visual experience.",
-          timeline: "2025 Q3",
-          status: "completed",
-          statusText: "Completed",
-          features: ["Multiple UI themes", "Dark mode support", "Component library expansion"]
-        },
-        {
-          title: "Third-party Service Expansion",
-          description: "Greatly expand third-party service support, covering more cloud service providers and SaaS tools. Through unified interface design, let you easily switch and integrate various service providers.",
-          timeline: "2025 Q4",
-          status: "in-progress",
-          statusText: "In Development",
-          features: ["More payment gateways", "Cloud storage services", "More SMS service providers"]
-        },
-        {
-          title: "Blog/Documentation System",
-          description: "Built-in complete blog and documentation management system, supporting Markdown editing, SEO optimization, comment system and other functions. Let your SaaS product have complete content marketing capabilities.",
-          timeline: "2026 Q1",
-          status: "planned",
-          statusText: "Planned",
-          features: ["Blog system", "Documentation system", "Knowledge base search"]
-        },
-        {
-          title: "Video Tutorial System",
-          description: "Create complete video tutorial series, from basic usage to advanced customization, helping developers quickly master TinyShip's various functions and best practices.",
-          timeline: "2026 Q3",
-          status: "planned",
-          statusText: "Planned",
-          features: ["Getting started tutorials", "Advanced development", "Deployment guide", "Practical cases"]
-        },
-        {
-          title: "Industry Template Library",
-          description: "For different industries and application scenarios, provide ready-to-use project templates. Each template includes complete business logic, UI design and best practices, allowing you to quickly start projects. As an expansion pack for the basic version, it needs to be purchased separately, but basic version users enjoy significant discounts.",
-          timeline: "2026 Q4",
-          status: "planned",
-          statusText: "Planned",
-          features: ["SaaS application templates", "Software sales templates", "AI project templates", "E-commerce platform templates", "Enterprise website templates", "Exclusive discounts for basic version users"]
-        }
-      ],
-      footer: "Continuously updating, stay tuned for more features..."
+    servicesSection: {
+      eyebrow: "What we offer",
+      title: "Scan the structure on the homepage, then open the page with the full offer",
+      subtitle: "Each card opens a detail page where the audience, key highlights, pricing cards, premium upgrades, and add-ons are already expanded."
     },
-    stats: {
-      title: "Trusted Choice",
+    bookingSteps: {
       items: [
         {
-          value: "10000",
-          suffix: "+",
-          label: "Users Choice"
+          title: "Pick the service direction first",
+          description: "Visitors can immediately choose whether they belong to water experiences, event customization, courses, business reception, or cultural retail."
         },
         {
-          value: "2",
-          suffix: "",
-          label: "Frontend Framework Support"
+          title: "See the whole offer on one page",
+          description: "The detail page exposes the audience, service highlights, pricing blocks, and premium tiers without requiring a second round of navigation."
         },
         {
-          value: "50",
-          suffix: "+",
-          label: "Built-in Feature Modules"
-        },
-        {
-          value: "99",
-          suffix: "%",
-          label: "User Satisfaction"
-        }
-      ]
-    },
-    testimonials: {
-      title: "Real User Feedback",
-      items: [
-        {
-          quote: "The early bird price was so worth it! Complete source code and lifetime updates helped me quickly build my own SaaS project, paid back in a month.",
-          author: "Zhang Wei",
-          role: "Independent Developer"
-        },
-        {
-          quote: "Technical support is great, problems are solved quickly. Dual framework support allows the team to choose familiar tech stacks.",
-          author: "Li Xiaoming",
-          role: "Startup CTO"
-        },
-        {
-          quote: "International features are particularly useful, internationalization and payments are all configured, saving us a lot of development time.",
-          author: "Wang Fang",
-          role: "Product Manager"
+          title: "Drive all traffic into inquiry or booking",
+          description: "The bottom of each page leads back to a unified booking or consultation action that can later connect to forms, WeChat, phone, or downloadable proposals."
         }
       ]
     },
     finalCta: {
-      title: "Ready to start your voyage?",
-      subtitle: "Join thousands of users and use TinyShip to quickly build your next business project. Though it's a small boat, it's enough to take you to the shore of success. Early bird pricing only for first 100 users!",
+      eyebrow: "Keep browsing",
+      title: "Lead with the page that converts fastest",
+      subtitle: "If the main goal is fast comprehension and more inquiries, start with Water Sports or Business & Exhibition first, then let Cultural Retail work as the follow-up conversion page.",
       buttons: {
-        purchase: "Buy Now ¥299",
-        demo: "View Demo"
+        primary: "Open Water Sports",
+        secondary: "Open Cultural Retail"
       }
     },
     footer: {
@@ -1453,9 +1294,292 @@ export const en: Locale = {
       description: "TinyShip"
     },
     common: {
-      demoInterface: "Feature Demo Interface",
-      techArchitecture: "Enterprise-grade technical architecture, production-verified",
-      learnMore: "Learn More"
+      viewDetails: "View details"
+    }
+  },
+  services: {
+    common: {
+      metadataTitleSuffix: "Qiannianzhou Tourism Services",
+      backToHome: "Back to homepage services",
+      audienceTitle: "Who this page is for",
+      primaryCta: "Review the full offer",
+      secondaryCta: "Browse another service",
+      highlightTitle: "What this page covers",
+      sectionLabel: "Service module",
+      relatedTitle: "Continue browsing",
+      relatedSubtitle: "The other service lines are already organized into their own detail pages",
+      notFoundTitle: "Service not found"
+    },
+    catalog: {
+      waterSports: {
+        name: "Water Sports Experience",
+        tagline: "Light outdoor experiences",
+        cardDescription: "Kayaks, paddleboards, sightseeing yachts, annual passes, and training are grouped on one page for individuals, families, and team visitors.",
+        detailIntro: "This page is designed around a simple progression: first-time experience, return visits, and premium custom sessions. It mixes one-off activities, longer memberships, and charter-style options.",
+        audiences: ["Individual visitors", "Friends traveling together", "Families", "Team groups"],
+        highlights: [
+          "Kayak experience ¥68 / two people / 40 min",
+          "Kayak experience ¥98 / three people / no time cap",
+          "Paddleboard with guidance ¥98 / person / 30 min",
+          "Sightseeing yacht ¥58 / person / 20 min",
+          "Private charter yacht ¥880 / hour"
+        ],
+        quickFacts: [
+          { label: "Recommended stay", value: "40 - 120 minutes" },
+          { label: "Booking format", value: "Single ride / charter / annual pass" },
+          { label: "Experience depth", value: "Intro session to recurring training" },
+          { label: "Best for", value: "Weekend leisure / gatherings / family outings" }
+        ],
+        sections: [
+          {
+            slug: "basic",
+            title: "Core experience items",
+            description: "These items are easy to understand at a glance and work well as the first purchase on the site.",
+            items: [
+              { name: "Two-person kayak ride", price: "¥68 / two people", duration: "40 minutes", description: "A low-barrier option for couples, friends, and casual visitors who want a quick outdoor activity." },
+              { name: "Three-person kayak ride", price: "¥98 / three people", duration: "No time cap", description: "Better suited to family groups and small friend circles who want a shared experience." },
+              { name: "Paddleboard session with guidance", price: "¥98 / person", duration: "30 minutes", description: "Designed for visitors who want to try paddleboarding without worrying about technique." },
+              { name: "Sightseeing yacht ride", price: "¥58 / person", duration: "20 minutes", description: "Light, scenic, and easy to sell as a same-day add-on for walk-in visitors." },
+              { name: "Model boat activity", price: "¥20 / person", duration: "20 minutes", description: "A compact interactive option that helps extend stay time and works well for family groups." }
+            ]
+          },
+          {
+            slug: "long-term",
+            title: "Recurring services and training",
+            description: "These items add repeat revenue and make the page useful for local visitors, schools, and parents.",
+            items: [
+              { name: "Kayak / paddleboard annual pass", price: "¥580 / year", duration: "Valid for one year", description: "Built for local repeat users who want a steady leisure or training routine." },
+              { name: "Youth paddleboard training", price: "¥1380 / 12 lessons", duration: "Multi-session course", description: "Useful for youth development and easy to connect with study-tour programming." },
+              { name: "Chartered sightseeing yacht", price: "¥880 / hour", duration: "Hourly booking", description: "Suitable for family outings, private gatherings, and premium guest hosting." }
+            ]
+          },
+          {
+            slug: "custom",
+            title: "Custom bundles and premium add-ons",
+            description: "This section packages the experience into higher-value delivery and keeps the page useful for more purposeful event buyers.",
+            items: [
+              { name: "Custom experience bundle", price: "¥198 / 2 hours", duration: "2 hours", description: "Can combine instruction, tea service, and group interaction into a compact program." },
+              { name: "Professional photography coverage", price: "Custom quote", duration: "Scheduled with the event", description: "Pairs well with charters, team events, couple activities, and study-tour sessions." },
+              { name: "Post-event keepsake booklet", price: "Custom quote", duration: "Delivered after the event", description: "Turns a single experience into a shareable memory product and follow-up touchpoint." }
+            ]
+          }
+        ]
+      },
+      festivalCustom: {
+        name: "Festival & Scene Customization",
+        tagline: "Atmosphere and event planning",
+        cardDescription: "Couple experiences, birthdays, family events, and team-building scenarios are organized here with scene setup, packages, and premium upgrades.",
+        detailIntro: "This page focuses on scene-making and full-package delivery. Visitors can first scan individual setup options and activities, then compare standard packages and higher-end upgrades.",
+        audiences: ["Couples", "Families", "Corporate teams", "Clubs and communities"],
+        highlights: [
+          "Exclusive pier set-up ¥300 / session",
+          "Two-person sightseeing yacht ¥116 / two people / 60 min",
+          "Theme scene arrangement ¥100 / session",
+          "Parent-child game ¥20 / person / 50 min",
+          "Team-building / family package ¥158 / person, minimum 10 guests"
+        ],
+        quickFacts: [
+          { label: "Recommended stay", value: "2 - 2.5 hours" },
+          { label: "Booking format", value: "Couple package / team bundle / birthday upgrade" },
+          { label: "Delivery focus", value: "Set design, activities, filming, hosting" },
+          { label: "Best for", value: "Dates / birthdays / company events / family gatherings" }
+        ],
+        sections: [
+          {
+            slug: "scene",
+            title: "Scene set-up and individual modules",
+            description: "These modules work well for light custom pricing and make it easy to explain how the package is assembled.",
+            items: [
+              { name: "Exclusive pier backdrop", price: "¥300 / session", duration: "Scheduled by event", description: "Great for couple dates, proposals, and anniversary-style photo moments." },
+              { name: "Theme scene arrangement", price: "¥100 / session", duration: "Scheduled by event", description: "Works for birthdays, family gatherings, and photo zones for groups." },
+              { name: "Two-person sightseeing yacht", price: "¥116 / two people", duration: "60 minutes", description: "A clear entry-level premium choice for romantic and commemorative experiences." },
+              { name: "Parent-child interactive games", price: "¥20 / person", duration: "50 minutes", description: "Useful for birthday warm-ups, family engagement, and team ice-breaker segments." }
+            ]
+          },
+          {
+            slug: "package",
+            title: "Standard packages",
+            description: "These are the easiest offers for visitors to understand and compare from the homepage.",
+            items: [
+              { name: "Couple package", price: "¥498 / two people", duration: "About 2 hours", description: "Includes pier styling, a two-person yacht ride, and a commemorative short film." },
+              { name: "Team-building / family package", price: "¥158 / person", duration: "2.5 hours", description: "Minimum 10 guests. Includes scene styling, kayak or paddleboard sessions, cake customization, and parent-child games." },
+              { name: "Theme event custom session", price: "¥198 / 2 hours", duration: "2 hours", description: "Suitable for compact activities that need teaching, tea service, and a light planning layer." }
+            ]
+          },
+          {
+            slug: "upgrade",
+            title: "Premium upgrades",
+            description: "This section catches the higher-budget audience with stronger visual production and concierge-style service.",
+            items: [
+              { name: "Premium couple event package", price: "¥3980 / session", duration: "Full event coverage", description: "Includes deep scene customization, cinematic filming, custom wedding gifts, and private concierge support." },
+              { name: "Birthday party premium package", price: "¥880 / session", duration: "Full event coverage", description: "Centred on boat afternoon tea, customized cake, kids games, a host, keepsake booklet, and visual documentation." },
+              { name: "Memorial video and image retention", price: "Custom quote", duration: "Configured by request", description: "Adds a clear value layer for festivals, birthdays, and family-focused events." }
+            ]
+          }
+        ]
+      },
+      educationCourses: {
+        name: "Education & Courses",
+        tagline: "Study tours and guided learning",
+        cardDescription: "Youth study-tour content, nature interpretation, water observation, and heritage workshops are grouped into one decision-ready page.",
+        detailIntro: "This page is structured around what participants will learn, what they will experience, and how long the full program will take. It supports schools, parents, communities, and corporate family programs.",
+        audiences: ["Hobby learners", "Youth groups", "School teams", "Corporate study-tour buyers"],
+        highlights: [
+          "Nature interpretation ¥55 / person / 30 min",
+          "Kayak experience ¥68 / person / 60 min",
+          "Aquatic plant observation journal ¥89 / person / 40 min",
+          "Study-tour package ¥138 / person / 2 hours",
+          "Premium study-tour package ¥368 / person"
+        ],
+        quickFacts: [
+          { label: "Recommended stay", value: "Starting from 2 hours" },
+          { label: "Course structure", value: "Interpretation + observation + on-water + workshop" },
+          { label: "Best partners", value: "Schools / parents / communities / companies" },
+          { label: "Delivery highlight", value: "Keepsake booklet and professional photos" }
+        ],
+        sections: [
+          {
+            slug: "basic",
+            title: "Core course modules",
+            description: "These are easy to combine into school programs or family education sessions.",
+            items: [
+              { name: "Nature interpretation session", price: "¥55 / person", duration: "30 minutes", description: "A strong opening module that gives the audience the context before the activity starts." },
+              { name: "Kayak experience", price: "¥68 / person", duration: "60 minutes", description: "Adds a real on-water layer so the program feels like more than a classroom talk." },
+              { name: "Aquatic plant observation journal", price: "¥89 / person", duration: "40 minutes", description: "Combines observation and note-taking into a tangible learning outcome." }
+            ]
+          },
+          {
+            slug: "package",
+            title: "Standard study-tour packages",
+            description: "These packages are built for one-stop school, family, or youth group planning.",
+            items: [
+              { name: "Youth study-tour package", price: "¥138 / person", duration: "2 hours", description: "Includes guided interpretation, kayak experience, and full-process support. This is the clearest complete offer for the page." },
+              { name: "Corporate family-day education package", price: "Custom quote", duration: "Planned by group size", description: "Good for staff family days, youth camps, and education-oriented themed events." },
+              { name: "Course photography extension", price: "Custom quote", duration: "Whole program", description: "Useful when the organizer wants a stronger visual recap and higher perceived value." }
+            ]
+          },
+          {
+            slug: "upgrade",
+            title: "Premium study-tour delivery",
+            description: "For buyers who want deeper learning, stronger cultural content, and a fuller keepsake package.",
+            items: [
+              { name: "Premium study-tour package", price: "¥368 / person", duration: "Half-day deep dive", description: "Adds a heritage ship-model workshop and a water-culture treasure challenge, plus a keepsake booklet and professional photography." },
+              { name: "Heritage ship-model workshop", price: "Included in premium package", duration: "Scheduled inside the course", description: "Strengthens the cultural layer so the program is not just about being on the water." },
+              { name: "Water-culture treasure challenge", price: "Included in premium package", duration: "Scheduled inside the course", description: "Works especially well for team cooperation and task-based learning." }
+            ]
+          }
+        ]
+      },
+      businessExhibition: {
+        name: "Business & Exhibition",
+        tagline: "Reception and event hosting",
+        cardDescription: "Business reception, international exchange, outdoor tea service, and exhibition beverage setups are presented as one business-facing offer.",
+        detailIntro: "This page targets companies, institutions, and premium visitors. It shows layered reception service from guided hosting and tea service through charter experiences, interpretation, and event beverage operations.",
+        audiences: ["Companies", "Institutions", "Premium visitors", "International exchange groups"],
+        highlights: [
+          "Bilingual guided interpretation ¥55 / person / 30 min",
+          "Business tea service ¥68 / person / open duration",
+          "Sightseeing yacht charter ¥89 / person / 40 min",
+          "Business reception package ¥258 / person, minimum 4 guests",
+          "Tea table experience ¥68 / seat"
+        ],
+        quickFacts: [
+          { label: "Recommended stay", value: "Starting from 2 hours" },
+          { label: "Booking format", value: "Reception package / outdoor exhibit / custom tea table" },
+          { label: "Delivery focus", value: "Guest flow, interpretation, tea service, charter activity" },
+          { label: "Best for", value: "Corporate visits / international exchange / outdoor exhibitions" }
+        ],
+        sections: [
+          {
+            slug: "basic",
+            title: "Core reception modules",
+            description: "These items make the offer legible for business buyers before they move into the full package.",
+            items: [
+              { name: "Bilingual guided interpretation", price: "¥55 / person", duration: "30 minutes", description: "Built for international exchange groups, company visits, and premium visitor hosting." },
+              { name: "Business tea service", price: "¥68 / person", duration: "Open duration", description: "A calm hospitality layer for pre-meeting, post-tour, or informal relationship building." },
+              { name: "Sightseeing yacht reception ride", price: "¥89 / person", duration: "40 minutes", description: "Adds a premium signature moment to reception programs." },
+              { name: "Cultural handbook", price: "¥20 / person", duration: "Distributed on site", description: "Useful as a reception handout or a companion souvenir." }
+            ]
+          },
+          {
+            slug: "package",
+            title: "Standard reception packages",
+            description: "These packages are the most decision-ready options for companies and institutions.",
+            items: [
+              { name: "International exchange / business package", price: "¥258 / person", duration: "2 hours", description: "Minimum 4 guests. Includes bilingual interpretation, tea service, sightseeing yacht, and handbook." },
+              { name: "Corporate or team tea table", price: "¥368 / table", duration: "8 guests per table", description: "A ready-made tea-table solution for exhibits, company hosting, or small gatherings." },
+              { name: "Tea experience seat", price: "¥68 / seat", duration: "Includes snacks and interpretation", description: "Good for exhibition-side cultural programming and lighter public engagement." }
+            ]
+          },
+          {
+            slug: "exhibition",
+            title: "Premium hosting and exhibition support",
+            description: "This section demonstrates higher-end reception ability and the revenue layers inside outdoor exhibitions.",
+            items: [
+              { name: "VIP hosting flow with dedicated interpreter", price: "Custom quote", duration: "Scheduled by event", description: "For foreign delegations, institutions, and visitors who expect higher-touch service." },
+              { name: "Premium negotiation tea room", price: "Custom quote", duration: "Scheduled by event", description: "Extends the reception path from an outdoor visit into a quieter, more formal setting." },
+              { name: "Mobile tea-break cart", price: "¥25 - ¥45 / cup", duration: "During the event", description: "Designed for outdoor exhibitions, open days, and public-facing hospitality." },
+              { name: "Custom drinks / co-branded cup", price: "¥35 - ¥45 / cup", duration: "During the event", description: "The co-branded cup sells at ¥38 and fits exhibitions, pop-ups, and branded collaborations." }
+            ]
+          }
+        ]
+      },
+      culturalRetail: {
+        name: "Cultural Retail",
+        tagline: "Products, livestreaming, and licensing",
+        cardDescription: "Standard cultural products, new themed merchandise, blind boxes, livestream service, and AI content licensing are gathered into one conversion page.",
+        detailIntro: "This page extends the experience after the visit. It supports direct product sales, branded collaborations, livestream commerce, and higher-ticket digital content services.",
+        audiences: ["All visitors", "Fans and repeat buyers", "Merchant partners", "Brand collaboration teams"],
+        highlights: [
+          "Click pen ¥12.9",
+          "Spiral notebook ¥22.9",
+          "Ocean-themed 3D frame ¥89.9",
+          "AI content service ¥300 - ¥1500 / project",
+          "Livestream hosting ¥500 - ¥2000 / session"
+        ],
+        quickFacts: [
+          { label: "Sales format", value: "On-site retail / collaboration drops / livestream conversion" },
+          { label: "Offer range", value: "Physical products + digital services" },
+          { label: "Best for", value: "Post-experience retail / fan conversion / brand partnerships" },
+          { label: "Revenue shape", value: "Low-ticket retail + high-ticket licensing" }
+        ],
+        sections: [
+          {
+            slug: "retail",
+            title: "Core merchandise matrix",
+            description: "These are the easiest take-home products and work naturally after an on-site experience.",
+            items: [
+              { name: "Click pen", price: "¥12.9", duration: "In stock", description: "An easy entry-level cultural product with a low decision threshold." },
+              { name: "Spiral notebook", price: "¥22.9", duration: "In stock", description: "Useful, giftable, and suitable for students and visitors alike." },
+              { name: "Ocean-themed double fridge magnet", price: "¥49.9", duration: "In stock", description: "A stronger souvenir product for couples, families, and out-of-town guests." },
+              { name: "Phone case pair", price: "¥29.9", duration: "In stock", description: "Good for couple visitors and small-scale collaboration drops." }
+            ]
+          },
+          {
+            slug: "new-products",
+            title: "New ocean-themed products and blind boxes",
+            description: "This section highlights more visual products and items with IP or collectable potential.",
+            items: [
+              { name: "Ocean-themed 3D photo frame", price: "¥89.9", duration: "In stock", description: "Pairs well with family, couple, and premium photo-memory services." },
+              { name: "Ocean-themed IP wind chime", price: "¥69.9", duration: "In stock", description: "A stronger atmosphere-driven product for festivals and exhibition retail." },
+              { name: "Ocean-themed scent card", price: "¥9.9", duration: "In stock", description: "Low-ticket and suitable for bundles, gifts, and giveaway packs." },
+              { name: "Ocean-themed bookmark / decor strip", price: "¥29.9", duration: "In stock", description: "A standardized product for students and design-oriented visitors." },
+              { name: "Five-Boats lucky blind box", price: "Series pricing", duration: "Limited release", description: "Adds collectability and shareable social-media conversation." }
+            ]
+          },
+          {
+            slug: "content",
+            title: "Digital content and collaboration services",
+            description: "Beyond retail, this section shows the higher-ticket service revenue available around the same cultural brand.",
+            items: [
+              { name: "AI custom content production", price: "¥300 - ¥1500 / project", duration: "Delivered by scope", description: "For local tourism merchants who need AIGC content or planning proposals." },
+              { name: "Livestream hosting service", price: "¥500 - ¥2000 / session", duration: "By session", description: "Useful for experience sales, retail campaigns, and event livestreaming." },
+              { name: "Content licensing", price: "Custom quote", duration: "By license term", description: "Suitable for AI-generated tourism assets and ship-culture content partnerships." },
+              { name: "Data licensing", price: "Custom quote", duration: "By collaboration term", description: "Structured around visitor profiles and consumption trend insights for enterprise use." }
+            ]
+          }
+        ]
+      }
     }
   },
   ai: {
@@ -1820,7 +1944,8 @@ export const en: Locale = {
       upload: "Upload",
       demos: "Demos",
       demosDescription: "Explore example features",
-      blog: "Blog"
+      blog: "Blog",
+      services: "Services"
     },
     demos: {
       ai: {

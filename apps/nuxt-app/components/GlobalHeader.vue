@@ -97,6 +97,12 @@
             {{ t('header.navigation.blog') }}
           </NuxtLink>
           <NuxtLink 
+            :to="`${localePath('/')}#services`" 
+            class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {{ t('header.navigation.services') }}
+          </NuxtLink>
+          <NuxtLink 
             :to="localePath('/pricing')" 
             class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
@@ -301,6 +307,13 @@
           @click="isMenuOpen = false"
         >
           {{ t('header.navigation.blog') }}
+        </NuxtLink>
+        <NuxtLink 
+          :to="`${localePath('/')}#services`" 
+          class="block px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-foreground hover:bg-muted"
+          @click="isMenuOpen = false"
+        >
+          {{ t('header.navigation.services') }}
         </NuxtLink>
         <NuxtLink 
           :to="localePath('/pricing')" 

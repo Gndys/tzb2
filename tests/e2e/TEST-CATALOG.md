@@ -27,6 +27,7 @@
 - [17. Creem 支付流程测试](#17-creem-支付流程测试)
 - [18. PayPal 支付流程测试](#18-paypal-支付流程测试)
 - [16. 管理员子页面筛选功能测试](#16-管理员子页面筛选功能测试)
+- [21. 服务展示页测试](#21-服务展示页测试)
 
 ### 待实现 (Backlog)
 - [19. 支付宝支付流程测试](#19-支付宝支付流程测试)
@@ -473,6 +474,21 @@ seedCredits 实现 (helpers/credits.ts):
 | 11 | 按类型筛选更新 URL | 访问 `/admin/credits` → 选择 "Purchase" → 等待 URL 包含 `type=purchase` |
 | 12 | 搜索通过 URL 反映到页面状态 | 访问 `/admin/credits?searchField=userEmail&searchValue=admin&page=1` → 验证搜索输入框值为 "admin" |
 | 13 | 清除按钮重置筛选 | 访问带有筛选参数的 URL → 点击清除按钮 → 验证 URL 不再包含 `searchValue`、`type` |
+
+---
+
+## 21. 服务展示页测试
+
+**文件：** `specs/services.spec.ts` ｜ **优先级：** P1 ｜ **无需登录**
+
+验证首页五大服务入口和 `/services/[slug]` 详情页能稳定渲染，保证服务内容一眼可见。
+
+| # | 测试名称 | 具体流程 |
+|---|---------|---------|
+| 1 | 首页展示 5 个服务入口 | 打开 `/en` → 验证 `[data-testid^="service-card-"]` 数量为 5 → 验证五个 slug 对应卡片都可见 |
+| 2 | 首页卡片能跳到对应详情页 | 打开 `/en` → 点击 `service-card-water-sports` → 验证 URL 为 `/services/water-sports` → 验证详情页 hero 可见 |
+| 3 | 服务详情页展示完整区块 | 打开 `/en/services/business-exhibition` → 验证详情页 `<h1>` 可见 → 验证服务区块数量为 3 → 验证页面中出现价格信息 |
+| 4 | 非法 slug 返回 404 | 打开 `/en/services/not-a-real-service` → 验证 HTTP 响应状态码为 404 |
 
 ---
 
